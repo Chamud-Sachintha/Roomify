@@ -34,12 +34,7 @@ class AuthenticationController extends Controller
         DB::beginTransaction();
 
         try {
-            $user = $this->UserModel->create([
-                'name' => $validatedData['name'],
-                'email' => $validatedData['email'],
-                'password' => bcrypt($validatedData['password']),
-            ]);
-
+            $user = $this->UserModel->createNewUser($validatedData);
             $otp = $this->AppHelper->generateUniqueOtp();
 
             $this->EmailOTPModel->createOTPForMail([
