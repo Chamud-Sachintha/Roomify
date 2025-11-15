@@ -20,4 +20,14 @@ class EmailOTP extends Model
             'expires_at' => $data['expires_at'],
         ]);
     }
+
+    public function validateOTP($email, $otp)
+    {
+        $record = self::where('email', $email)
+            ->where('otp_code', $otp)
+            ->where('expires_at', '>', now())
+            ->first();
+
+        return $record !== null;
+    }
 }

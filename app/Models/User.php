@@ -54,4 +54,9 @@ class User extends Authenticatable
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    public function userFindByEmail($email)
+    {
+        return $this->where('email', $email)->first();
+    }
 }

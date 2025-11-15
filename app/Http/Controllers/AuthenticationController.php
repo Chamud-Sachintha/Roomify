@@ -8,6 +8,7 @@ use App\Models\EmailOTP;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthenticationController extends Controller
@@ -52,6 +53,22 @@ class AuthenticationController extends Controller
         }
 
         return view('verify_otp', compact('user'));
+    }
+
+    public function authenticateUser(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        $user = $this->UserModel->userFindByEmail($credentials['email']);
+
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            return view('dashboard', compact('user'));
+        } else {
+            return back()->withErrors(['error' => 'Invalid email or password.']);
+        }
     }
 
 }
