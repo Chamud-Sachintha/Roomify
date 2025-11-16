@@ -21,3 +21,4 @@ Route::post('/register', [AuthenticationController::class, 'registerNewUser'])->
 Route::post('/login', [AuthenticationController::class, 'authenticateUser'])->name('login');
 Route::post('/verify-otp', [EmailOTPController::class, 'validateOTP'])->name('verify_otp');
 Route::get('app/dashboard', [DashboardController::class, 'showDashboardPage'])->name('dashboard')->middleware('auth');
+Route::get('app/verification', [DashboardController::class, 'showVerificationPage'])->name('verification')->middleware('auth');
