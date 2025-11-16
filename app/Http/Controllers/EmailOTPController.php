@@ -21,11 +21,11 @@ class EmailOTPController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'otp' => 'required|string',
+            'otp_code' => 'required|string',
         ]);
 
         $email = $request->input('email');
-        $otp = $request->input('otp');
+        $otp = $request->input('otp_code');
 
         $isValid = $this->EmailOTpModel->validateOTP($email, $otp);
 

@@ -8,6 +8,7 @@
 
     <!-- Font Icon -->
     <link rel="stylesheet" href="{{ asset('auth/fonts/material-icon/css/material-design-iconic-font.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
     <!-- Main css -->
     <link rel="stylesheet" href="{{asset('auth/css/style.css')}}">
@@ -26,14 +27,24 @@
 
                     <div class="signin-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST" class="register-form" id="login-form">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <form method="POST" class="register-form" action="{{ route('login') }}">
+                            @csrf
                             <div class="form-group">
                                 <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="your_name" id="your_name" placeholder="Your Name"/>
+                                <input type="text" name="email" id="email" placeholder="Your Name"/>
                             </div>
                             <div class="form-group">
                                 <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                                <input type="password" name="password" id="your_pass" placeholder="Password"/>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
@@ -61,5 +72,7 @@
     <!-- JS -->
     <script src="{{ asset('auth/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('auth/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

@@ -10,9 +10,9 @@
 
 <body>
     <div class="container d-flex justify-content-center align-items-center vh-100">
-        <form id="otpForm" method="POST" action="/verify-otp" class="card p-4 text-center" style="width: 350px;">
-            <!-- csrf for Laravel -->
-            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <form id="otpForm" method="POST" action="{{ route('verify_otp') }}" class="card p-4 text-center" style="width: 350px;">
+            @csrf
+            <input type="hidden" name="email" value="{{ $user->email }}">
 
             <h5 class="mb-4">Enter OTP Code</h5>
 

@@ -7,6 +7,7 @@ use App\Mail\AccountVerificationMail;
 use App\Models\EmailOTP;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -68,7 +69,9 @@ class AuthenticationController extends Controller
             if (!$user->is_verified) {
                 return back()->withErrors(['error' => 'Please verify your email before logging in.']);
             }
-            return view('dashboard', compact('user'));
+
+            Auth::login($user);
+            return redirect()->route('dashboard');
         } else {
             return back()->withErrors(['error' => 'Invalid email or password.']);
         }
