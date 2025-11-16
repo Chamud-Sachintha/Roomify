@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_verified',
     ];
 
     /**
@@ -52,11 +53,17 @@ class User extends Authenticatable
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'is_verified' => false,
         ]);
     }
 
     public function userFindByEmail($email)
     {
         return $this->where('email', $email)->first();
+    }
+
+    public function markEmailAsVerifiedUser($email)
+    {
+        return $this->where('email', $email)->update(['is_verified' => true]);
     }
 }

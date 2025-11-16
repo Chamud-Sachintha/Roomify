@@ -65,6 +65,9 @@ class AuthenticationController extends Controller
         $user = $this->UserModel->userFindByEmail($credentials['email']);
 
         if ($user && Hash::check($credentials['password'], $user->password)) {
+            if (!$user->is_verified) {
+                return back()->withErrors(['error' => 'Please verify your email before logging in.']);
+            }
             return view('dashboard', compact('user'));
         } else {
             return back()->withErrors(['error' => 'Invalid email or password.']);
