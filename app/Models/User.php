@@ -66,4 +66,19 @@ class User extends Authenticatable
     {
         return $this->where('email', $email)->update(['is_verified' => true]);
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_has_roles', 'user_id', 'role_id');
+    }
+
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function getUserById($id)
+    {
+        return $this->where('id', $id)->first();
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AppHelper;
 use App\Mail\AccountVerificationMail;
 use App\Models\EmailOTP;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,10 @@ class AuthenticationController extends Controller
 
         try {
             $user = $this->UserModel->createNewUser($validatedData);
+
+            $defaultRoleId = Role::where('name', Role::ROLE_USER)->first()->id;
+            $user->roles()->attach($defaultRoleId);
+
             $otp = $this->AppHelper->generateUniqueOtp();
 
             $this->EmailOTPModel->createOTPForMail([
