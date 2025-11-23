@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailOTPController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -29,3 +30,5 @@ Route::post('/login', [AuthenticationController::class, 'authenticateUser'])->na
 Route::post('/verify-otp', [EmailOTPController::class, 'validateOTP'])->name('verify_otp');
 Route::get('app/dashboard', [DashboardController::class, 'showDashboardPage'])->name('dashboard')->middleware('auth');
 Route::get('app/verification', [DashboardController::class, 'showVerificationPage'])->name('verification')->middleware('auth');
+Route::get('/settings/verification-settings', [SettingsController::class, 'showVerificationSettingsPage'])->name('verification-settings')->middleware('auth');
+Route::post('/settings/create-verification-document-type', [SettingsController::class, 'createVerificationDocumentType'])->name('create_verification_document_type')->middleware('auth');

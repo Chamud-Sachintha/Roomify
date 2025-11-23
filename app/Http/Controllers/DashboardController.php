@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+
+    private $user;
+
+    public function __construct() {
+        $this->user = Auth::user();
+    }
+
     public function showDashboardPage() {
-        $user = Auth::user();
-        return view('app.dashboard')->with(['user' => $user, 'breadcrumb' => 'Dashboard']);
+        if ($this->user->roles[0]['name'] == Role::ROLE_ADMIN) {
+           return view('app.admin.dashboard')->with(['user' => $this->user, 'breadcrumb' => 'Dashboard']);
+        }
+
+        return view('app.dashboard')->with(['user' => $this->user, 'breadcrumb' => 'Dashboard']);
     }
 
     public function showVerificationPage() {
-        $user = Auth::user();
-        return view('app.verifications')->with(['user' => $user, 'breadcrumb' => 'Account Verification']);
+        return view('app.verifications')->with(['user' => $this->user, 'breadcrumb' => 'Account Verification']);
     }
 }

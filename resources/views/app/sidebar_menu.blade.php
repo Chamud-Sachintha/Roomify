@@ -156,11 +156,22 @@
                                 <span>Verification</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="events.html">
+                        {{-- <li class="nav-item">
+                            <a class="nav-link " href="{{ route('settings') }}">
                                 <i class="bi bi-calendar-event"></i>
                                 <span>Settings</span>
                             </a>
+                        </li> --}}
+                        <li class="nav-item">
+                            <a class="nav-link has-submenu " href="javascript:void(0)" data-bs-toggle="collapse"
+                                data-bs-target="#dashboardSubmenu" aria-expanded="false">
+                                <i class="bi bi-speedometer2"></i>
+                                <span>Settings</span>
+                            </a>
+                            <ul id="dashboardSubmenu" class="submenu collapse  list-unstyled">
+                                <li><a class="nav-link active" href="index.html">General Settings</a></li>
+                                <li><a class="nav-link " href="{{ route('verification-settings') }}">Verification Settings</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link " href="{{ route('logout') }}">
