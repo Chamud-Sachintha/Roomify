@@ -268,9 +268,9 @@
                                             Type</label>
                                         <select class="form-select" id="verificationType" required>
                                             <option value="" disabled selected>Select type</option>
-                                            <option value="identity">Identity Verification</option>
-                                            <option value="address">Address Verification</option>
-                                            <option value="income">Income Verification</option>
+                                            @foreach ($allDocumentTypes as $documentType)
+                                                <option value="{{ $documentType->id }}">{{ $documentType->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                     <div class="col-md-6 col-sm-12 mb-3">

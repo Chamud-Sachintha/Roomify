@@ -23,8 +23,4 @@ class DashboardController extends Controller
 
         return view('app.dashboard')->with(['user' => $this->user, 'breadcrumb' => 'Dashboard']);
     }
-
-    public function showVerificationPage() {
-        return view('app.verifications')->with(['user' => $this->user, 'breadcrumb' => 'Account Verification']);
-    }
 }

@@ -18,4 +18,9 @@ class VerificationDocument extends Model
             'status' => $data['status'],
         ]);
     }
+
+    public function get_all_documents()
+    {
+        return self::all();
+    }
 }

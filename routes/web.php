@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ClientVerificationDocumentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailOTPController;
 use App\Http\Controllers\SettingsController;
@@ -29,6 +30,9 @@ Route::post('/register', [AuthenticationController::class, 'registerNewUser'])->
 Route::post('/login', [AuthenticationController::class, 'authenticateUser'])->name('login');
 Route::post('/verify-otp', [EmailOTPController::class, 'validateOTP'])->name('verify_otp');
 Route::get('app/dashboard', [DashboardController::class, 'showDashboardPage'])->name('dashboard')->middleware('auth');
-Route::get('app/verification', [DashboardController::class, 'showVerificationPage'])->name('verification')->middleware('auth');
+Route::get('app/verification', [ClientVerificationDocumentController::class, 'showVerificationPage'])->name('verification')->middleware('auth');
 Route::get('/settings/verification-settings', [SettingsController::class, 'showVerificationSettingsPage'])->name('verification-settings')->middleware('auth');
 Route::post('/settings/create-verification-document-type', [SettingsController::class, 'createVerificationDocumentType'])->name('create_verification_document_type')->middleware('auth');
+Route::post('/settings/update-verification-document-type', [SettingsController::class, 'updateVerificationDocumentType'])->name('update_verification_document_type')->middleware('auth');
+Route::post('/settings/delete-verification-document-type', [SettingsController::class, 'deleteVerificationDocumentType'])->name('delete_verification_document_type')->middleware('auth');
+Route::get('/settings/get-all-verification-document-types', [SettingsController::class, 'getAllverificationDocumentTypes'])->name('get_all_verification_document_types')->middleware('auth');

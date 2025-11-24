@@ -270,6 +270,11 @@
                                 </ul>
                             </div>
                             @endif
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                             <form class="form-group" method="POST" action="{{ route('create_verification_document_type') }}">
                                 @csrf
                                 <div class="row">
@@ -325,31 +330,47 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr style="cursor: pointer;">
-                                                    <td class="fw-semibold">2025001</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&amp;background=6366f1&amp;color=fff"
-                                                                alt="Sarah Johnson" class="student-avatar me-3">
-                                                            <div>
-                                                                <div class="student-name">Sarah Johnson</div>
-                                                                <div class="student-email">sarah.j@university.edu</div>
+                                                @foreach ($verificationDocumentList as $document)
+                                                    <tr style="cursor: pointer;">
+                                                        <td class="fw-semibold">{{ $document->id }}</td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                {{-- <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&amp;background=6366f1&amp;color=fff"
+                                                                    alt="Sarah Johnson" class="student-avatar me-3"> --}}
+                                                                <img width="48" height="48" src="https://img.icons8.com/color/48/document--v1.png" alt="document--v1"/>
+                                                                <div>
+                                                                    <div class="student-name">{{ $document->name }}</div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>Computer Science</td>
-                                                    <td>
-                                                        <button class="btn-action btn-view" title="View">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-edit" title="Edit">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-delete" title="Delete">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td>
+                                                            @if ($document->status == 0)
+                                                                <span class="status-badge status-inactive">Inactive</span>
+                                                            @else
+                                                                <span class="status-badge status-active">Active</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn-action btn-edit"
+                                                                    title="Edit"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#basicModal"
+                                                                    data-id="{{ $document->id }}"
+                                                                    data-name="{{ $document->name }}"
+                                                                    data-type="{{ $document->status }}">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+
+                                                            <button class="btn-action btn-delete" title="Delete" 
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#deleteModal"
+                                                                    data-id="{{ $document->id }}"
+                                                                    >
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -362,8 +383,90 @@
         </main>
 
         @include('app.footer')
+
+        <!-- Basic Modal -->
+        <div class="modal fade" id="basicModal" tabindex="-1" aria-labelledby="basicModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="basicModalLabel">Edit Document Type</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-group" method="POST" action="{{ route('update_verification_document_type') }}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 mb-3">
+                                    <label for="fullName" class="form-label">Document Type Name</label>
+                                    <input type="text" class="form-control" id="editDocumentTypeName" name="editDocumentTypeName"
+                                        placeholder="Eg. NIC" required>
+                                </div>
+                                <div class="col-md-6 col-sm-12 mb-3">
+                                    <label for="verificationType" class="form-label">Select Status</label>
+                                    <select class="form-select" id="editDocumentTypeStatus" name="editDocumentTypeStatus" required>
+                                        <option value="" disabled selected>Select type</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="hidden" id="documentTypeId" name="documentTypeId">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update changes</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="deleteModalLabel">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this item?</p>
+                        <p class="text-danger"><strong>This action cannot be undone!</strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form method="POST" action="{{ route('delete_verification_document_type') }}">
+                            @csrf
+                            <input type="hidden" id="deleteDocumentTypeId" name="deleteDocumentTypeId">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <script>
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btn-edit')) {
+                let button = e.target.closest('.btn-edit');
+
+                document.getElementById('documentTypeId').value = button.getAttribute('data-id');
+                document.getElementById('editDocumentTypeName').value = button.getAttribute('data-name');
+                document.getElementById('editDocumentTypeStatus').value = button.getAttribute('data-type');
+            }
+        });
+
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.btn-delete')) {
+                let button = e.target.closest('.btn-delete');
+
+                document.getElementById('deleteDocumentTypeId').value = button.getAttribute('data-id');
+            }
+        });
+    </script>
 </body>
 
 </html>
