@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('client_verification_documents', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('client_id')->constrained('users')->onDelete('cascade');
+            $table->string('full_name');
+            $table->foreignId('document_type_id')->constrained('verification_documents')->onDelete('cascade');
+            $table->string('document_path');
+            $table->string('status')->default('pending');
+            $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });
     }

@@ -36,3 +36,5 @@ Route::post('/settings/create-verification-document-type', [SettingsController::
 Route::post('/settings/update-verification-document-type', [SettingsController::class, 'updateVerificationDocumentType'])->name('update_verification_document_type')->middleware('auth');
 Route::post('/settings/delete-verification-document-type', [SettingsController::class, 'deleteVerificationDocumentType'])->name('delete_verification_document_type')->middleware('auth');
 Route::get('/settings/get-all-verification-document-types', [SettingsController::class, 'getAllverificationDocumentTypes'])->name('get_all_verification_document_types')->middleware('auth');
+
+Route::post('/upload-verification-document', [ClientVerificationDocumentController::class, 'uploadNewVerificationDocument'])->name('upload_verification_document')->middleware('auth');

@@ -261,12 +261,25 @@
                         <div class="card-header">
                             <h5 class="card-title mb-0">Create Verification Documents</h5>
                             <hr>
-                            <form class="form-group">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <div class="alert alert-info" role="alert">
+                                A simple secondary alert—check it out!
+                            </div>
+                            <form class="form-group" method="POST" action="{{ route('upload_verification_document') }}" enctype="multipart/form-data">
+                                @csrf
                                 <div class="row">
                                     <div class="col-md-6 col-sm-12 mb-3">
                                         <label for="verificationType" class="form-label">Select Verification
                                             Type</label>
-                                        <select class="form-select" id="verificationType" required>
+                                        <select class="form-select" id="verificationType" name="document_type_id" required>
                                             <option value="" disabled selected>Select type</option>
                                             @foreach ($allDocumentTypes as $documentType)
                                                 <option value="{{ $documentType->id }}">{{ $documentType->name }}</option>
@@ -275,7 +288,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-12 mb-3">
                                         <label for="fullName" class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" id="fullName"
+                                        <input type="text" class="form-control" id="fullName" name="full_name"
                                             placeholder="Enter full name" required>
                                     </div>
                                 </div>
@@ -283,7 +296,7 @@
                                     <div class="col-md-6 col-sm-12 mb-3">
                                         <label for="documentUpload" class="form-label">Upload Supporting
                                             Document</label>
-                                        <input type="file" class="form-control" id="documentUpload" required>
+                                        <input type="file" class="form-control" id="documentUpload" name="document_file" required>
                                     </div>
                                 </div>
                                 <div class="row">
