@@ -62,4 +62,10 @@ class ClientVerificationDocumentController extends Controller
             return back()->withErrors(['error' => 'Failed to delete the document: ' . $e->getMessage()]);
         }
     }
+
+    public function showDocumentVerificationRequestsPage() {
+        $allRequests = $this->clientVerificationDocumentModel->getAllVerificationRequests();
+
+        return view('app.admin.document-verification')->with(['user' => $this->user, 'breadcrumb' => 'Document Verification Requests', 'allRequests' => $allRequests]);
+    }
 }

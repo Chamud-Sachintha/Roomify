@@ -151,9 +151,9 @@
                     <div class="menu-section-title">Account</div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link " href="{{ route('verification') }}">
+                            <a class="nav-link " href="{{ route('document_verification_requests') }}">
                                 <i class="bi bi-calendar-event"></i>
-                                <span>Verification</span>
+                                <span>Verifications</span>
                             </a>
                         </li>
                         {{-- <li class="nav-item">

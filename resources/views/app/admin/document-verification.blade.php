@@ -251,79 +251,20 @@
             <div class="container-fluid">
                 <!-- Page Header -->
                 <div class="mb-3">
-                    <h1 class="h3 font-bold">Account Verification</h1>
+                    <h1 class="h3 font-bold">Verification Requests</h1>
                     <p class="text-muted text-sm">Welcome back! Here's what's happening with your institution today.</p>
-                </div>
-
-                <div class="dashboard-grid grid-cols-12">
-                    <!-- Recent Students -->
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Create Verification Documents</h5>
-                            <hr>
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                            @if (session('success'))
-                                <div class="alert alert-success">
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-                            <div class="alert alert-info" role="alert">
-                                A simple secondary alert—check it out!
-                            </div>
-                            <form class="form-group" method="POST" action="{{ route('upload_verification_document') }}" enctype="multipart/form-data">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12 mb-3">
-                                        <label for="verificationType" class="form-label">Select Verification
-                                            Type</label>
-                                        <select class="form-select" id="verificationType" name="document_type_id" required>
-                                            <option value="" disabled selected>Select type</option>
-                                            @foreach ($allDocumentTypes as $documentType)
-                                                <option value="{{ $documentType->id }}">{{ $documentType->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12 mb-3">
-                                        <label for="fullName" class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" id="fullName" name="full_name"
-                                            placeholder="Enter full name" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12 mb-3">
-                                        <label for="documentUpload" class="form-label">Upload Supporting
-                                            Document</label>
-                                        <input type="file" class="form-control" id="documentUpload" name="document_file" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-3">
-                                        <button type="submit" class="btn btn-primary">Generate Verification</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="dashboard-grid grid-cols-12 mt-3">
                     <!-- Recent Students -->
                     <div class="dashboard-card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Verification Documents</h5>
+                            <h5 class="card-title mb-0">Verification Documents Requests</h5>
                             <hr>
                             <div class="dashboard-card">
                                 <div class="dashboard-card-header py-4 px-4">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">Student Information</h5>
+                                        <h5 class="mb-0"></h5>
                                         <div class="d-flex gap-2">
                                             <input type="text" class="form-control form-control-sm"
                                                 placeholder="Search students..." style="width: 200px;">
@@ -344,7 +285,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($uploadedDocuments as $document)
+                                                @foreach ($allRequests as $document)
                                                     <tr style="cursor: pointer;">
                                                         <td>
                                                             {{ $document->id }}
@@ -370,20 +311,21 @@
                                                         </td>
                                                         <td>{{ $document->remark }}</td>
                                                         <td>
-                                                            <button class="btn-action btn-view" title="View"
+                                                            <button class="btn-action btn-edit"
+                                                                    title="Edit"
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#basicModal"
-                                                                    data-document-type="{{ $document->documentType->name }}"
-                                                                    data-full-name="{{ $document->full_name }}"
-                                                                    data-status="{{ $document->status }}"
-                                                                    data-remark="{{ $document->remark }}"
-                                                                    data-image-url="{{ Storage::url($document->document_path) }}"
-                                                                    >
-                                                                <i class="bi bi-eye"></i>
+                                                                    data-id="{{ $document->id }}"
+                                                                    data-name="{{ $document->name }}"
+                                                                    data-type="{{ $document->status }}">
+                                                                <i class="bi bi-pencil"></i>
                                                             </button>
-                                                            <button class="btn-action btn-delete" title="Delete" data-bs-toggle="modal"
+
+                                                            <button class="btn-action btn-delete" title="Delete" 
+                                                                    data-bs-toggle="modal"
                                                                     data-bs-target="#deleteModal"
-                                                                    data-id="{{ $document->id }}">
+                                                                    data-id="{{ $document->id }}"
+                                                                    >
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </td>
@@ -500,52 +442,7 @@
                 });
             }
 
-            // Modal population
-            const basicModal = document.getElementById('basicModal');
-            basicModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-
-                const documentType = button.getAttribute('data-document-type');
-                const fullName = button.getAttribute('data-full-name');
-                const status = button.getAttribute('data-status');
-                const remark = button.getAttribute('data-remark');
-                const imageUrl = button.getAttribute('data-image-url');
-
-                const modalDocumentType = basicModal.querySelector('#documentType');
-                const modalFullName = basicModal.querySelector('#fullName');
-                const modalStatus = basicModal.querySelector('#status');
-                const modalRemark = basicModal.querySelector('#remark');
-                const viewDocumentButton = basicModal.querySelector('.modal-body button');
-
-                modalDocumentType.value = documentType;
-                modalFullName.value = fullName;
-    
-                if (status == 1) {
-                    modalStatus.value = 'Approved';
-                } else if (status == 0) {
-                    modalStatus.value = 'Pending';
-                } else if (status == 2) {
-                    modalStatus.value = 'Rejected';
-                } else {
-                    modalStatus.value = 'Unknown';
-                }
-
-                modalRemark.value = remark;
-
-                viewDocumentButton.onclick = function () {
-                    window.open(imageUrl, '_blank');
-                };
-            });
-
-            // Delete modal population
-            const deleteModal = document.getElementById('deleteModal');
-            deleteModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-                const documentId = button.getAttribute('data-id');
-
-                const deleteInput = deleteModal.querySelector('#deleteVerificationDocumentId');
-                deleteInput.value = documentId;
-            });
+            
     </script>
 
 </body>

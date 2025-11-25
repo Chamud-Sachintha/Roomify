@@ -54,4 +54,9 @@ class ClientVerificationDocument extends Model
 
         return $document->delete();
     }
+
+    public function getAllVerificationRequests()
+    {
+        return self::with('client', 'documentType')->get();
+    }
 }
