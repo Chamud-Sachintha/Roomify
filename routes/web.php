@@ -38,3 +38,4 @@ Route::post('/settings/delete-verification-document-type', [SettingsController::
 Route::get('/settings/get-all-verification-document-types', [SettingsController::class, 'getAllverificationDocumentTypes'])->name('get_all_verification_document_types')->middleware('auth');
 
 Route::post('/upload-verification-document', [ClientVerificationDocumentController::class, 'uploadNewVerificationDocument'])->name('upload_verification_document')->middleware('auth');
+Route::post('/delete-verification-document', [ClientVerificationDocumentController::class, 'deleteVerificationDocument'])->name('delete_verification_document')->middleware('auth');

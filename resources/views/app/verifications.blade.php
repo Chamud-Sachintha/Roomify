@@ -322,9 +322,6 @@
                                         <div class="d-flex gap-2">
                                             <input type="text" class="form-control form-control-sm"
                                                 placeholder="Search students..." style="width: 200px;">
-                                            <button class="btn btn-sm btn-primary">
-                                                <i class="bi bi-plus me-1"></i>Add Student
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -333,162 +330,60 @@
                                         <table class="table table-custom mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th>Student</th>
-                                                    <th>ID Number</th>
-                                                    <th>Department</th>
-                                                    <th>Year</th>
-                                                    <th>GPA</th>
+                                                    <th>#</th>
+                                                    <th>Document Type</th>
+                                                    <th>Full Name</th>
                                                     <th>Status</th>
-                                                    <th>Enrolled</th>
+                                                    <th>Remark</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr style="cursor: pointer;">
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&amp;background=6366f1&amp;color=fff"
-                                                                alt="Sarah Johnson" class="student-avatar me-3">
-                                                            <div>
-                                                                <div class="student-name">Sarah Johnson</div>
-                                                                <div class="student-email">sarah.j@university.edu</div>
+                                                @foreach ($uploadedDocuments as $document)
+                                                    <tr style="cursor: pointer;">
+                                                        <td>
+                                                            {{ $document->id }}
+                                                        </td>
+                                                        <td class="fw-semibold">{{ $document->documentType->name }}</td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="https://ui-avatars.com/api/?name={{ $document->full_name }}&amp;background=6366f1&amp;color=fff"
+                                                                    alt="Sarah Johnson" class="student-avatar me-3">
+                                                                <div>
+                                                                    <div class="student-name">{{ $document->full_name }}</div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="fw-semibold">2025001</td>
-                                                    <td>Computer Science</td>
-                                                    <td>3rd Year</td>
-                                                    <td><span class="badge bg-success">3.85</span></td>
-                                                    <td><span class="status-badge status-active">Active</span></td>
-                                                    <td>Sep 2022</td>
-                                                    <td>
-                                                        <button class="btn-action btn-view" title="View">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-edit" title="Edit">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-delete" title="Delete">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr style="cursor: pointer;">
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="https://ui-avatars.com/api/?name=Michael+Chen&amp;background=10b981&amp;color=fff"
-                                                                alt="Michael Chen" class="student-avatar me-3">
-                                                            <div>
-                                                                <div class="student-name">Michael Chen</div>
-                                                                <div class="student-email">m.chen@university.edu</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="fw-semibold">2025002</td>
-                                                    <td>Mathematics</td>
-                                                    <td>2nd Year</td>
-                                                    <td><span class="badge bg-success">3.92</span></td>
-                                                    <td><span class="status-badge status-active">Active</span></td>
-                                                    <td>Sep 2023</td>
-                                                    <td>
-                                                        <button class="btn-action btn-view" title="View">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-edit" title="Edit">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-delete" title="Delete">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr style="cursor: pointer;">
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="https://ui-avatars.com/api/?name=Emma+Davis&amp;background=f59e0b&amp;color=fff"
-                                                                alt="Emma Davis" class="student-avatar me-3">
-                                                            <div>
-                                                                <div class="student-name">Emma Davis</div>
-                                                                <div class="student-email">emma.d@university.edu</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="fw-semibold">2025003</td>
-                                                    <td>Physics</td>
-                                                    <td>4th Year</td>
-                                                    <td><span class="badge bg-warning">3.45</span></td>
-                                                    <td><span class="status-badge status-active">Active</span></td>
-                                                    <td>Sep 2021</td>
-                                                    <td>
-                                                        <button class="btn-action btn-view" title="View">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-edit" title="Edit">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-delete" title="Delete">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr style="cursor: pointer;">
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="https://ui-avatars.com/api/?name=James+Wilson&amp;background=ef4444&amp;color=fff"
-                                                                alt="James Wilson" class="student-avatar me-3">
-                                                            <div>
-                                                                <div class="student-name">James Wilson</div>
-                                                                <div class="student-email">james.w@university.edu</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="fw-semibold">2025004</td>
-                                                    <td>Engineering</td>
-                                                    <td>1st Year</td>
-                                                    <td><span class="badge bg-info">3.65</span></td>
-                                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                                    <td>Sep 2024</td>
-                                                    <td>
-                                                        <button class="btn-action btn-view" title="View">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-edit" title="Edit">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-delete" title="Delete">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <tr style="cursor: pointer;">
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="https://ui-avatars.com/api/?name=Olivia+Brown&amp;background=8b5cf6&amp;color=fff"
-                                                                alt="Olivia Brown" class="student-avatar me-3">
-                                                            <div>
-                                                                <div class="student-name">Olivia Brown</div>
-                                                                <div class="student-email">olivia.b@university.edu</div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="fw-semibold">2025005</td>
-                                                    <td>Biology</td>
-                                                    <td>3rd Year</td>
-                                                    <td><span class="badge bg-success">3.78</span></td>
-                                                    <td><span class="status-badge status-active">Active</span></td>
-                                                    <td>Sep 2022</td>
-                                                    <td>
-                                                        <button class="btn-action btn-view" title="View">
-                                                            <i class="bi bi-eye"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-edit" title="Edit">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </button>
-                                                        <button class="btn-action btn-delete" title="Delete">
-                                                            <i class="bi bi-trash"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                        <td>
+                                                            @if ($document->status == 1)
+                                                                <span class="status-badge status-active">Approved</span>
+                                                            @elseif ($document->status == 0)
+                                                                <span class="status-badge status-pending">Pending</span>
+                                                            @elseif ($document->status == 2)
+                                                                <span class="status-badge status-inactive">Rejected</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>{{ $document->remark }}</td>
+                                                        <td>
+                                                            <button class="btn-action btn-view" title="View"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#basicModal"
+                                                                    data-document-type="{{ $document->documentType->name }}"
+                                                                    data-full-name="{{ $document->full_name }}"
+                                                                    data-status="{{ $document->status }}"
+                                                                    data-remark="{{ $document->remark }}"
+                                                                    data-image-url="{{ Storage::url($document->document_path) }}"
+                                                                    >
+                                                                <i class="bi bi-eye"></i>
+                                                            </button>
+                                                            <button class="btn-action btn-delete" title="Delete" data-bs-toggle="modal"
+                                                                    data-bs-target="#deleteModal"
+                                                                    data-id="{{ $document->id }}">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -501,51 +396,85 @@
         </main>
 
         @include('app.footer')
+
+        <!-- Basic Modal -->
+        <div class="modal fade" id="basicModal" tabindex="-1" aria-labelledby="basicModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="basicModalLabel">View Document Type</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-group" method="POST" action="">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 mb-3">
+                                    <label for="fullName" class="form-label">Document Type</label>
+                                    <input type="text" class="form-control" id="documentType" name="documentType"
+                                        placeholder="Eg. NIC" disabled>
+                                </div>
+                                <div class="col-md-6 col-sm-12 mb-3">
+                                    <label for="verificationType" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" name="fullName"
+                                        placeholder="Eg. NIC" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <input type="text" class="form-control" id="status" name="status"
+                                        placeholder="Eg. Approved / Pending" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 mb-3">
+                                    <label for="remark" class="form-label">Remark</label>
+                                    <textarea class="form-control" id="remark" name="remark" rows="3" disabled></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 mb-3">
+                                    <button type="button" class="btn btn-primary w-100">View Document</button>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="deleteModalLabel">
+                            <i class="bi bi-exclamation-triangle me-2"></i>Confirm Delete
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this item?</p>
+                        <p class="text-danger"><strong>This action cannot be undone!</strong></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form method="POST" action="{{ route('delete_verification_document') }}">
+                            @csrf
+                            <input type="hidden" id="deleteVerificationDocumentId" name="deleteVerificationDocumentId">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // Table interactions
-        document.addEventListener('DOMContentLoaded', function () {
-            // Add click handlers for action buttons
-            const viewButtons = document.querySelectorAll('.btn-view');
-            const editButtons = document.querySelectorAll('.btn-edit');
-            const deleteButtons = document.querySelectorAll('.btn-delete');
-
-            viewButtons.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    alert('View functionality would open student/course details');
-                });
-            });
-
-            editButtons.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    alert('Edit functionality would open edit form');
-                });
-            });
-
-            deleteButtons.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    if (confirm('Are you sure you want to delete this record?')) {
-                        alert('Delete functionality would remove the record');
-                    }
-                });
-            });
-
-            // Table row selection
-            const tableRows = document.querySelectorAll('tbody tr');
-            tableRows.forEach(row => {
-                row.style.cursor = 'pointer';
-                row.addEventListener('click', function (e) {
-                    // Don't select if clicking on action buttons
-                    if (!e.target.closest('.btn-action')) {
-                        // Remove previous selection
-                        tableRows.forEach(r => r.classList.remove('table-active'));
-                        // Add selection to clicked row
-                        this.classList.add('table-active');
-                    }
-                });
-            });
-
             // Search functionality
             const searchInput = document.querySelector('input[placeholder="Search students..."]');
             if (searchInput) {
@@ -565,7 +494,53 @@
                     });
                 });
             }
-        });
+
+            // Modal population
+            const basicModal = document.getElementById('basicModal');
+            basicModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                const documentType = button.getAttribute('data-document-type');
+                const fullName = button.getAttribute('data-full-name');
+                const status = button.getAttribute('data-status');
+                const remark = button.getAttribute('data-remark');
+                const imageUrl = button.getAttribute('data-image-url');
+
+                const modalDocumentType = basicModal.querySelector('#documentType');
+                const modalFullName = basicModal.querySelector('#fullName');
+                const modalStatus = basicModal.querySelector('#status');
+                const modalRemark = basicModal.querySelector('#remark');
+                const viewDocumentButton = basicModal.querySelector('.modal-body button');
+
+                modalDocumentType.value = documentType;
+                modalFullName.value = fullName;
+    
+                if (status == 1) {
+                    modalStatus.value = 'Approved';
+                } else if (status == 0) {
+                    modalStatus.value = 'Pending';
+                } else if (status == 2) {
+                    modalStatus.value = 'Rejected';
+                } else {
+                    modalStatus.value = 'Unknown';
+                }
+
+                modalRemark.value = remark;
+
+                viewDocumentButton.onclick = function () {
+                    window.open(imageUrl, '_blank');
+                };
+            });
+
+            // Delete modal population
+            const deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const documentId = button.getAttribute('data-id');
+
+                const deleteInput = deleteModal.querySelector('#deleteVerificationDocumentId');
+                deleteInput.value = documentId;
+            });
     </script>
 
 </body>

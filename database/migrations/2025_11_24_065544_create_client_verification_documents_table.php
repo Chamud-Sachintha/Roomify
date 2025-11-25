@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('full_name');
             $table->foreignId('document_type_id')->constrained('verification_documents')->onDelete('cascade');
             $table->string('document_path');
-            $table->string('status')->default('pending');
+            $table->integer('status')->default(0);
+            $table->string('remark');
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });

@@ -21,7 +21,9 @@ class ClientVerificationDocumentController extends Controller
 
     public function showVerificationPage() {
         $allDocumentTypes = $this->verificationDocumentTypeService->getAllverificationDocumentTypes();
-        return view('app.verifications')->with(['user' => $this->user, 'breadcrumb' => 'Account Verification', 'allDocumentTypes' => $allDocumentTypes]);
+        $uploadedDocuments = $this->clientVerificationDocumentModel->getClientVerificationDocuments($this->user->id);
+
+        return view('app.verifications')->with(['user' => $this->user, 'breadcrumb' => 'Account Verification', 'allDocumentTypes' => $allDocumentTypes, 'uploadedDocuments' => $uploadedDocuments]);
     }
 
     public function uploadNewVerificationDocument(Request $request) {
@@ -42,6 +44,22 @@ class ClientVerificationDocumentController extends Controller
             return redirect()->back()->with('success', 'Verification document uploaded successfully and is pending review.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function deleteVerificationDocument(Request $request) {
+        $request->validate([
+            'deleteVerificationDocumentId' => 'required|integer',
+        ]);
+
+        $documentId = $request->input('deleteVerificationDocumentId');
+
+        try {
+            $this->clientVerificationDocumentModel->deleteVerificationDocument($documentId, $this->user->id);
+
+            return redirect()->back()->with('success', 'Verification document deleted successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to delete the document: ' . $e->getMessage()]);
         }
     }
 }
