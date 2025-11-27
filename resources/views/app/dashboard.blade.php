@@ -33,6 +33,15 @@
         <!-- Main Content -->
         <main class="dashboard-content" id="main-content">
             <div class="container-fluid">
+
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            <li>{{ session('error') }}</li>
+                        </ul>
+                    </div>
+                @endif
+
                 <!-- Page Header -->
                 <div class="mb-3">
                     <h1 class="h3 font-bold">Dashboard Overview</h1>

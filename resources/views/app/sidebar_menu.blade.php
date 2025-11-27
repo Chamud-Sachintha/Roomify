@@ -89,7 +89,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="events.html">
+                            <a class="nav-link " href="{{ route('client_my_listings') }}">
                                 <i class="bi bi-calendar-event"></i>
                                 <span>My Listings</span>
                             </a>

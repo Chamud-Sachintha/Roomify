@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\ClientListingController;
 use App\Http\Controllers\ClientVerificationDocumentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailOTPController;
@@ -42,3 +43,5 @@ Route::post('/delete-verification-document', [ClientVerificationDocumentControll
 
 Route::get('app/admin/document-verification-requests', [ClientVerificationDocumentController::class, 'showDocumentVerificationRequestsPage'])->name('document_verification_requests')->middleware('auth');
 Route::post('app/admin/update-verification-request', [ClientVerificationDocumentController::class, 'updateVerificationRequest'])->name('update_verification_request')->middleware('auth');
+
+Route::get('app/client/my-listings', [ClientListingController::class, 'showCreateListingPage'])->name('client_my_listings')->middleware('auth');
