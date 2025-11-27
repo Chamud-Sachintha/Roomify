@@ -59,4 +59,14 @@ class ClientVerificationDocument extends Model
     {
         return self::with('client', 'documentType')->get();
     }
+
+    public function isAlreadyHavePendingDocument($clientId)
+    {
+        return self::where('client_id', $clientId)->where('status', 0)->exists();
+    }
+
+    public function isAlreadyApprovedDocument($clientId)
+    {
+        return self::where('client_id', $clientId)->where('status', 1)->exists();
+    }
 }

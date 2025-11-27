@@ -41,3 +41,4 @@ Route::post('/upload-verification-document', [ClientVerificationDocumentControll
 Route::post('/delete-verification-document', [ClientVerificationDocumentController::class, 'deleteVerificationDocument'])->name('delete_verification_document')->middleware('auth');
 
 Route::get('app/admin/document-verification-requests', [ClientVerificationDocumentController::class, 'showDocumentVerificationRequestsPage'])->name('document_verification_requests')->middleware('auth');
+Route::post('app/admin/update-verification-request', [ClientVerificationDocumentController::class, 'updateVerificationRequest'])->name('update_verification_request')->middleware('auth');

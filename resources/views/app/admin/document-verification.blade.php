@@ -261,6 +261,20 @@
                         <div class="card-header">
                             <h5 class="card-title mb-0">Verification Documents Requests</h5>
                             <hr>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
                             <div class="dashboard-card">
                                 <div class="dashboard-card-header py-4 px-4">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -316,8 +330,11 @@
                                                                     data-bs-toggle="modal"
                                                                     data-bs-target="#basicModal"
                                                                     data-id="{{ $document->id }}"
-                                                                    data-name="{{ $document->name }}"
-                                                                    data-type="{{ $document->status }}">
+                                                                    data-document-type="{{ $document->documentType->name }}"
+                                                                    data-full-name="{{ $document->full_name }}"
+                                                                    data-status="{{ $document->status }}"
+                                                                    data-remark="{{ $document->remark }}"
+                                                                    data-image-url="{{ Storage::url($document->document_path) }}">
                                                                 <i class="bi bi-pencil"></i>
                                                             </button>
 
@@ -353,7 +370,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-group" method="POST" action="">
+                        <form class="form-group" method="POST" action="{{ route('update_verification_request') }}">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 col-sm-12 mb-3">
@@ -370,14 +387,17 @@
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 mb-3">
                                     <label for="status" class="form-label">Status</label>
-                                    <input type="text" class="form-control" id="status" name="status"
-                                        placeholder="Eg. Approved / Pending" disabled>
+                                    <select class="form-select" id="status" name="status">
+                                        <option value="0">Pending</option>
+                                        <option value="1">Approved</option>
+                                        <option value="2">Rejected</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 mb-3">
                                     <label for="remark" class="form-label">Remark</label>
-                                    <textarea class="form-control" id="remark" name="remark" rows="3" disabled></textarea>
+                                    <textarea class="form-control" id="remark" name="remark" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -387,6 +407,8 @@
                             </div>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" id="document_id" name="document_id">
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -442,7 +464,42 @@
                 });
             }
 
-            
+            // Modal population
+            const basicModal = document.getElementById('basicModal');
+            basicModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                const documentType = button.getAttribute('data-document-type');
+                const fullName = button.getAttribute('data-full-name');
+                const status = button.getAttribute('data-status');
+                const remark = button.getAttribute('data-remark');
+                const imageUrl = button.getAttribute('data-image-url');
+                const documentId = button.getAttribute('data-id');
+
+                const modalDocumentType = basicModal.querySelector('#documentType');
+                const modalFullName = basicModal.querySelector('#fullName');
+                const modalStatus = basicModal.querySelector('#status');
+                const modalRemark = basicModal.querySelector('#remark');
+                const viewDocumentButton = basicModal.querySelector('.modal-body button');
+
+                modalDocumentType.value = documentType;
+                modalFullName.value = fullName;
+                document.getElementById('document_id').value = documentId;
+
+                if (status == 1) {
+                    modalStatus.value = '1';
+                } else if (status == 0) {
+                    modalStatus.value = '0';
+                } else if (status == 2) {
+                    modalStatus.value = '2';
+                }
+
+                modalRemark.value = remark;
+
+                viewDocumentButton.onclick = function () {
+                    window.open(imageUrl, '_blank');
+                };
+            });
     </script>
 
 </body>
