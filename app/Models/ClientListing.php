@@ -17,7 +17,7 @@ class ClientListing extends Model
         'floor', // ground, first, second, etc.
         'has_elevator', // boolean
         'has_parking', // boolean
-        'ocupation', // employed, student, unemployed, retired
+        'occupation', // employed, student, unemployed, retired
         'personal_habbits', // comma separated values
         'gender',
         'notes',
@@ -27,7 +27,23 @@ class ClientListing extends Model
         return $this->belongsTo(User::class, 'client_id');
     }
 
-    public function createNewListing(array $data) {
-        return self::create($data);
+    public static function createListing($userId,array $validated, array $imagePaths)
+    {
+        return self::create([
+            'client_id'         => $userId,
+            'location'          => $validated['location'],
+            'number_of_persons' => $validated['number_of_persons'] ?? null,
+            'total_rent'        => $validated['total_rent'] ?? null,
+            'rent_for_you'      => $validated['rent_for_you'] ?? null,
+            'floor'             => $validated['floor'] ?? null,
+            'has_elevator'      => $validated['has_elevator'],
+            'has_parking'       => $validated['has_parking'],
+            'occupation'         => $validated['ocupation'] ?? null,
+            'gender'            => $validated['gender'] ?? null,
+            'facilities'        => $validated['facilities'] ?? '',
+            'personal_habbits'  => $validated['personal_habbits'] ?? '',
+            'notes'             => $validated['notes'] ?? null,
+            'images'            => implode(',', $imagePaths),
+        ]);
     }
 }

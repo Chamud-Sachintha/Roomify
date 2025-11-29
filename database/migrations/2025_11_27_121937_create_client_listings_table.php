@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('client_listings', function (Blueprint $table) {
             $table->id();
-            $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('client_id')->constrained('users')->onDelete('cascade');
             $table->string('location');
             $table->integer('number_of_persons');
             $table->decimal('total_rent', 10, 2);

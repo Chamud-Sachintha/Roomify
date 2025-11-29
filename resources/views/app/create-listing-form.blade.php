@@ -124,7 +124,7 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-center">
-                                <form action="" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('create_new_listing') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
 
                                     <div class="row">
@@ -132,12 +132,7 @@
                                         <!-- Location -->
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Location</label>
-                                            <select name="location" class="form-control" required>
-                                                <option value="">Select Location</option>
-                                                <option value="urban">Urban</option>
-                                                <option value="suburban">Suburban</option>
-                                                <option value="rural">Rural</option>
-                                            </select>
+                                            <input type="text" name="location" class="form-control">
                                         </div>
 
                                         <!-- Number of Persons -->
