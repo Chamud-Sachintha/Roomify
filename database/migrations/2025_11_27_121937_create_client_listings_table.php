@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('client_listings', function (Blueprint $table) {
             $table->id();
+            $table->foreign('client_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('location');
+            $table->integer('number_of_persons');
+            $table->decimal('total_rent', 10, 2);
+            $table->decimal('rent_for_you', 10, 2);
+            $table->string('floor');
+            $table->boolean('has_elevator');
+            $table->boolean('has_parking');
+            $table->string('occupation');
+            $table->string('gender');
+            $table->string('facilities');
+            $table->string('personal_habbits');
+            $table->string('images');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

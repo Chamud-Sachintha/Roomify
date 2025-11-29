@@ -45,3 +45,4 @@ Route::get('app/admin/document-verification-requests', [ClientVerificationDocume
 Route::post('app/admin/update-verification-request', [ClientVerificationDocumentController::class, 'updateVerificationRequest'])->name('update_verification_request')->middleware('auth');
 
 Route::get('app/client/my-listings', [ClientListingController::class, 'showCreateListingPage'])->name('client_my_listings')->middleware('auth');
+Route::get('app/client/create-listing', [ClientListingController::class, 'showCreateListingFormPage'])->name('create_listing_form')->middleware('auth');

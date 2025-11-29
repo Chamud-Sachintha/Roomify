@@ -19,12 +19,27 @@ class ClientListingController extends Controller
 
     public function showCreateListingPage() {
 
-        $isDocumentVerified = $this->ClicnetVerificationModel->isAlreadyApprovedDocument($this->user->id);
-
-        if (!$isDocumentVerified) {
+        if (!$this->checkDocumentVerificationStatus()) {
             return redirect()->route('dashboard')->with('error', 'You need to verify your documents before creating a listing.');
         }
 
         return view('app.client-my-listings')->with(['user' => $this->user, 'breadcrumb' => 'My Listings']);
+    }
+
+    public function showCreateListingFormPage() {
+        
+        if (!$this->checkDocumentVerificationStatus()) {
+            return redirect()->route('dashboard')->with('error', 'You need to verify your documents before creating a listing.');
+        }
+
+        return view('app.create-listing-form')->with(['user' => $this->user, 'breadcrumb' => 'Create New Listing']);
+    }
+
+    public function createNewListing(Request $request) {
+        
+    }
+
+    private function checkDocumentVerificationStatus() {
+        return $this->ClicnetVerificationModel->isAlreadyApprovedDocument($this->user->id);
     }
 }

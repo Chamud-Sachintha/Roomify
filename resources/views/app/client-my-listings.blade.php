@@ -44,7 +44,7 @@
                         <div class="card-header">
                             <h5 class="card-title mb-0"></h5>
                             <div class="d-flex justify-content-end gap-2">
-                                <button class="btn btn-primary">Add New Listing</button>
+                                <a href="{{ route('create_listing_form') }}" class="btn btn-primary">Add New Listing</a>
                             </div>
                             <hr>
                             @if ($errors->any())

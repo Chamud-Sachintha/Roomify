@@ -16,6 +16,7 @@ class ClientListing extends Model
         'facilities', //comma separated values
         'floor', // ground, first, second, etc.
         'has_elevator', // boolean
+        'has_parking', // boolean
         'ocupation', // employed, student, unemployed, retired
         'personal_habbits', // comma separated values
         'gender',
