@@ -93,19 +93,20 @@ class ClientListingController extends Controller
 
             $paymentDetails = [
                 "listing_id"    =>  $post->id,
-                "order_id"      =>  uniqid("ORD"),
+                "order_id"      =>  uniqid("ORD-"),
                 "status"    =>  "pending",
                 "amount"    => 1000
             ];
 
             $payment = $this->AppPaymentModel->createPaymentDetails($paymentDetails);
 
+            DB::commit();
+
             $stripe = new PaymentService();
             $checkoutUrl = $stripe->createCheckout($payment, 1000);
 
             return redirect($checkoutUrl);
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
             return back()->withErrors(['error' => $e->getMessage()]);
         }

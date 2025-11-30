@@ -14,30 +14,33 @@ class PaymentService{
     }
 
     public function createCheckout($payment)
-{
-    $session = StripeSession::create([
-        'mode' => 'payment',
-        'payment_method_types' => ['card'],
-
-        'line_items' => [[
-            'price_data' => [
-                'product_data' => ['name' => "Listing Payment #{$payment->listing_id}"],
-                'currency' => 'lkr',
-                'unit_amount' => $payment->amount * 100,
+    {
+        $session = StripeSession::create([
+            'mode' => 'payment',
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'lkr',
+                    'unit_amount' => $payment->amount * 100,
+                    'product_data' => [
+                        'name' => "Roomify Listing Payment #{$payment->order_id}",
+                        'images' => [
+                            "https://cdn-icons-png.flaticon.com/512/69/69524.png"
+                        ],
+                    ],
+                ],
+                'quantity' => 1,
+            ]],
+            'success_url' => route('stripe.success') . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url'  => route('stripe.cancel'),
+            'metadata' => [
+                'payment_id' => $payment->id,
+                'company_name' => 'Roomify'
             ],
-            'quantity' => 1,
-        ]],
+        ]);
 
-        'success_url' => route('stripe.success').'?session_id={CHECKOUT_SESSION_ID}',
-        'cancel_url'  => route('stripe.cancel'),
-
-        'metadata' => [
-            'payment_id' => $payment->id,
-        ],
-    ]);
-
-    return $session->url; // IMPORTANT!
-}
+        return $session->url; // IMPORTANT!
+    }
 
     public function verifySession($sessionId)
     {
