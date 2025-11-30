@@ -27,13 +27,29 @@ class ClientListingController extends Controller
             return redirect()->route('dashboard')->with('error', 'You need to verify your documents before creating a listing.');
         }
 
-        return view('app.client-my-listings')->with(['user' => $this->user, 'breadcrumb' => 'My Listings']);
+        $post = $this->ClientListingModel->getListingByUserId($this->user->id);
+
+        if ($post && isset($post->images)) {
+            $post->images = explode(',', $post->images);
+        }
+
+        return view('app.client-my-listings')->with([
+            'user' => $this->user,
+            'breadcrumb' => 'My Listings',
+            'post' => $post,
+        ]);
     }
 
     public function showCreateListingFormPage() {
         
         if (!$this->checkDocumentVerificationStatus()) {
             return redirect()->route('dashboard')->with('error', 'You need to verify your documents before creating a listing.');
+        }
+
+        $isAlreadyHaveListing = $this->ClientListingModel->getListingByUserId($this->user->id);
+        
+        if ($isAlreadyHaveListing) {
+            return redirect()->route('client_my_listings')->with('info', 'You have already created a listing.');
         }
 
         return view('app.create-listing-form')->with(['user' => $this->user, 'breadcrumb' => 'Create New Listing']);
@@ -53,8 +69,8 @@ class ClientListingController extends Controller
             'facilities'         => 'nullable|string',
             'personal_habbits'   => 'nullable|string',
             'notes'              => 'nullable|string',
-            'images.*'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'images'             => 'nullable|array|max:5',
+            'images'             => 'nullable|array|max:3',
+            'images.*'           => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         DB::beginTransaction();

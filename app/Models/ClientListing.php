@@ -46,4 +46,9 @@ class ClientListing extends Model
             'images'            => implode(',', $imagePaths),
         ]);
     }
+
+    public function getListingByUserId($userId)
+    {
+        return self::where('client_id', $userId)->first();
+    }
 }

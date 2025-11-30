@@ -239,7 +239,7 @@
                                         <!-- Images -->
                                         <div class="col-12 mb-3">
                                             <label class="form-label">Images (Max 3)</label>
-                                            <input type="file" id="images-input" class="form-control" accept="image/*" multiple>
+                                            <input type="file" class="form-control" name="images[]" multiple>
                                         </div>
 
                                         <!-- Submit -->
