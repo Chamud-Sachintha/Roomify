@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientVerificationDocumentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailOTPController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\StripePaymentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -47,3 +48,6 @@ Route::post('app/admin/update-verification-request', [ClientVerificationDocument
 Route::get('app/client/my-listings', [ClientListingController::class, 'showCreateListingPage'])->name('client_my_listings')->middleware('auth');
 Route::get('app/client/create-listing', [ClientListingController::class, 'showCreateListingFormPage'])->name('create_listing_form')->middleware('auth');
 Route::post('app/client/create-new-listing', [ClientListingController::class, 'createNewListing'])->name('create_new_listing')->middleware('auth');
+
+Route::get('/payment/success', [StripePaymentController::class, 'success'])->name('stripe.success');
+Route::get('/payment/cancel', [StripePaymentController::class, 'cancel'])->name('stripe.cancel');

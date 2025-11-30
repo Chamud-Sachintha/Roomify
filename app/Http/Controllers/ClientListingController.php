@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppPayments;
 use App\Models\ClientListing;
 use App\Models\ClientVerificationDocument;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,12 +15,14 @@ class ClientListingController extends Controller
     private $user;
     private $ClicnetVerificationModel;
     private $ClientListingModel;
+    private $AppPaymentModel;
 
     public function __construct()
     {
         $this->user = Auth::user();
         $this->ClicnetVerificationModel = new ClientVerificationDocument();
         $this->ClientListingModel = new ClientListing();
+        $this->AppPaymentModel = new AppPayments();
     }
 
     public function showCreateListingPage() {
@@ -87,11 +91,21 @@ class ClientListingController extends Controller
 
             $post = $this->ClientListingModel->createListing($this->user->id, $validated, $imagePaths);
 
-            // need to add payment gateway redirection here later
+            $paymentDetails = [
+                "listing_id"    =>  $post->id,
+                "order_id"      =>  uniqid("ORD"),
+                "status"    =>  "pending",
+                "amount"    => 1000
+            ];
 
-            DB::commit();
-            return redirect()->route('client_my_listings')->with(['success', 'Listing created successfully.', 'post' => $post]);
+            $payment = $this->AppPaymentModel->createPaymentDetails($paymentDetails);
+
+            $stripe = new PaymentService();
+            $checkoutUrl = $stripe->createCheckout($payment, 1000);
+
+            return redirect($checkoutUrl);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
             return back()->withErrors(['error' => $e->getMessage()]);
         }
