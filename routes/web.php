@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientListingController;
 use App\Http\Controllers\ClientVerificationDocumentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmailOTPController;
+use App\Http\Controllers\ManageClientListingController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StripePaymentController;
 use Illuminate\Support\Facades\Auth;
@@ -51,3 +52,7 @@ Route::post('app/client/create-new-listing', [ClientListingController::class, 'c
 
 Route::get('/payment/success', [StripePaymentController::class, 'success'])->name('stripe.success');
 Route::get('/payment/cancel', [StripePaymentController::class, 'cancel'])->name('stripe.cancel');
+
+Route::get('/app/admin/manage-client-listings', [ManageClientListingController::class, 'showManageClientListingsPage'])->name('manage_client_listings')->middleware('auth');
+Route::get('/app/admin/manage-client-listings/{id}', [ManageClientListingController::class, 'viewClientListingDetails'])->name('view_client_listing')->middleware('auth');
+Route::post('/app/admin/manage-client-listings/{id}/delete', [ManageClientListingController::class, 'deleteClientListing'])->name('delete_client_listing')->middleware('auth');

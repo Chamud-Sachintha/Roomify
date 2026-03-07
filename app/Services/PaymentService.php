@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\AppPayments;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 
