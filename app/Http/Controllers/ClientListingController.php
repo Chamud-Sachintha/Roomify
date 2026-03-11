@@ -183,6 +183,19 @@ class ClientListingController extends Controller
         }
     }
 
+    public function deleteListing(Request $request)
+    {
+        $post = $this->ClientListingModel->getListingByUserId($this->user->id);
+
+        if (!$post) {
+            return redirect()->route('client_my_listings')->with('error', 'Listing not found.');
+        }
+
+        $post->delete();
+
+        return redirect()->route('client_my_listings')->with('success', 'Listing deleted successfully.');
+    }
+
     private function checkDocumentVerificationStatus() {
         return $this->ClicnetVerificationModel->isAlreadyApprovedDocument($this->user->id);
     }

@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('personal_habbits');
             $table->string('images');
             $table->text('notes')->nullable();
+            $table->string('status')->default('pending');
+            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

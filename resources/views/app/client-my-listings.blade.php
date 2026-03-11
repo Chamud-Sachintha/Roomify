@@ -88,7 +88,12 @@
 
         <!-- Page Title -->
         <div class="mb-4">
-            <h1 class="h3 font-bold">🏠 Listing Details</h1>
+            <h1 class="h3 font-bold">
+                🏠 Listing Details 
+                @if (isset($post))
+                    <span class="badge bg-success">{{ $post->status }}</span>
+                @endif
+            </h1>
             <p class="text-muted">Full information about your housing listing.</p>
         </div>
 
@@ -96,9 +101,17 @@
         @if (isset($post))
             <div class="dashboard-card">
 
-                <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex align-items-center justify-content-between">
                     <h5 class="mb-0">📄 Overview</h5>
-                    <a href="{{ route('update_listing_page') }}" class="btn btn-primary px-4">Update Post Information</a>
+
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('update_listing_page') }}" class="btn btn-primary px-4">
+                            Update Post Information
+                        </a>
+                        <a href="{{ route('delete_listing_page') }}" class="btn btn-danger px-4">
+                            Delete Post Information
+                        </a>
+                    </div>
                 </div>
 
                 <div class="card-body">

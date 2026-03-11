@@ -95,7 +95,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="events.html">
+                            <a class="nav-link " href="{{ route('profile_settings') }}">
                                 <i class="bi bi-calendar-event"></i>
                                 <span>Settings</span>
                             </a>

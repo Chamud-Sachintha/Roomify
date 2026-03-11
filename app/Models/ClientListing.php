@@ -21,6 +21,8 @@ class ClientListing extends Model
         'personal_habbits', // comma separated values
         'gender',
         'notes',
+        'status',
+        'remark'
     ];
 
     public function user() {
@@ -43,6 +45,8 @@ class ClientListing extends Model
             'facilities'        => $validated['facilities'] ?? '',
             'personal_habbits'  => $validated['personal_habbits'] ?? '',
             'notes'             => $validated['notes'] ?? null,
+            'status'            => $validated['status'] ?? 'pending',
+            'remark'            => $validated['remark'] ?? null,
             'images'            => implode(',', $imagePaths),
         ]);
     }
