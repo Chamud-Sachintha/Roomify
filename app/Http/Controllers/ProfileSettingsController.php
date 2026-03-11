@@ -21,7 +21,7 @@ class ProfileSettingsController extends Controller
 
     public function showProfileSettingsPage()
     {
-        $settings = $this->profileSettingsModel->where('id', $this->user->id)->first();
+        $settings = $this->profileSettingsModel->where('user_id', $this->user->id)->first();
 
         return view('app.profile-settings')->with(['settings' => $settings, 'user' => $this->user, 'breadcrumb' => 'Profile Settings']);
     }
@@ -41,7 +41,7 @@ class ProfileSettingsController extends Controller
             'bio'             => 'nullable|string',
         ]);
 
-        $settings = $this->profileSettingsModel->firstOrNew(['id' => $this->user->id]);
+        $settings = $this->profileSettingsModel->firstOrNew(['user_id' => $this->user->id]);
 
         if ($request->hasFile('profile_picture')) {
             if ($settings->profile_picture) {

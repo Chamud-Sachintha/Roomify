@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AppHelper;
 use App\Mail\AccountVerificationMail;
 use App\Models\EmailOTP;
+use App\Models\ProfileSettings;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,12 +18,14 @@ class AuthenticationController extends Controller
 {
     private $UserModel;
     private $EmailOTPModel;
+    private $profileSettingsModel;
     private $AppHelper;
 
     public function __construct()
     {
         $this->UserModel = new User();
         $this->EmailOTPModel = new EmailOTP();
+        $this->profileSettingsModel = new ProfileSettings();
         $this->AppHelper = new AppHelper();
     }
 
@@ -38,6 +41,11 @@ class AuthenticationController extends Controller
 
         try {
             $user = $this->UserModel->createNewUser($validatedData);
+            $this->profileSettingsModel->createProfileSettings([
+                'id' => $user->id,
+                'display_name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+            ]);
 
             $defaultRoleId = Role::where('name', Role::ROLE_USER)->first()->id;
             $user->roles()->attach($defaultRoleId);
