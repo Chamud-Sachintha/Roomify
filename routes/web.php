@@ -49,6 +49,8 @@ Route::post('app/admin/update-verification-request', [ClientVerificationDocument
 Route::get('app/client/my-listings', [ClientListingController::class, 'showCreateListingPage'])->name('client_my_listings')->middleware('auth');
 Route::get('app/client/create-listing', [ClientListingController::class, 'showCreateListingFormPage'])->name('create_listing_form')->middleware('auth');
 Route::post('app/client/create-new-listing', [ClientListingController::class, 'createNewListing'])->name('create_new_listing')->middleware('auth');
+Route::get('app/client/update-listing', [ClientListingController::class, 'showUpdateListingPage'])->name('update_listing_page')->middleware('auth');
+Route::put('app/client/update-listing', [ClientListingController::class, 'updateListing'])->name('update_client_listing')->middleware('auth');
 
 Route::get('/payment/success', [StripePaymentController::class, 'success'])->name('stripe.success');
 Route::get('/payment/cancel', [StripePaymentController::class, 'cancel'])->name('stripe.cancel');

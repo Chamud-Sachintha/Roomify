@@ -98,7 +98,7 @@
 
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">📄 Overview</h5>
-                    <a href="{{ route('client_my_listings') }}" class="btn btn-primary px-4">Update Post Information</a>
+                    <a href="{{ route('update_listing_page') }}" class="btn btn-primary px-4">Update Post Information</a>
                 </div>
 
                 <div class="card-body">
