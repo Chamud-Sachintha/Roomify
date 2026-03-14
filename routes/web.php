@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientListingController;
 use App\Http\Controllers\ClientVerificationDocumentController;
 use App\Http\Controllers\DashboardController;
@@ -63,3 +64,8 @@ Route::post('/app/admin/manage-client-listings/{id}/delete', [ManageClientListin
 
 Route::get('app/profile-settings', [ProfileSettingsController::class, 'showProfileSettingsPage'])->name('profile_settings')->middleware('auth');
 Route::post('app/profile-settings', [ProfileSettingsController::class, 'saveProfileSettings'])->name('save_profile_settings')->middleware('auth');
+
+Route::get('app/client/all-listings', [ClientListingController::class, 'showAllListings'])->name('all_listings')->middleware('auth');
+
+Route::get('app/admin/category-management', [CategoryController::class, 'showCategorySettingsPage'])->name('category_management')->middleware('auth');
+Route::post('app/admin/category-management/create', [CategoryController::class, 'createNewCategory'])->name('create_new_category')->middleware('auth');

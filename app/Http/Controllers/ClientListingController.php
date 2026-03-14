@@ -196,6 +196,22 @@ class ClientListingController extends Controller
         return redirect()->route('client_my_listings')->with('success', 'Listing deleted successfully.');
     }
 
+    public function showAllListings() {
+        $listings = $this->ClientListingModel->getAllListings();
+
+        foreach ($listings as $listing) {
+            if ($listing->images) {
+                $listing->images = explode(',', $listing->images);
+            }
+        }
+
+        return view('app.all-listing')->with([
+            'user' => $this->user,
+            'breadcrumb' => 'All Listings',
+            'listings' => $listings,
+        ]);
+    }
+
     private function checkDocumentVerificationStatus() {
         return $this->ClicnetVerificationModel->isAlreadyApprovedDocument($this->user->id);
     }

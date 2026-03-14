@@ -51,6 +51,11 @@ class ClientListing extends Model
         ]);
     }
 
+    public function getAllListings()
+    {
+        return self::with('user')->get();
+    }
+
     public function getListingByUserId($userId)
     {
         return self::where('client_id', $userId)->first();

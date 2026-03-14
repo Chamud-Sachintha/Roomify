@@ -47,7 +47,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " href="events.html">
+                            <a class="nav-link " href="{{ route('all_listings') }}">
                                 <i class="bi bi-calendar-event"></i>
                                 <span>All Listings</span>
                             </a>
@@ -169,7 +169,7 @@
                                 <span>Settings</span>
                             </a>
                             <ul id="dashboardSubmenu" class="submenu collapse  list-unstyled">
-                                <li><a class="nav-link active" href="index.html">General Settings</a></li>
+                                <li><a class="nav-link" href="{{ route('category_management') }}">Categories</a></li>
                                 <li><a class="nav-link " href="{{ route('verification-settings') }}">Verification Settings</a></li>
                             </ul>
                         </li>
