@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Services\CategoryTypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,15 +11,17 @@ class CategoryController extends Controller
 {
     private $user;
     private $CategoryModel;
+    private $CategoryTypeService;
 
     public function __construct()
     {
         $this->user = Auth::user();
         $this->CategoryModel = new Category();
+        $this->CategoryTypeService = new CategoryTypeService();
     }
 
     public function showCategorySettingsPage() {
-        $categories = $this->CategoryModel->all();
+        $categories = $this->CategoryTypeService->getAllCategoryTypes();
 
         return view('app.admin.manage-category')->with([
             'user' => $this->user,

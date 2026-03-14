@@ -129,6 +129,12 @@
 
                                     <div class="row">
 
+                                        <!-- Display Name -->
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Display Name</label>
+                                            <input type="text" name="display_name" class="form-control">
+                                        </div>
+
                                         <!-- Location -->
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label">Location</label>
@@ -203,6 +209,17 @@
                                                 <option value="male">Male</option>
                                                 <option value="female">Female</option>
                                                 <option value="other">Other</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Category Type -->
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Category Type</label>
+                                            <select name="category_type_id" class="form-control">
+                                                <option value="">Select</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
 

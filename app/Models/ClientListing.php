@@ -8,6 +8,8 @@ class ClientListing extends Model
 {
     protected $fillable = [
         'client_id',
+        'display_name',
+        'category_type_id',
         'location', // urban, suburban, rural
         'number_of_persons',
         'images', // comma separated values of image paths max 5
@@ -29,10 +31,16 @@ class ClientListing extends Model
         return $this->belongsTo(User::class, 'client_id');
     }
 
+    public function categoryType() {
+        return $this->belongsTo(Category::class, 'category_type_id');
+    }
+
     public static function createListing($userId,array $validated, array $imagePaths)
     {
         return self::create([
             'client_id'         => $userId,
+            'display_name'      => $validated['display_name'] ?? null,
+            'category_type_id'  => $validated['category_type_id'] ?? null,
             'location'          => $validated['location'],
             'number_of_persons' => $validated['number_of_persons'] ?? null,
             'total_rent'        => $validated['total_rent'] ?? null,

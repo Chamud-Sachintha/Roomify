@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppPayments;
 use App\Models\ClientListing;
 use App\Models\ClientVerificationDocument;
+use App\Services\CategoryTypeService;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,7 @@ class ClientListingController extends Controller
     private $ClicnetVerificationModel;
     private $ClientListingModel;
     private $AppPaymentModel;
+    private $categoryTypeService;
 
     public function __construct()
     {
@@ -23,6 +25,7 @@ class ClientListingController extends Controller
         $this->ClicnetVerificationModel = new ClientVerificationDocument();
         $this->ClientListingModel = new ClientListing();
         $this->AppPaymentModel = new AppPayments();
+        $this->categoryTypeService = new CategoryTypeService();
     }
 
     public function showCreateListingPage() {
@@ -56,12 +59,20 @@ class ClientListingController extends Controller
             return redirect()->route('client_my_listings')->with('info', 'You have already created a listing.');
         }
 
-        return view('app.create-listing-form')->with(['user' => $this->user, 'breadcrumb' => 'Create New Listing']);
+        $categories = $this->categoryTypeService->getAllCategoryTypes();
+
+        return view('app.create-listing-form')->with([
+            'user' => $this->user,
+            'breadcrumb' => 'Create New Listing',
+            'categories' => $categories
+        ]);
     }
 
     public function createNewListing(Request $request) {
         $validated = $request->validate([
             'location'           => 'required|string',
+            'display_name'       => 'nullable|string|max:255',
+            'category_type_id'   => 'nullable|exists:categories,id',
             'number_of_persons'  => 'nullable|integer|min:1',
             'total_rent'         => 'nullable|numeric|min:0',
             'rent_for_you'       => 'nullable|numeric|min:0',
