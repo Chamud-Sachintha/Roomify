@@ -150,69 +150,68 @@
 
                             <!-- LISTING CARD -->
                             <div class="detail-box">
-                                <div class="row mb-5">
+                                @foreach ($listings as $listing)
+                                    <div class="row mb-5">
 
-                                    <!-- IMAGE -->
-                                    <div class="col-md-4 listing-images">
-                                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"
-                                            class="img-fluid">
+                                        <!-- IMAGE -->
+                                        <div class="col-md-4 listing-images">
+                                            <img src="{{ asset('/storage/' . $listing->images[0]) }}"
+                                                class="img-fluid">
+                                        </div>
+
+                                        <!-- DETAILS -->
+                                        <div class="col-md-8">
+
+                                            <h4 class="mb-2">{{ $listing->display_name }}</h4>
+
+                                            <p class="text-muted mb-3">
+                                                {{ $listing->notes }}
+                                            </p>
+
+                                            <div class="row mb-4">
+                                                <div class="col-md-4">
+                                                    <div class="detail-label">Category</div>
+                                                    <div class="detail-value">{{ $listing->categoryType->name ?? 'N/A' }}</div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="detail-label">Location</div>
+                                                    <div class="detail-value">{{ $listing->location ?? 'N/A' }}</div>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="detail-label">Price</div>
+                                                    <div class="detail-value">LKR. {{ number_format($listing->rent_for_you ?? 0, 2) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tag-box mb-3">
+                                                <div class="detail-label mb-2">Facilities</div>
+                                                @foreach($listing->facilities as $facility)
+                                                    <span class="chip">{{ $facility }}</span>
+                                                @endforeach
+                                            </div>
+
+                                            <div class="tag-box mb-3">
+                                                <div class="detail-label mb-2">Personal Habits</div>
+                                                @foreach($listing->personal_habbits as $habit)
+                                                    <span class="chip">{{ $habit }}</span>
+                                                @endforeach
+                                            </div>
+
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="badge bg-success">Available</span>
+
+                                                <div>
+                                                    <a href="{{ route('view_single_listing', $listing->id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                                    <button class="btn btn-sm btn-outline-secondary">Contact</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                     </div>
-
-                                    <!-- DETAILS -->
-                                    <div class="col-md-8">
-
-                                        <h4 class="mb-2">Luxury Apartment in Colombo</h4>
-
-                                        <p class="text-muted mb-3">
-                                            Modern fully furnished apartment located in the heart of Colombo with city
-                                            views.
-                                        </p>
-
-                                        <div class="row mb-4">
-                                            <div class="col-md-4">
-                                                <div class="detail-label">Category</div>
-                                                <div class="detail-value">Apartment</div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="detail-label">Location</div>
-                                                <div class="detail-value">Colombo 07</div>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="detail-label">Price</div>
-                                                <div class="detail-value">$120,000</div>
-                                            </div>
-                                        </div>
-
-                                        <div class="tag-box mb-3">
-                                            <div class="detail-label mb-2">Facilities</div>
-                                            <span class="chip">3 Bedrooms</span>
-                                            <span class="chip">2 Bathrooms</span>
-                                            <span class="chip">Parking</span>
-                                            <span class="chip">Swimming Pool</span>
-                                        </div>
-
-                                        <div class="tag-box mb-3">
-                                            <div class="detail-label mb-2">Personal Habits</div>
-                                            <span class="chip">3 Bedrooms</span>
-                                            <span class="chip">2 Bathrooms</span>
-                                            <span class="chip">Parking</span>
-                                            <span class="chip">Swimming Pool</span>
-                                        </div>
-
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="badge bg-success">Available</span>
-
-                                            <div>
-                                                <button class="btn btn-sm btn-outline-primary">View</button>
-                                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

@@ -71,3 +71,4 @@ Route::get('app/admin/category-management', [CategoryController::class, 'showCat
 Route::post('app/admin/category-management/create', [CategoryController::class, 'createNewCategory'])->name('create_new_category')->middleware('auth');
 
 Route::post('/admin/update-listing-status', [ManageClientListingController::class, 'updateListingStatus'])->name('update_listing_status')->middleware('auth');
+Route::get('/app/listing/{id}', [ClientListingController::class, 'showsSingleListingItem'])->name('view_single_listing')->middleware('auth');

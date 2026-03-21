@@ -212,16 +212,48 @@ class ClientListingController extends Controller
     public function showAllListings() {
         $listings = $this->ClientListingModel->getAllListings();
 
-        foreach ($listings as $listing) {
-            if ($listing->images) {
-                $listing->images = explode(',', $listing->images);
-            }
+        $facilities = explode(',', $listings->pluck('facilities')->first() ?? '');
+        $personal_habits = explode(',', $listings->pluck('personal_habbits')->first() ?? '');
+        $images = explode(',', $listings->pluck('images')->first() ?? '');
+
+        if (isset($listings[0])) {
+            $listings[0]->facilities = $facilities;
+        }
+
+        if (isset($listings[0])) {
+            $listings[0]->personal_habbits = $personal_habits;
+        }
+
+        if (isset($listings[0])) {
+            $listings[0]->images = $images;
         }
 
         return view('app.all-listing')->with([
             'user' => $this->user,
             'breadcrumb' => 'All Listings',
             'listings' => $listings,
+        ]);
+    }
+
+    public function showsSingleListingItem($id) {
+        $listing = $this->ClientListingModel->getListingById($id);
+
+        if (!$listing) {
+            return redirect()->route('all_listings')->with('error', 'Listing not found.');
+        }
+
+        $facilities = explode(',', $listing->facilities);
+        $personal_habits = explode(',', $listing->personal_habbits);
+        $images = explode(',', $listing->images);
+
+        $listing->facilities = $facilities;
+        $listing->personal_habbits = $personal_habits;
+        $listing->images = $images;
+
+        return view('app.view-single-listing-item')->with([
+            'user' => $this->user,
+            'breadcrumb' => 'Listing Details',
+            'listing' => $listing,
         ]);
     }
 
