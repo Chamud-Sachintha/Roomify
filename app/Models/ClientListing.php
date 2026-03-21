@@ -82,4 +82,23 @@ class ClientListing extends Model
     {
         return $this->paginate($perPage);
     }
+
+    public function filterListings($filters, $perPage = 10)
+    {
+        $query = self::query();
+
+        if (!empty($filters['display_name'])) {
+            $query->where('display_name', 'like', '%' . $filters['display_name'] . '%');
+        }
+
+        if (!empty($filters['category_type_id'])) {
+            $query->where('category_type_id', $filters['category_type_id']);
+        }
+
+        if (!empty($filters['location'])) {
+            $query->where('location', 'like', '%' . $filters['location'] . '%');
+        }
+
+        return $query->paginate($perPage);
+    }
 }

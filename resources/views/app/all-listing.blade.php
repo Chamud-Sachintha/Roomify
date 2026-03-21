@@ -110,31 +110,28 @@
                         </div>
                         <div class="card-body">
                             <!-- SEARCH + FILTER BAR -->
-                            <div class="row mb-4">
+                            <form action="{{ route('filter_listings') }}" method="POST" class="mb-4">
+                                @csrf
+                                <div class="row mb-4">
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" placeholder="🔍 Search listings...">
+                                    <input type="text" class="form-control" name="display_name" placeholder="🔍 Search listings...">
                                 </div>
 
                                 <div class="col-md-2">
-                                    <select class="form-control">
-                                        <option>Category</option>
-                                        <option>Apartment</option>
-                                        <option>House</option>
-                                        <option>Commercial</option>
+                                    <select class="form-control" name="category_type_id">
+                                        <option value="">-- Select Category --</option>
+                                        @foreach($categoryTypeList as $categoryType)
+                                            <option value="{{ $categoryType->id }}">{{ $categoryType->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <select class="form-control">
-                                        <option>Location</option>
-                                        <option>Colombo</option>
-                                        <option>Kandy</option>
-                                        <option>Galle</option>
-                                    </select>
+                                    <input type="text" class="form-control" name="location" placeholder="📍 Location">
                                 </div>
 
                                 <div class="col-md-2">
-                                    <select class="form-control">
+                                    <select class="form-control" name="price_range">
                                         <option>Price Range</option>
                                         <option>$0 - $50k</option>
                                         <option>$50k - $100k</option>
@@ -143,9 +140,17 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <button class="btn btn-primary w-100">Filter</button>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="{{ route('all_listings') }}" class="btn btn-warning w-100">Reset</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            </form>
 
 
                             <!-- LISTING CARD -->
@@ -203,8 +208,8 @@
                                                 <span class="badge bg-success">Available</span>
 
                                                 <div>
-                                                    <a href="{{ route('view_single_listing', $listing->id) }}" class="btn btn-sm btn-outline-primary">View</a>
-                                                    <button class="btn btn-sm btn-outline-secondary">Contact</button>
+                                                    <a href="{{ route('view_single_listing', $listing->id) }}" class="btn btn-sm btn-primary">View</a>
+                                                    <button class="btn btn-sm btn-secondary">Contact</button>
                                                 </div>
                                             </div>
 

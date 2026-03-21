@@ -214,25 +214,13 @@ class ClientListingController extends Controller
 
     public function showAllListings() {
         $listings = $this->ClientListingModel->getAllListingsPaginated(10);
-
-        foreach ($listings as $listing) {
-            $listing->facilities = !empty($listing->facilities)
-                ? explode(',', $listing->facilities)
-                : [];
-
-            $listing->personal_habbits = !empty($listing->personal_habbits)
-                ? explode(',', $listing->personal_habbits)
-                : [];
-
-            $listing->images = !empty($listing->images)
-                ? explode(',', $listing->images)
-                : [];
-        }
+        $listings = $this->prepareListings($listings);
 
         return view('app.all-listing')->with([
             'user' => $this->user,
             'breadcrumb' => 'All Listings',
             'listings' => $listings,
+            'categoryTypeList' => $this->categoryTypeService->getAllCategoryTypes()
         ]);
     }
 
@@ -256,6 +244,46 @@ class ClientListingController extends Controller
             'breadcrumb' => 'Listing Details',
             'listing' => $listing,
         ]);
+    }
+
+    public function doFilterClientListingItems(Request $request) {
+        $validated = $request->validate([
+            'display_name' => 'nullable|string|max:255',
+            'location' => 'nullable|string',
+        ]);
+
+        $filter_data['display_name'] = $validated['display_name'] ?? null;
+        $filter_data['location'] = $validated['location'] ?? null;
+
+        $listings = $this->ClientListingModel->filterListings($filter_data, 10);
+
+        $listings = $this->prepareListings($listings);
+
+        return view('app.all-listing')->with([
+            'user' => $this->user,
+            'breadcrumb' => 'All Listings',
+            'listings' => $listings,
+            'categoryTypeList' => $this->categoryTypeService->getAllCategoryTypes()
+        ]);
+    }
+
+    private function prepareListings($listings)
+    {
+        foreach ($listings as $listing) {
+            $listing->facilities = !empty($listing->facilities)
+                ? explode(',', $listing->facilities)
+                : [];
+
+            $listing->personal_habbits = !empty($listing->personal_habbits)
+                ? explode(',', $listing->personal_habbits)
+                : [];
+
+            $listing->images = !empty($listing->images)
+                ? explode(',', $listing->images)
+                : [];
+        }
+
+        return $listings;
     }
 
     private function checkDocumentVerificationStatus() {
