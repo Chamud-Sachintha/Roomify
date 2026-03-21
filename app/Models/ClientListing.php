@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ClientListing extends Model
 {
@@ -75,5 +76,10 @@ class ClientListing extends Model
 
     public function getListingById($id) {
         return self::where('id', $id)->first();
+    }
+
+    public function getAllListingsPaginated($perPage = 10)
+    {
+        return $this->paginate($perPage);
     }
 }

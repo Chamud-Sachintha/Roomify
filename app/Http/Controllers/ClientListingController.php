@@ -8,6 +8,7 @@ use App\Models\ClientVerificationDocument;
 use App\Services\CategoryTypeService;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +22,8 @@ class ClientListingController extends Controller
 
     public function __construct()
     {
+        Paginator::useBootstrap();
+
         $this->user = Auth::user();
         $this->ClicnetVerificationModel = new ClientVerificationDocument();
         $this->ClientListingModel = new ClientListing();
@@ -210,22 +213,20 @@ class ClientListingController extends Controller
     }
 
     public function showAllListings() {
-        $listings = $this->ClientListingModel->getAllListings();
+        $listings = $this->ClientListingModel->getAllListingsPaginated(10);
 
-        $facilities = explode(',', $listings->pluck('facilities')->first() ?? '');
-        $personal_habits = explode(',', $listings->pluck('personal_habbits')->first() ?? '');
-        $images = explode(',', $listings->pluck('images')->first() ?? '');
+        foreach ($listings as $listing) {
+            $listing->facilities = !empty($listing->facilities)
+                ? explode(',', $listing->facilities)
+                : [];
 
-        if (isset($listings[0])) {
-            $listings[0]->facilities = $facilities;
-        }
+            $listing->personal_habbits = !empty($listing->personal_habbits)
+                ? explode(',', $listing->personal_habbits)
+                : [];
 
-        if (isset($listings[0])) {
-            $listings[0]->personal_habbits = $personal_habits;
-        }
-
-        if (isset($listings[0])) {
-            $listings[0]->images = $images;
+            $listing->images = !empty($listing->images)
+                ? explode(',', $listing->images)
+                : [];
         }
 
         return view('app.all-listing')->with([
