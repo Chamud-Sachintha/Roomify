@@ -46,4 +46,25 @@ class ManageClientListingController extends Controller
 
         return redirect()->route('manage_client_listings')->with('error', 'Client listing not found.');
     }
+
+    public function updateListingStatus(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|exists:client_listings,id',
+            'status' => 'required|in:pending,approved,rejected',
+            'remark' => 'nullable|string|max:255',
+        ]);
+
+        $listing = $this->clientListingModel->getListingById($validated['id']);
+
+        if (!$listing) {
+            return redirect()->route('view_client_listing')->with('error', 'Listing status updated Not successfully.');
+        }
+
+        $listing->status = $validated['status'];
+        $listing->remark = $validated['remark'] ?? null;
+        $listing->save();
+
+        return redirect()->route('view_client_listing', ['id' => $listing->id])->with('success', 'Listing status updated successfully.');
+    }
 }

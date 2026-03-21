@@ -103,141 +103,155 @@
 
                 <div class="card-body">
 
-                    <!-- Images Section -->
-                    <div class="detail-box">
-                        <h4 class="section-title">Images</h4>
-                        <div class="listing-images d-flex flex-wrap">
-                            @foreach ($clientListingData->images as $img)
-                                <img src="{{ asset('storage/' . $img) }}" alt="Image">
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <!-- Basic Info -->
-                    <div class="detail-box">
-                        <h4 class="section-title">Basic Information</h4>
-
-                        <div class="row">
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Location</div>
-                                <div class="detail-value">{{ $clientListingData->location }}</div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Number of Persons</div>
-                                <div class="detail-value">{{ $clientListingData->number_of_persons ?? 'N/A' }}</div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Total Rent</div>
-                                <div class="detail-value">Rs. {{ number_format($clientListingData->total_rent) }}</div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Rent for You</div>
-                                <div class="detail-value">Rs. {{ number_format($clientListingData->rent_for_you) }}</div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Floor</div>
-                                <div class="detail-value">{{ ucfirst($clientListingData->floor) }}</div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Elevator Available</div>
-                                <div class="detail-value">
-                                    {!! $clientListingData->has_elevator 
-                                        ? '<span class="badge bg-success px-3 py-2">Yes</span>' 
-                                        : '<span class="badge bg-danger px-3 py-2">No</span>' !!}
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Parking</div>
-                                <div class="detail-value">
-                                    {!! $clientListingData->has_parking 
-                                        ? '<span class="badge bg-success px-3 py-2">Yes</span>' 
-                                        : '<span class="badge bg-danger px-3 py-2">No</span>' !!}
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Preferred Occupation</div>
-                                <div class="detail-value">{{ ucfirst($clientListingData->occupation) }}</div>
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <div class="detail-label">Preferred Gender</div>
-                                <div class="detail-value">{{ ucfirst($clientListingData->gender) }}</div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Facilities -->
-                    <div class="detail-box">
-                        <h4 class="section-title">Facilities</h4>
-                        <div class="tag-box">
-                            @if ($clientListingData->facilities)
-                                @foreach (explode(',', $clientListingData->facilities) as $facility)
-                                    <span class="chip">{{ $facility }}</span>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
                                 @endforeach
-                            @else
-                                <p class="text-muted mb-0">No facilities added.</p>
-                            @endif
+                            </ul>
                         </div>
-                    </div>
+                    @endif
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
-                    <!-- Personal Habits -->
-                    <div class="detail-box">
-                        <h4 class="section-title">Personal Habits</h4>
-                        <div class="tag-box">
-                            @if ($clientListingData->personal_habbits)
-                                @foreach (explode(',', $clientListingData->personal_habbits) as $habit)
-                                    <span class="chip">{{ $habit }}</span>
+                    <form action="{{ route('update_listing_status') }}" method="POST">
+                        @csrf
+                        <!-- Images Section -->
+                        <div class="detail-box">
+                            <h4 class="section-title">Images</h4>
+                            <div class="listing-images d-flex flex-wrap">
+                                @foreach ($clientListingData->images as $img)
+                                    <img src="{{ asset('storage/' . $img) }}" alt="Image">
                                 @endforeach
-                            @else
-                                <p class="text-muted mb-0">No habits added.</p>
-                            @endif
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Notes -->
-                    <div class="detail-box">
-                        <h4 class="section-title">Notes</h4>
-                        <p class="detail-value">{{ $clientListingData->notes ?? 'No notes added.' }}</p>
-                    </div>
+                        <!-- Basic Info -->
+                        <div class="detail-box">
+                            <h4 class="section-title">Basic Information</h4>
 
-                    <!-- Update Status -->
-                    <div class="detail-box">
-                        <h4 class="section-title">Update Status</h4>
-                        <select id="status" class="form-select">
-                            <option value="pending" {{ $clientListingData->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="approved" {{ $clientListingData->status == 'approved' ? 'selected' : '' }}>Approved</option>
-                            <option value="rejected" {{ $clientListingData->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                        </select>
-                    </div>
+                            <div class="row">
 
-                    <!-- add remark if reject -->
-                    <div class="detail-box">
-                        <div class="alert alert-warning">
-                            If you reject this listing, please provide a remark to inform the client about the reason for rejection.
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Location</div>
+                                    <div class="detail-value">{{ $clientListingData->location }}</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Number of Persons</div>
+                                    <div class="detail-value">{{ $clientListingData->number_of_persons ?? 'N/A' }}</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Total Rent</div>
+                                    <div class="detail-value">Rs. {{ number_format($clientListingData->total_rent) }}</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Rent for You</div>
+                                    <div class="detail-value">Rs. {{ number_format($clientListingData->rent_for_you) }}</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Floor</div>
+                                    <div class="detail-value">{{ ucfirst($clientListingData->floor) }}</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Elevator Available</div>
+                                    <div class="detail-value">
+                                        {!! $clientListingData->has_elevator 
+                                            ? '<span class="badge bg-success px-3 py-2">Yes</span>' 
+                                            : '<span class="badge bg-danger px-3 py-2">No</span>' !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Parking</div>
+                                    <div class="detail-value">
+                                        {!! $clientListingData->has_parking 
+                                            ? '<span class="badge bg-success px-3 py-2">Yes</span>' 
+                                            : '<span class="badge bg-danger px-3 py-2">No</span>' !!}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Preferred Occupation</div>
+                                    <div class="detail-value">{{ ucfirst($clientListingData->occupation) }}</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <div class="detail-label">Preferred Gender</div>
+                                    <div class="detail-value">{{ ucfirst($clientListingData->gender) }}</div>
+                                </div>
+
+                            </div>
                         </div>
-                        <h4 class="section-title">Rejection Remark</h4>
-                        <textarea id="rejection-remark" class="form-control" rows="3" placeholder="Enter rejection remark..."></textarea>
-                    </div>
 
-                    <!-- submit update status remark and id !-->
-                    <div>
-                        <input type="hidden" id="listing-id" value="{{ $clientListingData->id }}">
-                        <button id="update-status-btn" class="btn btn-primary">Update Status</button>
-                    </div>
+                        <!-- Facilities -->
+                        <div class="detail-box">
+                            <h4 class="section-title">Facilities</h4>
+                            <div class="tag-box">
+                                @if ($clientListingData->facilities)
+                                    @foreach (explode(',', $clientListingData->facilities) as $facility)
+                                        <span class="chip">{{ $facility }}</span>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted mb-0">No facilities added.</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Personal Habits -->
+                        <div class="detail-box">
+                            <h4 class="section-title">Personal Habits</h4>
+                            <div class="tag-box">
+                                @if ($clientListingData->personal_habbits)
+                                    @foreach (explode(',', $clientListingData->personal_habbits) as $habit)
+                                        <span class="chip">{{ $habit }}</span>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted mb-0">No habits added.</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="detail-box">
+                            <h4 class="section-title">Notes</h4>
+                            <p class="detail-value">{{ $clientListingData->notes ?? 'No notes added.' }}</p>
+                        </div>
+
+                        <!-- Update Status -->
+                        <div class="detail-box">
+                            <h4 class="section-title">Update Status</h4>
+                            <select name="status" class="form-select">
+                                <option value="pending" {{ $clientListingData->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="approved" {{ $clientListingData->status == 'approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="rejected" {{ $clientListingData->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            </select>
+                        </div>
+
+                        <!-- add remark if reject -->
+                        <div class="detail-box">
+                            <div class="alert alert-warning">
+                                If you reject this listing, please provide a remark to inform the client about the reason for rejection.
+                            </div>
+                            <h4 class="section-title">Rejection Remark</h4>
+                            <textarea id="rejection-remark" class="form-control" rows="3" placeholder="Enter rejection remark..."></textarea>
+                        </div>
+
+                        <!-- submit update status remark and id !-->
+                        <div>
+                            <input type="hidden" name="id" value="{{ $clientListingData->id }}">
+                            <button type="submit" class="btn btn-primary">Update Status</button>
+                        </div>
+                    </form>
                 </div>
-            </div>
-        @else
-            <div class="alert alert-info">
-                You have not created any listings yet. <a href="{{ route('create_listing_form') }}" class="alert-link">Create a listing now</a>.
             </div>
         @endif
 
@@ -247,33 +261,4 @@
 </div>
 
 </body>
-<script>
-    document.getElementById('update-status-btn').addEventListener('click', function() {
-        const listingId = document.getElementById('listing-id').value;
-        const status = document.getElementById('status').value;
-        const remark = document.getElementById('rejection-remark').value;
-
-        fetch(`/admin/update-listing-status/${listingId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ status, remark })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Listing status updated successfully!');
-                location.reload();
-            } else {
-                alert('Failed to update listing status. Please try again.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while updating the listing status.');
-        });
-    });
-</script>
 </html>

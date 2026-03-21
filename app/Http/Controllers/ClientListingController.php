@@ -225,26 +225,6 @@ class ClientListingController extends Controller
         ]);
     }
 
-    public function updateListingStatus(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'status' => 'required|in:pending,approved,rejected',
-            'remark' => 'nullable|string|max:255',
-        ]);
-
-        $listing = $this->ClientListingModel->getListingById($id);
-
-        if (!$listing) {
-            return response()->json(['error' => 'Listing not found.'], 404);
-        }
-
-        $listing->status = $validated['status'];
-        $listing->admin_remark = $validated['remark'] ?? null;
-        $listing->save();
-
-        return response()->json(['message' => 'Listing status updated successfully.']);
-    }
-
     private function checkDocumentVerificationStatus() {
         return $this->ClicnetVerificationModel->isAlreadyApprovedDocument($this->user->id);
     }

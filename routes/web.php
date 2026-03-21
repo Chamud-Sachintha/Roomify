@@ -70,4 +70,4 @@ Route::get('app/client/all-listings', [ClientListingController::class, 'showAllL
 Route::get('app/admin/category-management', [CategoryController::class, 'showCategorySettingsPage'])->name('category_management')->middleware('auth');
 Route::post('app/admin/category-management/create', [CategoryController::class, 'createNewCategory'])->name('create_new_category')->middleware('auth');
 
-Route::post('/admin/update-listing-status/{id}', [ClientListingController::class, 'updateListingStatus'])->name('update_listing_status')->middleware('auth');
+Route::post('/admin/update-listing-status', [ManageClientListingController::class, 'updateListingStatus'])->name('update_listing_status')->middleware('auth');
