@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('client_listings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade');
+            $table->string('display_name')->nullable();
+            $table->foreignId('category_type_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->string('location');
             $table->integer('number_of_persons');
             $table->decimal('total_rent', 10, 2);
@@ -25,6 +27,8 @@ return new class extends Migration
             $table->string('gender');
             $table->string('facilities');
             $table->string('personal_habbits');
+            $table->string('contact_number')->nullable();
+            $table->string('contact_email')->nullable();
             $table->string('images');
             $table->text('notes')->nullable();
             $table->string('status')->default('pending');

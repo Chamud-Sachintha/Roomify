@@ -223,6 +223,16 @@
                                             </select>
                                         </div>
 
+                                        <!-- contact details -->
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Contact Number</label>
+                                            <input type="text" name="contact_number" class="form-control">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Contact Email</label>
+                                            <input type="email" name="contact_email" class="form-control">
+                                        </div>
+
                                         <!-- Facilities -->
                                         <div class="col-12 mb-3">
                                             <label class="form-label">Facilities</label>

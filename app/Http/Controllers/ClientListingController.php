@@ -83,6 +83,8 @@ class ClientListingController extends Controller
             'gender'             => 'nullable|in:male,female,other',
             'facilities'         => 'nullable|string',
             'personal_habbits'   => 'nullable|string',
+            'contact_number'     => 'nullable|string|max:10',
+            'contact_email'      => 'nullable|email|max:255',
             'notes'              => 'nullable|string',
             'images'             => 'nullable|array|max:3',
             'images.*'           => 'file|mimes:jpg,jpeg,png|max:2048',
@@ -221,6 +223,26 @@ class ClientListingController extends Controller
             'breadcrumb' => 'All Listings',
             'listings' => $listings,
         ]);
+    }
+
+    public function updateListingStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+            'remark' => 'nullable|string|max:255',
+        ]);
+
+        $listing = $this->ClientListingModel->getListingById($id);
+
+        if (!$listing) {
+            return response()->json(['error' => 'Listing not found.'], 404);
+        }
+
+        $listing->status = $validated['status'];
+        $listing->admin_remark = $validated['remark'] ?? null;
+        $listing->save();
+
+        return response()->json(['message' => 'Listing status updated successfully.']);
     }
 
     private function checkDocumentVerificationStatus() {

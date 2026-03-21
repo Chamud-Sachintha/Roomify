@@ -209,6 +209,30 @@
                         <p class="detail-value">{{ $clientListingData->notes ?? 'No notes added.' }}</p>
                     </div>
 
+                    <!-- Update Status -->
+                    <div class="detail-box">
+                        <h4 class="section-title">Update Status</h4>
+                        <select id="status" class="form-select">
+                            <option value="pending" {{ $clientListingData->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="approved" {{ $clientListingData->status == 'approved' ? 'selected' : '' }}>Approved</option>
+                            <option value="rejected" {{ $clientListingData->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                        </select>
+                    </div>
+
+                    <!-- add remark if reject -->
+                    <div class="detail-box">
+                        <div class="alert alert-warning">
+                            If you reject this listing, please provide a remark to inform the client about the reason for rejection.
+                        </div>
+                        <h4 class="section-title">Rejection Remark</h4>
+                        <textarea id="rejection-remark" class="form-control" rows="3" placeholder="Enter rejection remark..."></textarea>
+                    </div>
+
+                    <!-- submit update status remark and id !-->
+                    <div>
+                        <input type="hidden" id="listing-id" value="{{ $clientListingData->id }}">
+                        <button id="update-status-btn" class="btn btn-primary">Update Status</button>
+                    </div>
                 </div>
             </div>
         @else
@@ -223,4 +247,33 @@
 </div>
 
 </body>
+<script>
+    document.getElementById('update-status-btn').addEventListener('click', function() {
+        const listingId = document.getElementById('listing-id').value;
+        const status = document.getElementById('status').value;
+        const remark = document.getElementById('rejection-remark').value;
+
+        fetch(`/admin/update-listing-status/${listingId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ status, remark })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Listing status updated successfully!');
+                location.reload();
+            } else {
+                alert('Failed to update listing status. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the listing status.');
+        });
+    });
+</script>
 </html>

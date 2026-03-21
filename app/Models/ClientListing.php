@@ -21,6 +21,8 @@ class ClientListing extends Model
         'has_parking', // boolean
         'occupation', // employed, student, unemployed, retired
         'personal_habbits', // comma separated values
+        'contact_number',
+        'contact_email',
         'gender',
         'notes',
         'status',
@@ -52,6 +54,8 @@ class ClientListing extends Model
             'gender'            => $validated['gender'] ?? null,
             'facilities'        => $validated['facilities'] ?? '',
             'personal_habbits'  => $validated['personal_habbits'] ?? '',
+            'contact_number'    => $validated['contact_number'] ?? null,
+            'contact_email'     => $validated['contact_email'] ?? null,
             'notes'             => $validated['notes'] ?? null,
             'status'            => $validated['status'] ?? 'pending',
             'remark'            => $validated['remark'] ?? null,

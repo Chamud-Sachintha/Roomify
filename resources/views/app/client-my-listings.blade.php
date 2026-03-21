@@ -188,6 +188,26 @@
                         </div>
                     </div>
 
+                    <!-- Contact details -->
+
+                     <div class="detail-box">
+                        <h4 class="section-title">Contact Details</h4>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <div class="detail-label">Contact Number</div>
+                                <div class="detail-value">{{ $post->contact_number ?? 'N/A' }}</div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <div class="detail-label">Contact Email</div>
+                                <div class="detail-value">{{ $post->contact_email ?? 'N/A' }}</div>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <!-- Facilities -->
                     <div class="detail-box">
                         <h4 class="section-title">Facilities</h4>

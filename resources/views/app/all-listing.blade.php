@@ -168,7 +168,7 @@
                                             views.
                                         </p>
 
-                                        <div class="row mb-3">
+                                        <div class="row mb-4">
                                             <div class="col-md-4">
                                                 <div class="detail-label">Category</div>
                                                 <div class="detail-value">Apartment</div>
@@ -186,6 +186,15 @@
                                         </div>
 
                                         <div class="tag-box mb-3">
+                                            <div class="detail-label mb-2">Facilities</div>
+                                            <span class="chip">3 Bedrooms</span>
+                                            <span class="chip">2 Bathrooms</span>
+                                            <span class="chip">Parking</span>
+                                            <span class="chip">Swimming Pool</span>
+                                        </div>
+
+                                        <div class="tag-box mb-3">
+                                            <div class="detail-label mb-2">Personal Habits</div>
                                             <span class="chip">3 Bedrooms</span>
                                             <span class="chip">2 Bathrooms</span>
                                             <span class="chip">Parking</span>
