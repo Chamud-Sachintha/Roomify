@@ -251,7 +251,7 @@
             <div class="container-fluid">
                 <!-- Page Header -->
                 <div class="mb-3">
-                    <h1 class="h3 font-bold">Clients Listings</h1>
+                    <h1 class="h3 font-bold">Manage All Users</h1>
                     <p class="text-muted text-sm">Welcome back! Here's what's happening with your institution today.</p>
                 </div>
 
@@ -259,7 +259,7 @@
                     <!-- Recent Students -->
                     <div class="dashboard-card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Manage Client Listings</h5>
+                            <h5 class="card-title mb-0">Manage All Users</h5>
                             <hr>
                             @if ($errors->any())
                                 <div class="alert alert-danger">
@@ -293,23 +293,26 @@
                                                     <th>#</th>
                                                     <th>Client ID</th>
                                                     <th>Full Name</th>
-                                                    <th>Location</th>
-                                                    <th>Number of Persons</th>
+                                                    <th>Email</th>
+                                                    <th>Role</th>
+                                                    <th>Verification Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($clientListingData as $clientListing)
-                                                    <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $clientListing->id }}</td>
-                                                        <td>{{ $clientListing->user->name }}</td>
-                                                        <td>{{ $clientListing->location }}</td>
-                                                        <td>{{ $clientListing->number_of_persons }}</td>
-                                                        <td>
-                                                            <a href="{{ route('view_client_listing', $clientListing->id) }}" class="btn btn-sm btn-primary">View</a>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
-                                                        </td>
+                                                @foreach ($users as $user)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }} </td>
+                                                    <td>{{ $user->id }}</td>
+                                                    <td>{{ $user->name }}</td>
+                                                    <td>{{ $user->email }}</td>
+                                                    <td><span class="badge bg-success">{{ $user->role }}</span></td>
+                                                    <td><span class="badge bg-warning text-dark">{{ $user->verification_status }}</span></td>
+                                                    <td>
+                                                        <a href="{{ route('view_user_details', $user->id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                                        <button class="btn btn-sm btn-outline-secondary">Reset Password</button>
+                                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteVerificationDocumentId({{ $user->id }})">Disable User</button>
+                                                    </td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -351,65 +354,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-            // Search functionality
-            const searchInput = document.querySelector('input[placeholder="Search students..."]');
-            if (searchInput) {
-                searchInput.addEventListener('input', function () {
-                    const searchTerm = this.value.toLowerCase();
-                    const studentRows = document.querySelectorAll('.table-custom tbody tr');
-
-                    studentRows.forEach(row => {
-                        const studentName = row.querySelector('.student-name')?.textContent.toLowerCase();
-                        const studentEmail = row.querySelector('.student-email')?.textContent.toLowerCase();
-
-                        if (studentName?.includes(searchTerm) || studentEmail?.includes(searchTerm)) {
-                            row.style.display = '';
-                        } else {
-                            row.style.display = 'none';
-                        }
-                    });
-                });
-            }
-
-            // Modal population
-            const basicModal = document.getElementById('basicModal');
-            basicModal.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
-
-                const documentType = button.getAttribute('data-document-type');
-                const fullName = button.getAttribute('data-full-name');
-                const status = button.getAttribute('data-status');
-                const remark = button.getAttribute('data-remark');
-                const imageUrl = button.getAttribute('data-image-url');
-                const documentId = button.getAttribute('data-id');
-
-                const modalDocumentType = basicModal.querySelector('#documentType');
-                const modalFullName = basicModal.querySelector('#fullName');
-                const modalStatus = basicModal.querySelector('#status');
-                const modalRemark = basicModal.querySelector('#remark');
-                const viewDocumentButton = basicModal.querySelector('.modal-body button');
-
-                modalDocumentType.value = documentType;
-                modalFullName.value = fullName;
-                document.getElementById('document_id').value = documentId;
-
-                if (status == 1) {
-                    modalStatus.value = '1';
-                } else if (status == 0) {
-                    modalStatus.value = '0';
-                } else if (status == 2) {
-                    modalStatus.value = '2';
-                }
-
-                modalRemark.value = remark;
-
-                viewDocumentButton.onclick = function () {
-                    window.open(imageUrl, '_blank');
-                };
-            });
-    </script>
 
 </body>
 
