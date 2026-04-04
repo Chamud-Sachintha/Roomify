@@ -310,10 +310,10 @@
                                                     <td><span class="badge bg-warning text-dark">{{ $user->verification_status }}</span></td>
                                                     <td>
                                                         <a href="{{ route('view_user_details', $user->id) }}" class="btn btn-sm btn-outline-primary">View</a>
-                                                        <button class="btn btn-sm btn-outline-secondary">Reset Password</button>
+                                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Reset Password</button>
                                                         <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteVerificationDocumentId({{ $user->id }})">Disable User</button>
                                                     </td>
-                                                    </tr>
+                                                </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
@@ -339,7 +339,7 @@
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure you want to delete this item?</p>
+                        <p>Are you sure you want to disable this user</p>
                         <p class="text-danger"><strong>This action cannot be undone!</strong></p>
                     </div>
                     <div class="modal-footer">
@@ -353,8 +353,42 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- password reset modal -->
+        <div class="modal fade" id="passwordResetModal" tabindex="-1" aria-labelledby="passwordResetModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="passwordResetModalLabel">
+                            <i class="bi bi-key me-2"></i>Reset Password
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="{{ route('reset_user_password') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <p>Are you sure you want to reset the password for this user?</p>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="text" class="form-control" id="newPassword" name="newPassword" placeholder="Enter a new password">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <input type="hidden" id="resetUserId" name="resetUserId">
+                            <button type="submit" class="btn btn-primary">Reset Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 </body>
+
+<script>
+    function setPasswordResetUserId(userId) {
+        document.getElementById('resetUserId').value = userId;
+    }
+</script>
 
 </html>

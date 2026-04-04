@@ -34,4 +34,23 @@ class UserManagementController extends Controller
 
         return view('app.admin.view-user')->with(['settings' => $settings, 'user' => $this->user, 'breadcrumb' => 'Profile Settings']);
     }
+
+    public function resetUserPassword(Request $request) {
+        
+        $validatedData = $request->validate([
+            'resetUserId' => 'required|integer|exists:users,id',
+            'newPassword' => 'required|string|min:8',
+        ]);
+
+        $user = User::find($validatedData['resetUserId']);
+        
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        $user->password = bcrypt($validatedData['newPassword']);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Password reset successfully');
+    }
 }
