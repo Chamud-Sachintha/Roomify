@@ -146,6 +146,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/messages', [ChatMessageController::class, 'showMessagesPage'])->name('messages');
         Route::post('/send-message', [ChatMessageController::class, 'sendChatMessage'])->name('send_message');
+        Route::post('/mark-as-read', [ChatMessageController::class, 'markAsRead'])->name('mark_as_read');
+        Route::get('/chat-history', [ChatMessageController::class, 'getChatHistory'])->name('chat_history');
     });
 
 });

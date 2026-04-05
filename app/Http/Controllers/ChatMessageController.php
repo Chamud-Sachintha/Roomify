@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Models\ChatMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,11 +12,13 @@ class ChatMessageController extends Controller
 {
     private $user;
     private $UserModel;
+    private $ChatMessageModel;
 
     public function __construct()
     {
         $this->user = Auth::user();
         $this->UserModel = new User();
+        $this->ChatMessageModel = new ChatMessage();
     }
 
     public function showMessagesPage()
@@ -38,23 +41,45 @@ class ChatMessageController extends Controller
             'message' => 'required|string',
         ]);
 
-        // dd($request->all());
-
-        // $message = new \App\Models\ChatMessage();
-        // $message->sender_id = $this->user->id;
-        // $message->receiver_id = $request->input('receiver_id');
-        // $message->message = $request->input('message');
-        // $message->save();
-
-        $messageData = [
-            'sender_id' => $this->user->id,
-            'receiver_id' => $request->input('receiver_id'),
-            'message' => $request->input('message'),
-        ];
+        $message = $this->ChatMessageModel->saveChatMessage($this->user->id, $request->input('receiver_id'), $request->input('message'));
 
         // Broadcast the message to the receiver
-        broadcast(new MessageSent($messageData))->toOthers();
+        broadcast(new MessageSent($message))->toOthers();
 
         return response()->json(['status' => 'Message sent successfully']);
+    }
+
+    public function markAsRead(Request $request)
+    {
+        $request->validate([
+            'sender_id' => 'required|exists:users,id',
+            'receiver_id' => 'required|exists:users,id',
+        ]);
+
+        $this->ChatMessageModel->where('sender_id', $request->input('sender_id'))
+            ->where('receiver_id', $request->input('receiver_id'))
+            ->where('is_read', 0)
+            ->update(['is_read' => 1]);
+
+        return response()->json(['status' => 'Messages marked as read']);
+    }
+
+    public function getChatHistory(Request $request)
+    {
+        $request->validate([
+            'sender_id' => 'required|exists:users,id',
+            'receiver_id' => 'required|exists:users,id',
+        ]);
+
+        $chatHistory = $this->ChatMessageModel->where(function ($query) use ($request) {
+            $query->where('sender_id', $request->input('sender_id'))
+                ->where('receiver_id', $request->input('receiver_id'));
+        })->orWhere(function ($query) use ($request) {
+            $query->where('sender_id', $request->input('receiver_id'))
+                ->where('receiver_id', $request->input('sender_id'));
+        })->orderBy('created_at', 'asc')->get();
+
+        return response()->json(['chat_history' => $chatHistory]);
+
     }
 }
