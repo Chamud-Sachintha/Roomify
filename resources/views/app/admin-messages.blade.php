@@ -276,9 +276,10 @@
         }
 
         // Listen on private channel
-        console.log("sending on channel: " + `chat.${receiverId}`);
+        console.log("Listening on channel: " + `chat.${receiverId}`);
         window.Echo.private(`chat.${userId}`)
             .listen('MessageSent', (e) => {
+                console.log("sender id from event: " + e.message.sender_id);
                 if (e.message.sender_id === userId) return;
                 appendMessage(e.message.message, 'received');
             });

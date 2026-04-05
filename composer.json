@@ -12,6 +12,7 @@
         "php": "^8.2",
         "laravel-payhere/laravel-payhere": "*",
         "laravel/framework": "^12.0",
+        "laravel/reverb": "^1.10",
         "laravel/tinker": "^2.10.1",
         "stripe/stripe-php": "^19.0"
     },

@@ -103,6 +103,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/update-listing', [ClientListingController::class, 'updateListing'])->name('update_client_listing');
 
         Route::get('/delete-listing', [ClientListingController::class, 'deleteListing'])->name('delete_listing_page');
+
+        Route::get('/admin-messages', [ChatMessageController::class, 'showClientAdminMessagePage'])->name('client_admin_messages');
     });
 
     /*
@@ -143,6 +145,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/reset-user-password', [UserManagementController::class, 'resetUserPassword'])->name('reset_user_password');
 
         Route::get('/messages', [ChatMessageController::class, 'showMessagesPage'])->name('messages');
+        Route::post('/send-message', [ChatMessageController::class, 'sendChatMessage'])->name('send_message');
     });
 
 });

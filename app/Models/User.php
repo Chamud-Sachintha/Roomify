@@ -81,4 +81,11 @@ class User extends Authenticatable
     {
         return $this->where('id', $id)->first();
     }
+
+    public function getAdminusers()
+    {
+        return $this->whereHas('roles', function ($query) {
+            $query->where('name', 'admin');
+        })->get();
+    }
 }
