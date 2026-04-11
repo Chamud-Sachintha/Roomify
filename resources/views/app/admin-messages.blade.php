@@ -172,32 +172,34 @@
                                 <div class="chat-contact" onclick="selectUser({{ $each_user->id }}, '{{ $each_user->name }}')">
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($each_user->name) }}" class="chat-avatar">
                                     <span>{{ $each_user->name }}</span>
+
+                                    <!-- Hardcoded message count -->
+                                    <span style="
+                                        background:#ef4444;
+                                        color:white;
+                                        font-size:12px;
+                                        padding:2px 8px;
+                                        border-radius:999px;
+                                    " id="messageCount{{ $each_user->id }}" class="message-count" hidden>0</span>
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
                     <!-- Chat Area -->
+                    <!-- Chat Area -->
                     <div class="chat-main">
 
                         <!-- Header -->
                         <div class="chat-header" id="chatHeader">
-                            Chat with John Doe
+                            Chat with Users
                         </div>
 
                         <!-- Messages -->
                         <div class="chat-messages" id="chatBox">
-
-                            <div class="message received">
-                                Hello, how are you?
-                                <div class="message-time">10:00 AM</div>
+                            <div id="emptyState" style="text-align:center; color:#9ca3af; margin-top:50px;">
+                                No messages yet 👋
                             </div>
-
-                            <div class="message sent">
-                                I'm good, thanks! How about you?
-                                <div class="message-time">10:01 AM</div>
-                            </div>
-
                         </div>
 
                         <!-- Input -->
@@ -220,6 +222,10 @@
     <script type="module">
         import Echo from 'https://cdn.jsdelivr.net/npm/laravel-echo@1.18.0/dist/echo.js';
 
+        if (performance.getEntriesByType("navigation")[0].type === "reload") {
+            localStorage.removeItem('selectedChatBoxUserId');
+        }
+
         // Tell Echo to use the Pusher client
         window.Pusher = Pusher;
 
@@ -235,12 +241,17 @@
 
         const userId = {{ auth() -> id() }};
         let receiverId = null;
+        let messageCount = 0;
 
         function selectUser(id, name) {
-            console.log("Selected user id: " + id);
             receiverId = id;
             document.getElementById('chatHeader').innerText = "Chat with " + name;
+
+            localStorage.setItem('selectedChatBoxUserId', id);
             document.getElementById('chatBox').innerHTML = '';
+
+            markAsRead();
+            getChatHistory(userId, id);
         }
 
         function sendMessage(e) {
@@ -264,6 +275,39 @@
             input.value = '';
         }
 
+        function markAsRead() {
+            if (!receiverId) return;
+
+            fetch('/app/admin/mark-as-read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({ sender_id: receiverId, receiver_id: userId })
+            });
+
+            messageCount = 0;
+            const countElem = document.getElementById('messageCount' + receiverId);
+            if (countElem) {
+                countElem.innerText = messageCount;
+                countElem.hidden = true;
+            }
+        }
+
+        function getChatHistory(userId1, userId2) {
+            fetch(`/app/admin/chat-history?sender_id=${userId1}&receiver_id=${userId2}`)
+                .then(response => response.json())
+                .then(data => {
+                    const box = document.getElementById('chatBox');
+                    box.innerHTML = '';
+                    data.chat_history.forEach(msg => {
+                        const type = msg.sender_id === userId ? 'sent' : 'received';
+                        appendMessage(msg.message, type);
+                    });
+                });
+        }
+
         function appendMessage(message, type) {
             const box = document.getElementById('chatBox');
             box.innerHTML += `
@@ -276,17 +320,33 @@
         }
 
         // Listen on private channel
-        console.log("Listening on channel: " + `chat.${receiverId}`);
+        console.log("sending on channel: " + `chat.${receiverId}`);
         window.Echo.private(`chat.${userId}`)
             .listen('MessageSent', (e) => {
-                console.log("sender id from event: " + e.message.sender_id);
                 if (e.message.sender_id === userId) return;
-                appendMessage(e.message.message, 'received');
+
+                var selectedUserId = localStorage.getItem('selectedChatBoxUserId');
+
+                if (selectedUserId != e.message.sender_id) {
+                    // Optionally, you can show a notification here for new messages from other users
+                    console.log("New message from user " + e.message.sender_id);
+                    messageCount++;
+
+                    const countElem = document.getElementById('messageCount' + e.message.sender_id);
+                    if (countElem) {
+                        countElem.innerText = messageCount;
+                        countElem.hidden = false;
+                    }
+                } else {
+                    appendMessage(e.message.message, 'received');
+                    markAsRead();
+                    getChatHistory(userId, e.message.sender_id);
+                }
             });
 
-                // Make functions accessible globally
-    window.selectUser = selectUser;
-    window.sendMessage = sendMessage;
+        // Make functions accessible globally
+        window.selectUser = selectUser;
+        window.sendMessage = sendMessage;
     </script>
 </body>
 

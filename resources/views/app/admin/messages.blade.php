@@ -169,26 +169,27 @@
 
                         <div class="space-y-2">
                             @foreach ($all_users as $each_user)
-                                <div class="chat-contact d-flex justify-between align-center"
-                                    onclick="selectUser({{ $each_user->id }}, '{{ $each_user->name }}')">
+                            <div class="chat-contact d-flex justify-between align-center"
+                                onclick="selectUser({{ $each_user->id }}, '{{ $each_user->name }}')">
 
-                                    <div style="display:flex; align-items:center; gap:10px;">
-                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($each_user->name) }}" class="chat-avatar">
-                                        <span>{{ $each_user->name }}</span>
-                                    </div>
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($each_user->name) }}"
+                                        class="chat-avatar">
+                                    <span>{{ $each_user->name }}</span>
+                                </div>
 
-                                    <!-- Hardcoded message count -->
-                                    <span style="
+                                <!-- Hardcoded message count -->
+                                <span style="
                                         background:#ef4444;
                                         color:white;
                                         font-size:12px;
                                         padding:2px 8px;
                                         border-radius:999px;
                                     " id="messageCount{{ $each_user->id }}" class="message-count" hidden>0</span>
-                                        
-                                    </span>
 
-                                </div>
+                                </span>
+
+                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -252,7 +253,7 @@
         function selectUser(id, name) {
             receiverId = id;
             document.getElementById('chatHeader').innerText = "Chat with " + name;
-            
+
             localStorage.setItem('selectedChatBoxUserId', id);
             document.getElementById('chatBox').innerHTML = '';
 
@@ -350,9 +351,9 @@
                 }
             });
 
-                // Make functions accessible globally
-    window.selectUser = selectUser;
-    window.sendMessage = sendMessage;
+        // Make functions accessible globally
+        window.selectUser = selectUser;
+        window.sendMessage = sendMessage;
     </script>
 </body>
 
