@@ -70,6 +70,10 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/upload-verification-document', [ClientVerificationDocumentController::class, 'uploadNewVerificationDocument'])->name('upload_verification_document');
         Route::post('/delete-verification-document', [ClientVerificationDocumentController::class, 'deleteVerificationDocument'])->name('delete_verification_document');
+        Route::get('/messages', [ChatMessageController::class, 'showUserMessagesPage'])->name('user_messages');
+        Route::post('/send-message', [ChatMessageController::class, 'sendChatMessage'])->name('send_message');
+        Route::post('/mark-as-read', [ChatMessageController::class, 'markAsRead'])->name('mark_as_read');
+        Route::get('/chat-history', [ChatMessageController::class, 'getChatHistory'])->name('chat_history');
     });
 
     /*

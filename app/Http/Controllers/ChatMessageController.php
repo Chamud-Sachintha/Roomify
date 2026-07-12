@@ -28,6 +28,13 @@ class ChatMessageController extends Controller
         return view('app.admin.messages')->with(['user' => $this->user, 'breadcrumb' => 'Message Inbox', 'all_users' => $all_users]);
     }
 
+    public function showUserMessagesPage()
+    {
+        $all_users = $this->UserModel->getNonAdminUsers($this->user->id);
+
+        return view('app.admin.messages')->with(['user' => $this->user, 'breadcrumb' => 'Message Inbox', 'all_users' => $all_users]);
+    }
+
     public function showClientAdminMessagePage() {
         $all_users = $this->UserModel->getAdminusers();
 

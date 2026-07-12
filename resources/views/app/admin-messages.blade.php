@@ -262,7 +262,7 @@
             const message = input.value.trim();
             if (!message) return;
 
-            fetch('/app/admin/send-message', {
+            fetch('{{ url('/app/send-message') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -278,7 +278,7 @@
         function markAsRead() {
             if (!receiverId) return;
 
-            fetch('/app/admin/mark-as-read', {
+            fetch('{{ url('/app/mark-as-read') }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -296,7 +296,7 @@
         }
 
         function getChatHistory(userId1, userId2) {
-            fetch(`/app/admin/chat-history?sender_id=${userId1}&receiver_id=${userId2}`)
+            fetch('{{ url('/app/chat-history') }}?sender_id=' + encodeURIComponent(userId1) + '&receiver_id=' + encodeURIComponent(userId2))
                 .then(response => response.json())
                 .then(data => {
                     const box = document.getElementById('chatBox');

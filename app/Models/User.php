@@ -88,4 +88,17 @@ class User extends Authenticatable
             $query->where('name', 'admin');
         })->get();
     }
+
+    public function getNonAdminUsers($excludeId = null)
+    {
+        $query = $this->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'admin');
+        });
+
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        return $query->get();
+    }
 }

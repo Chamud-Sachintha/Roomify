@@ -59,7 +59,7 @@
                     <div class="menu-section-title">Communication</div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link " href="events.html">
+                            <a class="nav-link " href="{{ route('user_messages') }}">
                                 <i class="bi bi-calendar-event"></i>
                                 <span>Messages</span>
                             </a>
