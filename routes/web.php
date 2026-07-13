@@ -136,6 +136,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/document-verification-requests', [ClientVerificationDocumentController::class, 'showDocumentVerificationRequestsPage'])->name('document_verification_requests');
         Route::post('/update-verification-request', [ClientVerificationDocumentController::class, 'updateVerificationRequest'])->name('update_verification_request');
+        Route::get('/payment-history', [StripePaymentController::class, 'showPaymentHistoryPage'])->name('admin_payment_history');
 
         /*
         |--------------------------------------------------------------------------

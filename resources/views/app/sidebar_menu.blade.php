@@ -132,6 +132,12 @@
                                 <span>All Listings</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link " href="{{ route('admin_payment_history') }}">
+                                <i class="bi bi-wallet2"></i>
+                                <span>Payment History</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
 

@@ -12,10 +12,12 @@ class StripePaymentController extends Controller
 {
 
     private $ClientListingModel;
+    private $user;
 
     public function __construct()
     {
         $this->ClientListingModel = new ClientListing();
+        $this->user = Auth::user();
     }
 
     public function success(Request $request, PaymentService $stripe)
@@ -56,5 +58,18 @@ class StripePaymentController extends Controller
     public function cancel()
     {
         // return view('stripe.cancel');
+    }
+
+    public function showPaymentHistoryPage()
+    {
+        $payments = AppPayments::with('listing.user')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('app.admin.payment-history')->with([
+            'breadcrumb' => 'Payment History',
+            'user' => $this->user,
+            'payments' => $payments,
+        ]);
     }
 }
