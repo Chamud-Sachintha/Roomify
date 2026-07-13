@@ -213,7 +213,7 @@ class ClientListingController extends Controller
     }
 
     public function showAllListings() {
-        $listings = $this->ClientListingModel->getAllListingsPaginated(10);
+        $listings = $this->ClientListingModel->getApprovedListingsPaginated(10);
         $listings = $this->prepareListings($listings);
 
         return view('app.all-listing')->with([
@@ -225,10 +225,10 @@ class ClientListingController extends Controller
     }
 
     public function showsSingleListingItem($id) {
-        $listing = $this->ClientListingModel->getListingById($id);
+        $listing = $this->ClientListingModel->getApprovedListingById($id);
 
         if (!$listing) {
-            return redirect()->route('all_listings')->with('error', 'Listing not found.');
+            return redirect()->route('all_listings')->with('error', 'Listing not found or not yet approved.');
         }
 
         $facilities = explode(',', $listing->facilities);

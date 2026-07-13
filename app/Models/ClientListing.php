@@ -66,7 +66,7 @@ class ClientListing extends Model
 
     public function getAllListings()
     {
-        return self::with('user')->get();
+        return self::with('user')->where('status', 'approved')->get();
     }
 
     public function getListingByUserId($userId)
@@ -74,18 +74,30 @@ class ClientListing extends Model
         return self::where('client_id', $userId)->first();
     }
 
-    public function getListingById($id) {
+    public function getListingById($id)
+    {
         return self::where('id', $id)->first();
     }
 
-    public function getAllListingsPaginated($perPage = 10)
+    public function getApprovedListingById($id)
     {
-        return $this->paginate($perPage);
+        return self::with('user')
+            ->where('id', $id)
+            ->where('status', 'approved')
+            ->first();
+    }
+
+    public function getApprovedListingsPaginated($perPage = 10)
+    {
+        return self::with('user')
+            ->where('status', 'approved')
+            ->paginate($perPage);
     }
 
     public function filterListings($filters, $perPage = 10)
     {
-        $query = self::query();
+        $query = self::with('user')
+            ->where('status', 'approved');
 
         if (!empty($filters['display_name'])) {
             $query->where('display_name', 'like', '%' . $filters['display_name'] . '%');
