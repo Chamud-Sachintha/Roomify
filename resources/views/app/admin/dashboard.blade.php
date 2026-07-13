@@ -44,37 +44,37 @@
                     <div class="dashboard-grid grid-cols-4">
                         <div class="stats-card">
                             <div class="stats-card-label">All Listings</div>
-                            <div class="stats-card-value">$5,000</div>
-                            <span class="stats-card-change positive">+20%</span>
+                            <div class="stats-card-value">{{ $totalListingsCount ?? 0 }}</div>
+                            <span class="stats-card-change positive">{{ $totalListingsCount > 0 ? '+'.round(min(100, ($totalListingsCount / max(1, $totalListingsCount)) * 100)).'%' : '0%' }}</span>
                             <div class="progress-custom">
-                                <div class="progress-bar-custom bg-success" style="width: 20%"></div>
+                                <div class="progress-bar-custom bg-success" style="width: 100%"></div>
                             </div>
                         </div>
 
                         <div class="stats-card">
-                            <div class="stats-card-label">My Listings</div>
-                            <div class="stats-card-value">$3,000</div>
-                            <span class="stats-card-change positive">+30%</span>
+                            <div class="stats-card-label">Total Users</div>
+                            <div class="stats-card-value">{{ $totalUsersCount ?? 0 }}</div>
+                            <span class="stats-card-change positive">{{ $totalUsersCount > 0 ? '+'.round(min(100, ($totalUsersCount / max(1, $totalUsersCount)) * 100)).'%' : '0%' }}</span>
                             <div class="progress-custom">
-                                <div class="progress-bar-custom bg-danger" style="width: 30%"></div>
+                                <div class="progress-bar-custom bg-danger" style="width: {{ min(100, ($totalUsersCount ?? 0) * 10) }}%"></div>
                             </div>
                         </div>
 
                         <div class="stats-card">
-                            <div class="stats-card-label">Verification Status</div>
-                            <div class="stats-card-value">$2,000</div>
-                            <span class="stats-card-change positive">+60%</span>
+                            <div class="stats-card-label">Pending Verifications</div>
+                            <div class="stats-card-value">{{ $pendingVerificationsCount ?? 0 }}</div>
+                            <span class="stats-card-change positive">{{ $pendingVerificationsCount > 0 ? '+'.round(min(100, ($pendingVerificationsCount / max(1, $pendingVerificationsCount)) * 100)).'%' : '0%' }}</span>
                             <div class="progress-custom">
-                                <div class="progress-bar-custom bg-info" style="width: 60%"></div>
+                                <div class="progress-bar-custom bg-info" style="width: {{ min(100, ($pendingVerificationsCount ?? 0) * 10) }}%"></div>
                             </div>
                         </div>
 
                         <div class="stats-card">
                             <div class="stats-card-label">Unread Messages</div>
-                            <div class="stats-card-value">$3,500</div>
-                            <span class="stats-card-change positive">+80%</span>
+                            <div class="stats-card-value">{{ $unreadMessagesCount ?? 0 }}</div>
+                            <span class="stats-card-change positive">{{ $unreadMessagesCount > 0 ? '+'.round(min(100, ($unreadMessagesCount / max(1, $unreadMessagesCount)) * 100)).'%' : '0%' }}</span>
                             <div class="progress-custom">
-                                <div class="progress-bar-custom bg-warning" style="width: 80%"></div>
+                                <div class="progress-bar-custom bg-warning" style="width: {{ min(100, ($unreadMessagesCount ?? 0) * 10) }}%"></div>
                             </div>
                         </div>
                     </div>
@@ -82,95 +82,57 @@
 
                 <!-- Recent Activity -->
                 <div class="dashboard-grid grid-cols-2">
-                    <!-- Recent Students -->
+                    <!-- Recent Clients -->
                     <div class="dashboard-card">
                         <div class="dashboard-card-header d-flex justify-content-between align-items-center">
-                            <h5 class="dashboard-card-title mb-0">Recent Students</h5>
-                            <a href="all-students.html" class="btn btn-outline-primary btn-sm">View All</a>
+                            <h5 class="dashboard-card-title mb-0">Recent Clients</h5>
+                            <a href="{{ route('manage_all_users') }}" class="btn btn-outline-primary btn-sm">View All</a>
                         </div>
                         <div class="dashboard-card-body">
                             <div class="list-group list-group-flush">
-                                <div class="list-group-item d-flex align-items-center px-0 py-3">
-                                    <img src="https://ui-avatars.com/api/?name=John+Smith&background=0d6efd&color=fff"
-                                        alt="John Smith" class="rounded-circle me-3" width="40" height="40"
-                                        loading="lazy">
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">John Smith</h6>
-                                        <small class="text-muted">Computer Science - Freshman</small>
-                                        <div class="small text-muted">Enrolled 2 hours ago</div>
+                                @forelse($recentUsers as $client)
+                                    <div class="list-group-item d-flex align-items-center px-0 py-3">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($client->name) }}&background=0d6efd&color=fff"
+                                            alt="{{ $client->name }}" class="rounded-circle me-3" width="40" height="40"
+                                            loading="lazy">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">{{ $client->name }}</h6>
+                                            <small class="text-muted">{{ $client->email }}</small>
+                                            <div class="small text-muted">Joined {{ $client->created_at->diffForHumans() }}</div>
+                                        </div>
+                                        <span class="badge bg-success">Client</span>
                                     </div>
-                                    <span class="badge bg-success">Active</span>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center px-0 py-3">
-                                    <img src="https://ui-avatars.com/api/?name=Emily+Davis&background=198754&color=fff"
-                                        alt="Emily Davis" class="rounded-circle me-3" width="40" height="40"
-                                        loading="lazy">
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Emily Davis</h6>
-                                        <small class="text-muted">Biology - Sophomore</small>
-                                        <div class="small text-muted">Enrolled 1 day ago</div>
-                                    </div>
-                                    <span class="badge bg-success">Active</span>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center px-0 py-3">
-                                    <img src="https://ui-avatars.com/api/?name=Michael+Brown&background=dc3545&color=fff"
-                                        alt="Michael Brown" class="rounded-circle me-3" width="40" height="40"
-                                        loading="lazy">
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Michael Brown</h6>
-                                        <small class="text-muted">Mathematics - Junior</small>
-                                        <div class="small text-muted">Enrolled 3 days ago</div>
-                                    </div>
-                                    <span class="badge bg-warning">Pending</span>
-                                </div>
+                                @empty
+                                    <div class="list-group-item px-0 py-3 text-muted">No recent clients found.</div>
+                                @endforelse
                             </div>
                         </div>
                     </div>
 
-                    <!-- Popular Courses -->
+                    <!-- Latest Listings -->
                     <div class="dashboard-card">
                         <div class="dashboard-card-header d-flex justify-content-between align-items-center">
-                            <h5 class="dashboard-card-title mb-0">Popular Courses</h5>
-                            <a href="all-courses.html" class="btn btn-outline-primary btn-sm">View All</a>
+                            <h5 class="dashboard-card-title mb-0">Latest Listings</h5>
+                            <a href="{{ route('manage_client_listings') }}" class="btn btn-outline-primary btn-sm">View All</a>
                         </div>
                         <div class="dashboard-card-body">
                             <div class="list-group list-group-flush">
-                                <div class="list-group-item d-flex align-items-center px-0 py-3">
-                                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-                                        style="width: 40px; height: 40px;">
-                                        <i class="bi bi-code-slash" style="color: #0d6efd;"></i>
+                                @forelse($recentListings as $listing)
+                                    <div class="list-group-item px-0 py-3">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h6 class="mb-1">{{ $listing->display_name }}</h6>
+                                                <small class="text-muted">{{ $listing->location }} · {{ $listing->number_of_persons }} persons</small>
+                                                <div class="small text-muted">Posted {{ $listing->created_at->diffForHumans() }}</div>
+                                            </div>
+                                            <span class="badge bg-{{ $listing->status === 'approved' ? 'success' : ($listing->status === 'pending' ? 'warning' : 'danger') }}">
+                                                {{ ucfirst($listing->status) }}</span>
+                                        </div>
+                                        <div class="small text-muted">Rent: {{ number_format($listing->total_rent, 0) }} / month</div>
                                     </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Advanced Programming</h6>
-                                        <small class="text-muted">Prof. Sarah Johnson</small>
-                                        <div class="small text-muted">45 enrolled students</div>
-                                    </div>
-                                    <span class="badge bg-success">85% Full</span>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center px-0 py-3">
-                                    <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3"
-                                        style="width: 40px; height: 40px;">
-                                        <i class="bi bi-calculator" style="color: #198754;"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Calculus II</h6>
-                                        <small class="text-muted">Prof. Michael Chen</small>
-                                        <div class="small text-muted">38 enrolled students</div>
-                                    </div>
-                                    <span class="badge bg-success">76% Full</span>
-                                </div>
-                                <div class="list-group-item d-flex align-items-center px-0 py-3">
-                                    <div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center me-3"
-                                        style="width: 40px; height: 40px;">
-                                        <i class="bi bi-microscope" style="color: #0dcaf0;"></i>
-                                    </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1">Biology Lab</h6>
-                                        <small class="text-muted">Prof. Lisa Thompson</small>
-                                        <div class="small text-muted">28 enrolled students</div>
-                                    </div>
-                                    <span class="badge bg-warning text-dark">56% Full</span>
-                                </div>
+                                @empty
+                                    <div class="list-group-item px-0 py-3 text-muted">No recent listings available.</div>
+                                @endforelse
                             </div>
                         </div>
                     </div>

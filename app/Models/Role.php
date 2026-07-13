@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
 
-    const ROLE_ADMIN = 'ADMIN';
-    const ROLE_USER = 'USER';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
 
     protected $fillable = ['name'];
 
