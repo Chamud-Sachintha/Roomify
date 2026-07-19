@@ -115,10 +115,14 @@
 <main class="dashboard-content" id="main-content">
     <div class="container-fluid">
 
+        @php
+            $showUser = $managedUser ?? auth()->user();
+        @endphp
+
         <!-- Page Title -->
         <div class="mb-4">
-            <h1 class="h3 font-bold">👤 Profile Settings</h1>
-            <p class="text-muted">Update your profile information below.</p>
+            <h1 class="h3 font-bold">👤 User Details</h1>
+            <p class="text-muted">Viewing user profile for {{ $showUser->name ?? 'Unknown User' }}.</p>
         </div>
 
         <div class="mb-4">
@@ -129,10 +133,16 @@
         <form action="{{ route('save_profile_settings') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
+            @php
+                $showUser = $managedUser ?? auth()->user();
+            @endphp
+
+            <input type="hidden" name="admin_viewed_user_id" value="{{ $showUser->id ?? '' }}">
+
             <!-- Display Name -->
             <div class="mb-3">
                 <label for="display_name" class="form-label">Display Name</label>
-                <input type="text" class="form-control" id="display_name" name="display_name" value="{{ $settings->display_name ?? '' }}" required>
+                <input type="text" class="form-control" id="display_name" name="display_name" value="{{ $settings->display_name ?? $showUser->name ?? '' }}" required>
             </div>
 
             <!-- Profile Picture -->
@@ -150,53 +160,53 @@
             <!-- First Name -->
             <div class="mb-3">
                 <label for="first_name" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $settings->first_name ?? '' }}">
+                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $settings->first_name ?? $showUser->first_name ?? '' }}">
             </div>
 
             <!-- Last Name -->
             <div class="mb-3">
                 <label for="last_name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $settings->last_name ?? '' }}">
+                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $settings->last_name ?? $showUser->last_name ?? '' }}">
             </div>
 
             <!-- Phone Number -->
             <div class="mb-3">
                 <label for="phone_number" class="form-label">Phone Number</label>
-                <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ $settings->phone_number ?? '' }}">
+                <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ $settings->phone_number ?? $showUser->phone_number ?? '' }}">
             </div>
 
             <!-- Gender -->
             <div class="mb-3">
                 <label for="gender" class="form-label">Gender</label>
                 <select class="form-control" id="gender" name="gender">
-                    <option value="male" {{ (isset($settings->gender) && $settings->gender == 'male') ? 'selected' : '' }}>Male</option>
-                    <option value="female" {{ (isset($settings->gender) && $settings->gender == 'female') ? 'selected' : '' }}>Female</option>
-                    <option value="other" {{ (isset($settings->gender) && $settings->gender == 'other') ? 'selected' : '' }}>Other</option>
+                    <option value="male" {{ (isset($settings->gender) && $settings->gender == 'male') || (!isset($settings->gender) && ($showUser->gender ?? '') == 'male') ? 'selected' : '' }}>Male</option>
+                    <option value="female" {{ (isset($settings->gender) && $settings->gender == 'female') || (!isset($settings->gender) && ($showUser->gender ?? '') == 'female') ? 'selected' : '' }}>Female</option>
+                    <option value="other" {{ (isset($settings->gender) && $settings->gender == 'other') || (!isset($settings->gender) && ($showUser->gender ?? '') == 'other') ? 'selected' : '' }}>Other</option>
                 </select>
             </div>
 
             <!-- Date of Birth -->
             <div class="mb-3">
                 <label for="date_of_birth" class="form-label">Date of Birth</label>
-                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ $settings->date_of_birth ?? '' }}">
+                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" value="{{ $settings->date_of_birth ?? $showUser->date_of_birth ?? '' }}">
             </div>
 
             <!-- Occupation -->
             <div class="mb-3">
                 <label for="occupation" class="form-label">Occupation</label>
-                <input type="text" class="form-control" id="occupation" name="occupation" value="{{ $settings->occupation ?? '' }}">
+                <input type="text" class="form-control" id="occupation" name="occupation" value="{{ $settings->occupation ?? $showUser->occupation ?? '' }}">
             </div>
 
             <!-- Email -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ $settings->email ?? '' }}" required>
+                <input type="email" class="form-control" id="email" name="email" value="{{ $settings->email ?? $showUser->email ?? '' }}" required>
             </div>
 
             <!-- Bio -->
             <div class="mb-3">
                 <label for="bio" class="form-label">Bio</label>
-                <textarea class="form-control" id="bio" name="bio" rows="4">{{ $settings->bio ?? '' }}</textarea>
+                <textarea class="form-control" id="bio" name="bio" rows="4">{{ $settings->bio ?? $showUser->bio ?? '' }}</textarea>
             </div>
         </form>
 

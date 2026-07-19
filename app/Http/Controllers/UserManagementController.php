@@ -30,9 +30,15 @@ class UserManagementController extends Controller
     }
 
     public function viewUserDetails($id) {
+        $managedUser = User::with('roles')->findOrFail($id);
         $settings = $this->profileSettingsModel->where('user_id', $id)->first();
 
-        return view('app.admin.view-user')->with(['settings' => $settings, 'user' => $this->user, 'breadcrumb' => 'Profile Settings']);
+        return view('app.admin.view-user')->with([
+            'settings' => $settings,
+            'managedUser' => $managedUser,
+            'user' => $this->user,
+            'breadcrumb' => 'User Details'
+        ]);
     }
 
     public function resetUserPassword(Request $request) {

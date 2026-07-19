@@ -22,9 +22,19 @@ use App\Http\Controllers\UserManagementController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn() => view('welcome'));
-Route::get('/register', fn() => view('register'));
-Route::get('/login', fn() => view('login'));
+Route::get('/', function () {
+    $featuredListings = \App\Models\ClientListing::query()
+        ->with('user')
+        ->where('status', 'approved')
+        ->latest()
+        ->take(3)
+        ->get();
+
+    return view('welcome', ['featuredListings' => $featuredListings]);
+})->name('home');
+
+Route::get('/register', fn() => view('register'))->name('register_page');
+Route::get('/login', fn() => view('login'))->name('login_page');
 
 Route::post('/register', [AuthenticationController::class, 'registerNewUser'])->name('register');
 Route::post('/login', [AuthenticationController::class, 'authenticateUser'])->name('login');
