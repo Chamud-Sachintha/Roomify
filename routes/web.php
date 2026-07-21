@@ -93,6 +93,8 @@ Route::middleware('auth')->group(function () {
     */
     Route::prefix('settings')->group(function () {
         Route::get('/verification-settings', [SettingsController::class, 'showVerificationSettingsPage'])->name('verification-settings');
+        Route::get('/payment-settings', [SettingsController::class, 'showPaymentSettingsPage'])->name('payment-settings');
+        Route::post('/payment-settings', [SettingsController::class, 'savePaymentSettings'])->name('save_payment_settings');
 
         Route::post('/create-verification-document-type', [SettingsController::class, 'createVerificationDocumentType'])->name('create_verification_document_type');
         Route::post('/update-verification-document-type', [SettingsController::class, 'updateVerificationDocumentType'])->name('update_verification_document_type');

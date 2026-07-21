@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppPayments;
 use App\Models\ClientListing;
 use App\Models\ClientVerificationDocument;
+use App\Models\Settings;
 use App\Services\CategoryTypeService;
 use App\Services\PaymentService;
 use Illuminate\Http\Request;
@@ -107,11 +108,13 @@ class ClientListingController extends Controller
 
             $post = $this->ClientListingModel->createListing($this->user->id, $validated, $imagePaths);
 
+            $postingFee = (float) Settings::getValue('ad_posting_fee', 1000);
+
             $paymentDetails = [
                 "listing_id"    =>  $post->id,
                 "order_id"      =>  uniqid("ORD-"),
                 "status"    =>  "pending",
-                "amount"    => 1000
+                "amount"    =>  $postingFee
             ];
 
             $payment = $this->AppPaymentModel->createPaymentDetails($paymentDetails);
@@ -119,7 +122,7 @@ class ClientListingController extends Controller
             DB::commit();
 
             $stripe = new PaymentService();
-            $checkoutUrl = $stripe->createCheckout($payment, 1000);
+            $checkoutUrl = $stripe->createCheckout($payment);
 
             return redirect($checkoutUrl);
         } catch (\Exception $e) {

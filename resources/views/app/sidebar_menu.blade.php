@@ -177,6 +177,7 @@
                             <ul id="dashboardSubmenu" class="submenu collapse  list-unstyled">
                                 <li><a class="nav-link" href="{{ route('category_management') }}">Categories</a></li>
                                 <li><a class="nav-link " href="{{ route('verification-settings') }}">Verification Settings</a></li>
+                                <li><a class="nav-link " href="{{ route('payment-settings') }}">Payment Settings</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">

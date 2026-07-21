@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Settings;
 use App\Models\VerificationDocument;
 use App\Services\VerificationDocumentTypeService;
 use Illuminate\Http\Request;
@@ -24,6 +25,32 @@ class SettingsController extends Controller
     {
         $verificationDocumentList = $this->verificationDocumentTypeService->getAllverificationDocumentTypes();
         return view('app.admin.verification-settings')->with(['user' => $this->user, 'breadcrumb' => 'Verification-Settings', 'verificationDocumentList' => $verificationDocumentList]);
+    }
+
+    public function showPaymentSettingsPage()
+    {
+        $adPostingFee = Settings::getValue('ad_posting_fee', 1000);
+
+        return view('app.admin.payment-settings')->with([
+            'user' => $this->user,
+            'breadcrumb' => 'Payment-Settings',
+            'adPostingFee' => $adPostingFee,
+        ]);
+    }
+
+    public function savePaymentSettings(Request $request)
+    {
+        $validatedData = $request->validate([
+            'ad_posting_fee' => 'required|numeric|min:0',
+        ]);
+
+        try {
+            Settings::setValue('ad_posting_fee', $validatedData['ad_posting_fee']);
+
+            return redirect()->back()->with('success', 'Payment settings updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     public function createVerificationDocumentType(Request $request)
