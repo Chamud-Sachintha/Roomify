@@ -255,10 +255,14 @@ class ClientListingController extends Controller
         $validated = $request->validate([
             'display_name' => 'nullable|string|max:255',
             'location' => 'nullable|string',
+            'category_type_id' => 'nullable|exists:categories,id',
+            'price_range' => 'nullable|string|in:0-50000,50000-100000,100000-999999999',
         ]);
 
         $filter_data['display_name'] = $validated['display_name'] ?? null;
         $filter_data['location'] = $validated['location'] ?? null;
+        $filter_data['category_type_id'] = $validated['category_type_id'] ?? null;
+        $filter_data['price_range'] = $validated['price_range'] ?? null;
 
         $listings = $this->ClientListingModel->filterListings($filter_data, 10);
 

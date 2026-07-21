@@ -132,10 +132,10 @@
 
                                 <div class="col-md-2">
                                     <select class="form-control" name="price_range">
-                                        <option>Price Range</option>
-                                        <option>$0 - $50k</option>
-                                        <option>$50k - $100k</option>
-                                        <option>$100k+</option>
+                                        <option value="">Price Range (LKR)</option>
+                                        <option value="0-50000">LKR 0 - 50,000</option>
+                                        <option value="50000-100000">LKR 50,000 - 100,000</option>
+                                        <option value="100000-999999999">LKR 100,000+</option>
                                     </select>
                                 </div>
 
