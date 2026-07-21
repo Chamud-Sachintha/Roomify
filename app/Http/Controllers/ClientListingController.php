@@ -109,12 +109,14 @@ class ClientListingController extends Controller
             $post = $this->ClientListingModel->createListing($this->user->id, $validated, $imagePaths);
 
             $postingFee = (float) Settings::getValue('ad_posting_fee', 1000);
+            $postingDiscount = (float) Settings::getValue('ad_posting_discount', 0);
+            $finalAmount = max(0, $postingFee - $postingDiscount);
 
             $paymentDetails = [
                 "listing_id"    =>  $post->id,
                 "order_id"      =>  uniqid("ORD-"),
                 "status"    =>  "pending",
-                "amount"    =>  $postingFee
+                "amount"    =>  $finalAmount
             ];
 
             $payment = $this->AppPaymentModel->createPaymentDetails($paymentDetails);

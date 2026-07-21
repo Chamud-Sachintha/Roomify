@@ -48,6 +48,10 @@
                                         <label for="adPostingFee" class="form-label">Fee Amount (LKR)</label>
                                         <input type="number" class="form-control" id="adPostingFee" name="ad_posting_fee" value="{{ $adPostingFee ?? 1000 }}" min="0" step="0.01" required>
                                     </div>
+                                    <div class="col-md-6 col-sm-12 mb-3">
+                                        <label for="adPostingDiscount" class="form-label">Discount Amount (LKR)</label>
+                                        <input type="number" class="form-control" id="adPostingDiscount" name="ad_posting_discount" value="{{ $adPostingDiscount ?? 0 }}" min="0" step="0.01" required>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-3">

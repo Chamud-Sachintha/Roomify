@@ -30,11 +30,13 @@ class SettingsController extends Controller
     public function showPaymentSettingsPage()
     {
         $adPostingFee = Settings::getValue('ad_posting_fee', 1000);
+        $adPostingDiscount = Settings::getValue('ad_posting_discount', 0);
 
         return view('app.admin.payment-settings')->with([
             'user' => $this->user,
             'breadcrumb' => 'Payment-Settings',
             'adPostingFee' => $adPostingFee,
+            'adPostingDiscount' => $adPostingDiscount,
         ]);
     }
 
@@ -42,10 +44,12 @@ class SettingsController extends Controller
     {
         $validatedData = $request->validate([
             'ad_posting_fee' => 'required|numeric|min:0',
+            'ad_posting_discount' => 'required|numeric|min:0',
         ]);
 
         try {
             Settings::setValue('ad_posting_fee', $validatedData['ad_posting_fee']);
+            Settings::setValue('ad_posting_discount', $validatedData['ad_posting_discount']);
 
             return redirect()->back()->with('success', 'Payment settings updated successfully.');
         } catch (\Exception $e) {
