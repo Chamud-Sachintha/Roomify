@@ -269,6 +269,9 @@
                 </form>
 
                 <div class="auth-footer">
+                    <div class="mb-2">
+                        <a href="{{ route('forgot_password_page') }}">Forgot password?</a>
+                    </div>
                     Don’t have an account? <a href="/register">Create one</a>
                 </div>
             </div>

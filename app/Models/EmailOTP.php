@@ -14,11 +14,13 @@ class EmailOTP extends Model
 
     public function createOTPForMail(array $data)
     {
-        return self::create([
-            'email' => $data['email'],
-            'otp_code' => $data['otp_code'],
-            'expires_at' => $data['expires_at'],
-        ]);
+        return self::updateOrCreate(
+            ['email' => $data['email']],
+            [
+                'otp_code' => $data['otp_code'],
+                'expires_at' => $data['expires_at'],
+            ]
+        );
     }
 
     public function validateOTP($email, $otp)

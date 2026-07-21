@@ -35,6 +35,9 @@ Route::get('/', function () {
 
 Route::get('/register', fn() => view('register'))->name('register_page');
 Route::get('/login', fn() => view('login'))->name('login_page');
+Route::get('/forgot-password', [AuthenticationController::class, 'showForgotPasswordPage'])->name('forgot_password_page');
+Route::post('/forgot-password', [AuthenticationController::class, 'requestPasswordReset'])->name('forgot_password');
+Route::post('/reset-password', [AuthenticationController::class, 'resetUserPassword'])->name('reset_password');
 
 Route::post('/register', [AuthenticationController::class, 'registerNewUser'])->name('register');
 Route::post('/login', [AuthenticationController::class, 'authenticateUser'])->name('login');
