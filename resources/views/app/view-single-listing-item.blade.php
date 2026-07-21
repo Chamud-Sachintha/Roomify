@@ -12,42 +12,72 @@
     <link rel="stylesheet" crossorigin href="{{ asset('dashboard/css/dashboard-CN5n4iss.css') }}">
 
     <style>
+        :root {
+            --bg: #fffaf5;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --card: rgba(255,255,255,0.95);
+            --border: rgba(15, 23, 42, 0.08);
+            --accent: #ff6b35;
+            --accent-dark: #d94a1e;
+            --navy: #0f172a;
+            --shadow: 0 18px 45px rgba(15, 23, 42, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,255,255,0.95));
+            color: var(--text);
+        }
+
+        .dashboard-content {
+            padding-top: 24px;
+        }
+
+        .dashboard-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
         .section-title {
             font-size: 1.1rem;
             font-weight: 600;
-            border-left: 4px solid #0d6efd;
+            border-left: 4px solid var(--accent);
             padding-left: 10px;
             margin-bottom: 15px;
+            color: var(--navy);
         }
 
         .detail-box {
-            background: #fff;
-            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,248,243,0.95));
+            border-radius: 18px;
             padding: 18px;
             margin-bottom: 20px;
-            border: 1px solid #e6e6e6;
+            border: 1px solid rgba(15,23,42,0.06);
         }
 
         .detail-label {
             font-weight: 600;
-            color: #333;
+            color: var(--navy);
             margin-bottom: 4px;
         }
 
         .detail-value {
             font-size: 15px;
-            color: #555;
-            background: #f8f9fc;
+            color: var(--text);
+            background: rgba(255,255,255,0.8);
             padding: 8px 12px;
-            border-radius: 6px;
+            border-radius: 10px;
         }
 
         .chip {
             display: inline-block;
-            background: #0d6efd;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             padding: 6px 14px;
             color: #fff;
-            border-radius: 20px;
+            border-radius: 999px;
             margin: 3px;
             font-size: 13px;
         }
@@ -56,10 +86,10 @@
             height: 150px;
             width: 190px;
             object-fit: cover;
-            border-radius: 10px;
+            border-radius: 14px;
             margin: 7px;
             transition: 0.25s ease;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 24px rgba(15,23,42,0.12);
         }
 
         .listing-images img:hover {
@@ -67,10 +97,14 @@
         }
 
         .tag-box {
-            background: #f1f5ff;
+            background: rgba(255, 107, 53, 0.08);
             padding: 10px 15px;
-            border-radius: 10px;
-            border-left: 4px solid #0d6efd;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .btn-primary {
+            border-radius: 999px;
         }
     </style>
 </head>

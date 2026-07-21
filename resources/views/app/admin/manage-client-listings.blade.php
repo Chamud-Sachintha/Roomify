@@ -21,6 +21,23 @@
     <script type="module" crossorigin="" src="{{ asset('dashboard/js/main-DEP3gGTG.js') }}"></script>
     <link rel="stylesheet" crossorigin="" href="{{ asset('dashboard/css/dashboard-CN5n4iss.css') }}">
     <style>
+        :root {
+            --bg: #fffaf5;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --card: rgba(255,255,255,0.96);
+            --border: rgba(15, 23, 42, 0.08);
+            --accent: #ff6b35;
+            --accent-dark: #d94a1e;
+            --navy: #0f172a;
+            --shadow: 0 18px 45px rgba(15, 23, 42, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,255,255,0.95));
+            color: var(--text);
+        }
+
         .dashboard-row {
             margin-bottom: 24px
         }
@@ -49,7 +66,12 @@
         }
 
         .dashboard-card {
-            margin-bottom: 24px
+            margin-bottom: 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 18px;
         }
 
         .dashboard-card:last-child {
@@ -57,12 +79,12 @@
         }
 
         .table-custom {
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden
         }
 
         .table-custom thead {
-            background: linear-gradient(135deg, #4361ee, #6366f1);
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             color: #fff
         }
 
@@ -80,7 +102,7 @@
         }
 
         .table-custom tbody tr:hover {
-            background-color: #f8f9fa;
+            background-color: rgba(255,107,53,0.06);
             box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
             transform: scale(1.01)
         }
@@ -99,13 +121,13 @@
         }
 
         .student-name {
-            color: #1f2937;
+            color: var(--navy);
             font-weight: 600;
             margin-bottom: 2px
         }
 
         .student-email {
-            color: #6b7280;
+            color: var(--muted);
             font-size: .875rem
         }
 

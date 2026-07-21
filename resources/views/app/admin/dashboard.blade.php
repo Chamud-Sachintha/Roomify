@@ -20,6 +20,115 @@
 
     <script type="module" crossorigin="" src="{{ asset('dashboard/js/main-DEP3gGTG.js') }}"></script>
     <link rel="stylesheet" crossorigin="" href="{{ asset('dashboard/css/dashboard-CN5n4iss.css') }}">
+
+    <style>
+        :root {
+            --bg: #fffaf5;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --card: rgba(255,255,255,0.95);
+            --border: rgba(15, 23, 42, 0.08);
+            --accent: #ff6b35;
+            --accent-dark: #d94a1e;
+            --navy: #0f172a;
+            --shadow: 0 18px 45px rgba(15, 23, 42, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(255,255,255,0.95));
+            color: var(--text);
+        }
+
+        .main-wrapper {
+            background: transparent;
+        }
+
+        .dashboard-content {
+            padding-top: 24px;
+        }
+
+        .container-fluid {
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+
+        .stats-card,
+        .dashboard-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .stats-card {
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            inset: 0 auto auto 0;
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, rgba(255,107,53,0.16), transparent);
+            border-radius: 0 0 100px 0;
+        }
+
+        .stats-card-label {
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+
+        .stats-card-value {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 6px 0;
+        }
+
+        .stats-card-change {
+            font-weight: 600;
+            color: var(--accent-dark);
+        }
+
+        .dashboard-card {
+            padding: 18px;
+        }
+
+        .dashboard-card-header {
+            border-bottom: 1px solid rgba(15,23,42,0.06);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-card-title {
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .btn-outline-primary {
+            border-color: rgba(255,107,53,0.25);
+            color: var(--accent-dark);
+            border-radius: 999px;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .list-group-item {
+            border-color: rgba(15,23,42,0.06);
+        }
+
+        .badge {
+            border-radius: 999px;
+        }
+    </style>
 </head>
 
 <body>
