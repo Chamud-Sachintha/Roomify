@@ -21,217 +21,219 @@
     <script type="module" crossorigin="" src="{{ asset('dashboard/js/main-DEP3gGTG.js') }}"></script>
     <link rel="stylesheet" crossorigin="" href="{{ asset('dashboard/css/dashboard-CN5n4iss.css') }}">
     <style>
-        .dashboard-row {
-            margin-bottom: 24px
+        :root {
+            --bg: #fffaf5;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --card: rgba(255, 255, 255, 0.82);
+            --border: rgba(15, 23, 42, 0.08);
+            --accent: #ff6b35;
+            --accent-dark: #d94a1e;
+            --navy: #0f172a;
+            --shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Instrument Sans', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(255, 107, 53, 0.18), transparent 22%),
+                radial-gradient(circle at top right, rgba(56, 189, 248, 0.16), transparent 24%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        .dashboard-content {
+            padding: 24px 0 40px;
+        }
+
+        .container-fluid {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .page-intro {
+            margin-bottom: 22px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(255, 107, 53, 0.12);
+            color: var(--accent-dark);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+
+        .page-intro h1 {
+            margin: 0 0 6px;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            letter-spacing: -0.03em;
+            color: var(--navy);
+        }
+
+        .page-intro p {
+            margin: 0;
+            color: var(--muted);
         }
 
         .dashboard-grid {
             display: grid;
-            gap: 24px
-        }
-
-        .grid-cols-1 {
-            grid-template-columns: 1fr
-        }
-
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, 1fr)
-        }
-
-        @media (max-width:768px) {
-            .dashboard-grid {
-                gap: 16px
-            }
-
-            .grid-cols-2 {
-                grid-template-columns: 1fr
-            }
+            gap: 24px;
         }
 
         .dashboard-card {
-            margin-bottom: 24px
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,248,243,0.95));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
         }
 
-        .dashboard-card:last-child {
-            margin-bottom: 0
+        .card-header {
+            background: transparent;
+        }
+
+        .card-title {
+            color: var(--navy);
+            font-weight: 800;
         }
 
         .table-custom {
-            border-radius: 8px;
-            overflow: hidden
+            border-radius: 18px;
+            overflow: hidden;
+            background: white;
+            border: 1px solid rgba(15,23,42,0.08);
         }
 
         .table-custom thead {
-            background: linear-gradient(135deg, #4361ee, #6366f1);
-            color: #fff
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: #fff;
         }
 
         .table-custom thead th {
             border: none;
-            font-size: .875rem;
-            font-weight: 600;
-            letter-spacing: .5px;
-            padding: 16px;
-            text-transform: uppercase
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            padding: 14px 16px;
+            text-transform: uppercase;
         }
 
         .table-custom tbody tr {
-            transition: all .3s ease
+            transition: all 0.2s ease;
         }
 
         .table-custom tbody tr:hover {
-            background-color: #f8f9fa;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
-            transform: scale(1.01)
+            background: rgba(255, 107, 53, 0.06);
         }
 
         .table-custom tbody td {
             padding: 14px 16px;
-            vertical-align: middle
+            vertical-align: middle;
         }
 
         .student-avatar {
-            border: 2px solid #e5e7eb;
+            border: 2px solid rgba(255, 107, 53, 0.25);
             border-radius: 50%;
             height: 40px;
             object-fit: cover;
-            width: 40px
+            width: 40px;
         }
 
         .student-name {
-            color: #1f2937;
-            font-weight: 600;
-            margin-bottom: 2px
-        }
-
-        .student-email {
-            color: #6b7280;
-            font-size: .875rem
-        }
-
-        .grade-badge {
-            border-radius: 20px;
-            display: inline-block;
-            font-size: .875rem;
-            font-weight: 600;
-            min-width: 50px;
-            padding: 6px 12px;
-            text-align: center
-        }
-
-        .grade-a {
-            background: #10b981;
-            color: #fff
-        }
-
-        .grade-b {
-            background: #3b82f6;
-            color: #fff
-        }
-
-        .grade-c {
-            background: #f59e0b;
-            color: #fff
-        }
-
-        .grade-d {
-            background: #ef4444;
-            color: #fff
-        }
-
-        .grade-f {
-            background: #6b7280;
-            color: #fff
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 2px;
         }
 
         .status-badge {
-            border-radius: 12px;
-            font-size: .75rem;
-            font-weight: 600;
-            letter-spacing: .5px;
-            padding: 4px 10px;
-            text-transform: uppercase
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            padding: 5px 10px;
+            text-transform: uppercase;
         }
 
         .status-active {
             background: #d1fae5;
-            color: #065f46
+            color: #065f46;
         }
 
         .status-pending {
             background: #fed7aa;
-            color: #92400e
+            color: #92400e;
         }
 
         .status-inactive {
             background: #e5e7eb;
-            color: #374151
-        }
-
-        .status-completed {
-            background: #ddd6fe;
-            color: #5b21b6
+            color: #374151;
         }
 
         .btn-action {
             align-items: center;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             display: inline-flex;
-            height: 32px;
+            height: 34px;
             justify-content: center;
             margin: 0 2px;
             padding: 0;
-            transition: all .3s ease;
-            width: 32px
+            transition: all 0.2s ease;
+            width: 34px;
         }
 
         .btn-action:hover {
-            transform: translateY(-2px)
-        }
-
-        .btn-view {
-            background: #e0e7ff;
-            color: #4338ca
-        }
-
-        .btn-view:hover {
-            background: #4338ca;
-            color: #fff
+            transform: translateY(-1px);
         }
 
         .btn-edit {
-            background: #fef3c7;
-            color: #d97706
+            background: rgba(255, 107, 53, 0.14);
+            color: var(--accent-dark);
         }
 
         .btn-edit:hover {
-            background: #d97706;
-            color: #fff
+            background: var(--accent-dark);
+            color: #fff;
         }
 
         .btn-delete {
-            background: #fee2e2;
-            color: #dc2626
+            background: rgba(239, 68, 68, 0.12);
+            color: #dc2626;
         }
 
         .btn-delete:hover {
             background: #dc2626;
-            color: #fff
+            color: #fff;
         }
 
-        @media (max-width:768px) {
-            .table-responsive {
-                border: none
-            }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border: none;
+            border-radius: 999px;
+            box-shadow: 0 12px 24px rgba(255, 107, 53, 0.22);
+        }
 
-            .table-custom {
-                font-size: .875rem
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                gap: 16px;
             }
 
             .table-custom tbody td,
             .table-custom thead th {
-                padding: 10px
+                padding: 10px;
             }
         }
     </style>
@@ -249,10 +251,10 @@
         <!-- Main Content -->
         <main class="dashboard-content" id="main-content">
             <div class="container-fluid">
-                <!-- Page Header -->
-                <div class="mb-3">
-                    <h1 class="h3 font-bold">Verification Requests</h1>
-                    <p class="text-muted text-sm">Welcome back! Here's what's happening with your institution today.</p>
+                <div class="page-intro">
+                    <div class="eyebrow">📋 Review verification requests</div>
+                    <h1>Verification Requests</h1>
+                    <p>Approve, reject, and manage incoming verification requests with a cleaner admin workflow.</p>
                 </div>
 
                 <div class="dashboard-grid grid-cols-12 mt-3">
