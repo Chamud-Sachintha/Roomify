@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ClientListingNotificationMail;
 use App\Models\AppPayments;
 use App\Models\ClientListing;
 use App\Models\ClientVerificationDocument;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ClientListingController extends Controller
 {
@@ -122,6 +124,8 @@ class ClientListingController extends Controller
             $payment = $this->AppPaymentModel->createPaymentDetails($paymentDetails);
 
             DB::commit();
+
+            Mail::to($this->user->email)->send(new ClientListingNotificationMail($post, 'created'));
 
             $stripe = new PaymentService();
             $checkoutUrl = $stripe->createCheckout($payment);

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ClientListingNotificationMail;
 use App\Models\ClientListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ManageClientListingController extends Controller
 {
@@ -64,6 +66,10 @@ class ManageClientListingController extends Controller
         $listing->status = $validated['status'];
         $listing->remark = $validated['remark'] ?? null;
         $listing->save();
+
+        Mail::to($listing->user->email)->send(
+            new ClientListingNotificationMail($listing, $validated['status'], $validated['remark'] ?? null)
+        );
 
         return redirect()->route('view_client_listing', ['id' => $listing->id])->with('success', 'Listing status updated successfully.');
     }
