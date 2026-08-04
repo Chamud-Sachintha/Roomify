@@ -46,9 +46,15 @@ class ClientVerificationDocument extends Model
         return self::with('documentType')->where('client_id', $clientId)->get();
     }
 
-    public function deleteVerificationDocument($documentId, $clientId)
+    public function deleteVerificationDocument($documentId, $clientId = null)
     {
-        $document = self::where('id', $documentId)->where('client_id', $clientId)->firstOrFail();
+        $query = self::where('id', $documentId);
+
+        if ($clientId !== null) {
+            $query->where('client_id', $clientId);
+        }
+
+        $document = $query->firstOrFail();
 
         Storage::disk('public')->delete($document->document_path);
 

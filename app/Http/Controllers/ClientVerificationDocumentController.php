@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientVerificationDocument;
+use App\Models\Role;
 use App\Services\VerificationDocumentTypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +73,10 @@ class ClientVerificationDocumentController extends Controller
         $documentId = $request->input('deleteVerificationDocumentId');
 
         try {
-            $this->clientVerificationDocumentModel->deleteVerificationDocument($documentId, $this->user->id);
+            $isAdminRequest = $this->user->hasRole(Role::ROLE_ADMIN) || request()->is('app/admin/*');
+            $clientId = $isAdminRequest ? null : $this->user->id;
+
+            $this->clientVerificationDocumentModel->deleteVerificationDocument($documentId, $clientId);
 
             return redirect()->back()->with('success', 'Verification document deleted successfully.');
         } catch (\Exception $e) {
