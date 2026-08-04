@@ -361,6 +361,12 @@
         let receiverId = null;
         let messageCount = 0;
 
+        const chatUserNames = {
+            @foreach ($all_users as $userOption)
+                {{ $userOption->id }}: @json($userOption->name),
+            @endforeach
+        };
+
         function selectUser(id, name) {
             receiverId = id;
             document.getElementById('chatHeader').innerText = "Chat with " + name;
@@ -371,6 +377,18 @@
             markAsRead();
             getChatHistory(userId, id);
         }
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const initialReceiverId = getQueryParam('receiver_id');
+            if (initialReceiverId && chatUserNames[initialReceiverId]) {
+                selectUser(parseInt(initialReceiverId, 10), chatUserNames[initialReceiverId]);
+            }
+        });
 
         function sendMessage(e) {
             e.preventDefault();

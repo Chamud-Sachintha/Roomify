@@ -253,7 +253,11 @@
 
                                                 <div>
                                                     <a href="{{ route('view_single_listing', $listing->id) }}" class="btn btn-sm btn-primary">View</a>
-                                                    <button class="btn btn-sm btn-secondary">Contact</button>
+                                                    @if (auth()->id() !== $listing->user->id)
+                                                        <a href="{{ route('user_messages', ['receiver_id' => $listing->user->id]) }}" class="btn btn-sm btn-secondary">Contact</a>
+                                                    @else
+                                                        <button class="btn btn-sm btn-secondary" disabled>Contact</button>
+                                                    @endif
                                                 </div>
                                             </div>
 
