@@ -377,7 +377,7 @@
                     </div>
 
                     <div class="listings-stack">
-                        @forelse ($featuredListings as $listing)
+                        @forelse ($featuredListings->take(1) as $listing)
                             @php
                                 $images = !empty($listing->images) ? explode(',', $listing->images) : [];
                                 $primaryImage = $images[0] ?? '';
@@ -385,16 +385,26 @@
                             @endphp
 
                             <div class="listing-preview">
-                                <div class="image" style="background-image: linear-gradient(160deg, rgba(255,107,53,0.16), rgba(34,197,94,0.12)), url('{{ $listingImage }}');"></div>
+                                <div
+                                    class="image"
+                                    style="background-image: linear-gradient(160deg, rgba(255,107,53,0.16), rgba(34,197,94,0.12)), url('{{ $listingImage }}');">
+                                </div>
+
                                 <h3>{{ $listing->display_name ?? 'Room Listing' }}</h3>
-                                <p>{{ $listing->notes ?: 'Premium room available for quick move-in.' }}</p>
+
+                                <p>
+                                    {{ $listing->notes ?: 'Premium room available for quick move-in.' }}
+                                </p>
+
                                 <div class="listing-meta">
                                     <span>{{ $listing->location ?? 'Location not set' }}</span>
                                     <span>LKR {{ number_format($listing->rent_for_you ?? 0, 2) }}</span>
                                 </div>
                             </div>
                         @empty
-                            <div class="empty-state">No approved listings are available at the moment. Please check back soon.</div>
+                            <div class="empty-state">
+                                No approved listings are available at the moment. Please check back soon.
+                            </div>
                         @endforelse
                     </div>
                 </div>
