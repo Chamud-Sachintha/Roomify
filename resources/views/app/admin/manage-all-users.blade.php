@@ -302,8 +302,8 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h5 class="mb-0"></h5>
                                         <div class="d-flex gap-2">
-                                            <input type="text" class="form-control form-control-sm"
-                                                placeholder="Search students..." style="width: 200px;">
+                                            <input type="text" class="form-control form-control-sm admin-table-search"
+                                                placeholder="Search users..." style="width: 250px;">
                                         </div>
                                     </div>
                                 </div>
@@ -408,6 +408,19 @@
 </body>
 
 <script>
+    const adminSearchInput = document.querySelector('.admin-table-search');
+    if (adminSearchInput) {
+        adminSearchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const tableRows = document.querySelectorAll('.table-custom tbody tr');
+
+            tableRows.forEach(row => {
+                const rowText = row.textContent.toLowerCase();
+                row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+            });
+        });
+    }
+
     function setPasswordResetUserId(userId) {
         document.getElementById('resetUserId').value = userId;
     }

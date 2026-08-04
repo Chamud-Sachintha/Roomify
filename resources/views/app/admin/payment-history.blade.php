@@ -162,6 +162,15 @@
                                     {{ session('success') }}
                                 </div>
                             @endif
+                            <div class="dashboard-card-header py-4 px-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0"></h5>
+                                    <div class="d-flex gap-2">
+                                        <input type="text" class="form-control form-control-sm admin-table-search"
+                                            placeholder="Search payments..." style="width: 250px;">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="dashboard-card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-custom mb-0">
@@ -209,6 +218,20 @@
         @include('app.footer')
     </div>
 
+    <script>
+        const adminSearchInput = document.querySelector('.admin-table-search');
+        if (adminSearchInput) {
+            adminSearchInput.addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase();
+                const tableRows = document.querySelectorAll('.table-custom tbody tr');
+
+                tableRows.forEach(row => {
+                    const rowText = row.textContent.toLowerCase();
+                    row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+    </script>
 </body>
 
 </html>
