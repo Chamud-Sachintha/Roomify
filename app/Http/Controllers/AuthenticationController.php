@@ -116,6 +116,41 @@ class AuthenticationController extends Controller
         return view('reset_password', compact('user'));
     }
 
+    public function resendOtp(Request $request)
+    {
+        $validatedData = $request->validate([
+            'email' => 'required|string|email|exists:users,email',
+        ]);
+
+        $user = $this->UserModel->userFindByEmail($validatedData['email']);
+
+        if ($user->is_verified) {
+            return response()->json(['message' => 'Email is already verified.'], 422);
+        }
+
+        $existingOtp = $this->EmailOTPModel->where('email', $user->email)->first();
+
+        if ($existingOtp && $existingOtp->updated_at->greaterThan(now()->subMinute())) {
+            $secondsLeft = 60 - now()->diffInSeconds($existingOtp->updated_at);
+            return response()->json([
+                'message' => "Please wait {$secondsLeft} second(s) before resending the OTP.",
+                'seconds_left' => max($secondsLeft, 0),
+            ], 429);
+        }
+
+        $otp = $this->AppHelper->generateUniqueOtp();
+
+        $this->EmailOTPModel->createOTPForMail([
+            'email' => $user->email,
+            'otp_code' => $otp,
+            'expires_at' => now()->addMinutes(10),
+        ]);
+
+        Mail::to($user->email)->send(new AccountVerificationMail($user, $otp));
+
+        return response()->json(['message' => 'OTP resent successfully. Please check your email.']);
+    }
+
     public function resetUserPassword(Request $request)
     {
         $validatedData = $request->validate([

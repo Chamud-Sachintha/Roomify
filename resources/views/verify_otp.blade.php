@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Verify OTP</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
@@ -29,6 +30,9 @@
             <input type="hidden" id="otp_full" name="otp_code">
 
             <button type="submit" class="btn btn-primary mt-4 w-100">Verify OTP</button>
+
+            <button type="button" id="resendOtpButton" class="btn btn-link mt-3" disabled>Resend OTP in 60s</button>
+            <div id="resendMessage" class="text-center text-muted small mt-2"></div>
         </form>
     </div>
 
@@ -52,6 +56,77 @@
             inputs.forEach(input => otp += input.value);
             otpFull.value = otp;
         });
+
+        const resendOtpButton = document.getElementById('resendOtpButton');
+        const resendMessage = document.getElementById('resendMessage');
+        const email = '{{ $user->email }}';
+        let countdown = 60;
+        let countdownInterval = null;
+
+        function updateResendButton() {
+            if (countdown > 0) {
+                resendOtpButton.textContent = `Resend OTP in ${countdown}s`;
+                resendOtpButton.disabled = true;
+            } else {
+                resendOtpButton.textContent = 'Resend OTP';
+                resendOtpButton.disabled = false;
+            }
+        }
+
+        function startCountdown() {
+            countdown = 60;
+            updateResendButton();
+
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            countdownInterval = setInterval(() => {
+                countdown -= 1;
+                updateResendButton();
+
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+        }
+
+        resendOtpButton.addEventListener('click', () => {
+            if (countdown > 0) {
+                return;
+            }
+
+            resendMessage.textContent = 'Sending OTP...';
+            fetch('{{ route('resend_otp') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+                body: JSON.stringify({ email }),
+            })
+                .then(async response => {
+                    const data = await response.json();
+                    if (!response.ok) {
+                        throw new Error(data.message || 'Unable to resend OTP.');
+                    }
+
+                    resendMessage.textContent = data.message;
+                    startCountdown();
+                })
+                .catch(error => {
+                    resendMessage.textContent = error.message;
+                    if (error.message.includes('Please wait')) {
+                        const match = error.message.match(/(\d+) second/);
+                        if (match) {
+                            countdown = parseInt(match[1], 10);
+                            startCountdown();
+                        }
+                    }
+                });
+        });
+
+        startCountdown();
     </script>
 </body>
 

@@ -42,6 +42,7 @@ Route::post('/reset-password', [AuthenticationController::class, 'resetUserPassw
 Route::post('/register', [AuthenticationController::class, 'registerNewUser'])->name('register');
 Route::post('/login', [AuthenticationController::class, 'authenticateUser'])->name('login');
 Route::post('/verify-otp', [EmailOTPController::class, 'validateOTP'])->name('verify_otp');
+Route::post('/resend-otp', [AuthenticationController::class, 'resendOtp'])->name('resend_otp');
 
 Route::get('/logout', function () {
     Auth::logout();
