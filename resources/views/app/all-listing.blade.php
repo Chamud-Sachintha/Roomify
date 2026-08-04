@@ -175,12 +175,11 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <select class="form-control" name="price_range">
-                                        <option value="">Price Range (LKR)</option>
-                                        <option value="0-50000">LKR 0 - 50,000</option>
-                                        <option value="50000-100000">LKR 50,000 - 100,000</option>
-                                        <option value="100000-999999999">LKR 100,000+</option>
-                                    </select>
+                                    <input type="number" min="0" step="1000" class="form-control" name="min_price" placeholder="Min Price">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <input type="number" min="0" step="1000" class="form-control" name="max_price" placeholder="Max Price">
                                 </div>
 
                                 <div class="col-md-2">

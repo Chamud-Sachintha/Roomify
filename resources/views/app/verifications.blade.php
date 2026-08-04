@@ -335,11 +335,7 @@
                             <div class="dashboard-card">
                                 <div class="dashboard-card-header py-4 px-4">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">Student Information</h5>
-                                        <div class="d-flex gap-2">
-                                            <input type="text" class="form-control form-control-sm"
-                                                placeholder="Search students..." style="width: 200px;">
-                                        </div>
+                                        <h5 class="mb-0">Verification Information</h5>
                                     </div>
                                 </div>
                                 <div class="dashboard-card-body p-0">

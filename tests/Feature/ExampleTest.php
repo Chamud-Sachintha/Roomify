@@ -136,7 +136,8 @@ test('price range filter returns only listings within the selected lkr range', f
         'display_name' => '',
         'location' => '',
         'category_type_id' => '',
-        'price_range' => '0-50000',
+        'min_price' => 0,
+        'max_price' => 50000,
     ]);
 
     $response->assertStatus(200)

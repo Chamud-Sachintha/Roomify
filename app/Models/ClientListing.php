@@ -111,16 +111,14 @@ class ClientListing extends Model
             $query->where('location', 'like', '%' . $filters['location'] . '%');
         }
 
-        if (!empty($filters['price_range'])) {
-            [$minPrice, $maxPrice] = explode('-', $filters['price_range']);
+        if (!empty($filters['min_price'])) {
+            $query->whereNotNull('rent_for_you')
+                ->where('rent_for_you', '>=', (float) $filters['min_price']);
+        }
 
-            $query->whereNotNull('rent_for_you');
-
-            if ($maxPrice === '999999999') {
-                $query->where('rent_for_you', '>=', (float) $minPrice);
-            } else {
-                $query->whereBetween('rent_for_you', [(float) $minPrice, (float) $maxPrice]);
-            }
+        if (!empty($filters['max_price'])) {
+            $query->whereNotNull('rent_for_you')
+                ->where('rent_for_you', '<=', (float) $filters['max_price']);
         }
 
         return $query->paginate($perPage);

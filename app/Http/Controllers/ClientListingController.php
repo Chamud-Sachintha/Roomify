@@ -260,13 +260,15 @@ class ClientListingController extends Controller
             'display_name' => 'nullable|string|max:255',
             'location' => 'nullable|string',
             'category_type_id' => 'nullable|exists:categories,id',
-            'price_range' => 'nullable|string|in:0-50000,50000-100000,100000-999999999',
+            'min_price' => 'nullable|numeric|min:0',
+            'max_price' => 'nullable|numeric|min:0',
         ]);
 
         $filter_data['display_name'] = $validated['display_name'] ?? null;
         $filter_data['location'] = $validated['location'] ?? null;
         $filter_data['category_type_id'] = $validated['category_type_id'] ?? null;
-        $filter_data['price_range'] = $validated['price_range'] ?? null;
+        $filter_data['min_price'] = $validated['min_price'] ?? null;
+        $filter_data['max_price'] = $validated['max_price'] ?? null;
 
         $listings = $this->ClientListingModel->filterListings($filter_data, 10);
 
