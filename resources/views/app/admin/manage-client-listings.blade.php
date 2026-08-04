@@ -330,7 +330,10 @@
                                                         <td>{{ $clientListing->number_of_persons }}</td>
                                                         <td>
                                                             <a href="{{ route('view_client_listing', $clientListing->id) }}" class="btn btn-sm btn-primary">View</a>
-                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                            <form action="{{ route('delete_client_listing', $clientListing->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this listing?');">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                            </form>
                                                         </td>
                                                     </tr>
                                                 @endforeach

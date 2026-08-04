@@ -333,7 +333,7 @@
                                                     <td>
                                                         <a href="{{ route('view_user_details', $user->id) }}" class="btn btn-sm btn-outline-primary">View</a>
                                                         <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Reset Password</button>
-                                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDeleteVerificationDocumentId({{ $user->id }})">Disable User</button>
+                                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDisableUserId({{ $user->id }})">Disable User</button>
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -366,10 +366,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <form method="POST" action="{{ route('delete_verification_document') }}">
+                        <form method="POST" action="{{ route('disable_user') }}">
                             @csrf
-                            <input type="hidden" id="deleteVerificationDocumentId" name="deleteVerificationDocumentId">
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <input type="hidden" id="disableUserId" name="disableUserId">
+                            <button type="submit" class="btn btn-danger">Disable User</button>
                         </form>
                     </div>
                 </div>
@@ -423,6 +423,10 @@
 
     function setPasswordResetUserId(userId) {
         document.getElementById('resetUserId').value = userId;
+    }
+
+    function setDisableUserId(userId) {
+        document.getElementById('disableUserId').value = userId;
     }
 </script>
 

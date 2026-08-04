@@ -410,7 +410,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <form method="POST" action="#">
+                        <form method="POST" action="{{ route('delete_category') }}">
                             @csrf
                             <input type="hidden" id="deleteCategoryId" name="deleteCategoryId">
                             <button type="submit" class="btn btn-danger">Delete</button>

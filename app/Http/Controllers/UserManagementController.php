@@ -59,4 +59,22 @@ class UserManagementController extends Controller
 
         return redirect()->back()->with('success', 'Password reset successfully');
     }
+
+    public function disableUser(Request $request)
+    {
+        $validatedData = $request->validate([
+            'disableUserId' => 'required|integer|exists:users,id',
+        ]);
+
+        $user = User::find($validatedData['disableUserId']);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        $user->is_verified = false;
+        $user->save();
+
+        return redirect()->back()->with('success', 'User disabled successfully.');
+    }
 }

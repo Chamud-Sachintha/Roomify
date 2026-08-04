@@ -283,7 +283,7 @@
                                         <h5 class="mb-0"></h5>
                                         <div class="d-flex gap-2">
                                             <input type="text" class="form-control form-control-sm"
-                                                placeholder="Search students..." style="width: 200px;">
+                                                placeholder="Search..." style="width: 200px;">
                                         </div>
                                     </div>
                                 </div>
@@ -502,6 +502,18 @@
                     window.open(imageUrl, '_blank');
                 };
             });
+
+            const deleteModal = document.getElementById('deleteModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const documentId = button.getAttribute('data-id');
+                    const deleteInput = deleteModal.querySelector('#deleteVerificationDocumentId');
+                    if (deleteInput) {
+                        deleteInput.value = documentId;
+                    }
+                });
+            }
     </script>
 
 </body>

@@ -164,6 +164,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/app/admin/manage-all-users', [UserManagementController::class, 'showUserManagementPage'])->name('manage_all_users');
         Route::get('/view-user/{id}', [UserManagementController::class, 'viewUserDetails'])->name('view_user_details');
         Route::post('/reset-user-password', [UserManagementController::class, 'resetUserPassword'])->name('reset_user_password');
+        Route::post('/disable-user', [UserManagementController::class, 'disableUser'])->name('disable_user');
+        Route::post('/delete-category', [CategoryController::class, 'deleteCategory'])->name('delete_category');
 
         Route::get('/messages', [ChatMessageController::class, 'showMessagesPage'])->name('messages');
         Route::post('/send-message', [ChatMessageController::class, 'sendChatMessage'])->name('send_message');

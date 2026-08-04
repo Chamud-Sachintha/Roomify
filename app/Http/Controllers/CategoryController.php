@@ -48,4 +48,22 @@ class CategoryController extends Controller
             ->route('category_management')
             ->with('success', 'Category created successfully.');
     }
+
+    public function deleteCategory(Request $request)
+    {
+        $validated = $request->validate([
+            'deleteCategoryId' => 'required|integer|exists:categories,id',
+        ]);
+
+        try {
+            $category = $this->CategoryModel->findOrFail($validated['deleteCategoryId']);
+            $category->delete();
+
+            return redirect()
+                ->route('category_management')
+                ->with('success', 'Category deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Category could not be deleted.']);
+        }
+    }
 }
