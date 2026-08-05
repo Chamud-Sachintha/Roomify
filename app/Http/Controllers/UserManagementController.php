@@ -77,4 +77,22 @@ class UserManagementController extends Controller
 
         return redirect()->back()->with('success', 'User disabled successfully.');
     }
+
+    public function enableUser(Request $request)
+    {
+        $validatedData = $request->validate([
+            'enableUserId' => 'required|integer|exists:users,id',
+        ]);
+
+        $user = User::find($validatedData['enableUserId']);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        $user->is_verified = true;
+        $user->save();
+
+        return redirect()->back()->with('success', 'User enabled successfully.');
+    }
 }

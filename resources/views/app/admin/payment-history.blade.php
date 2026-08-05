@@ -190,7 +190,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $payment->order_id }}</td>
-                                                    <td>{{ optional($payment->listing->user)->name ?? 'N/A' }}</td>
+                                                    <td>{{ optional(optional($payment->listing)->user)->name ?? 'N/A' }}</td>
                                                     <td>{{ optional($payment->listing)->display_name ?? 'N/A' }}</td>
                                                     <td>{{ number_format($payment->amount, 2) }}</td>
                                                     <td>

@@ -333,7 +333,15 @@
                                                     <td>
                                                         <a href="{{ route('view_user_details', $user->id) }}" class="btn btn-sm btn-outline-primary">View</a>
                                                         <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#passwordResetModal">Reset Password</button>
-                                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDisableUserId({{ $user->id }})">Disable User</button>
+                                                        @if ($user->is_verified)
+                                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="setDisableUserId({{ $user->id }})">Disable User</button>
+                                                        @else
+                                                            <form method="POST" action="{{ route('enable_user') }}" class="d-inline">
+                                                                @csrf
+                                                                <input type="hidden" name="enableUserId" value="{{ $user->id }}">
+                                                                <button type="submit" class="btn btn-sm btn-outline-success">Enable User</button>
+                                                            </form>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                                 @endforeach
