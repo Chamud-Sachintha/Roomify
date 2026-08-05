@@ -72,4 +72,24 @@ class StripePaymentController extends Controller
             'payments' => $payments,
         ]);
     }
+
+    public function deletePayment(Request $request)
+    {
+        $request->validate([
+            'payment_id' => 'required|integer',
+        ]);
+
+        $payment = AppPayments::find($request->input('payment_id'));
+
+        if (!$payment) {
+            return redirect()->back()->withErrors(['error' => 'Payment not found.']);
+        }
+
+        try {
+            $payment->delete();
+            return redirect()->back()->with('success', 'Payment record deleted successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to delete payment record.']);
+        }
+    }
 }

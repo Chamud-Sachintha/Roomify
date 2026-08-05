@@ -183,6 +183,7 @@
                                                 <th>Amount</th>
                                                 <th>Status</th>
                                                 <th>Date</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -199,6 +200,13 @@
                                                         </span>
                                                     </td>
                                                     <td>{{ $payment->created_at->format('Y-m-d H:i') }}</td>
+                                                    <td>
+                                                        <form method="POST" action="{{ route('admin_delete_payment') }}" onsubmit="return confirm('Are you sure you want to delete this payment record?');">
+                                                            @csrf
+                                                            <input type="hidden" name="payment_id" value="{{ $payment->id }}">
+                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             @empty
                                                 <tr>
