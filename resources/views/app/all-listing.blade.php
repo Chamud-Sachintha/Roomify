@@ -158,28 +158,37 @@
                                 @csrf
                                 <div class="row mb-4">
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="display_name" placeholder="🔍 Search listings...">
+                                    <input type="text" class="form-control" name="display_name" placeholder="🔍 Search listings..." value="{{ request('display_name') }}">
                                 </div>
 
                                 <div class="col-md-2">
                                     <select class="form-control" name="category_type_id">
                                         <option value="">-- Select Category --</option>
                                         @foreach($categoryTypeList as $categoryType)
-                                            <option value="{{ $categoryType->id }}">{{ $categoryType->name }}</option>
+                                            <option value="{{ $categoryType->id }}" {{ request('category_type_id') == $categoryType->id ? 'selected' : '' }}>{{ $categoryType->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <input type="text" class="form-control" name="location" placeholder="📍 Location">
+                                    <select class="form-control" name="gender">
+                                        <option value="">-- Preferred Gender --</option>
+                                        <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                        <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                        <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                                    </select>
                                 </div>
 
                                 <div class="col-md-2">
-                                    <input type="number" min="0" step="1000" class="form-control" name="min_price" placeholder="Min Price">
+                                    <input type="text" class="form-control" name="location" placeholder="📍 Location" value="{{ request('location') }}">
                                 </div>
 
                                 <div class="col-md-2">
-                                    <input type="number" min="0" step="1000" class="form-control" name="max_price" placeholder="Max Price">
+                                    <input type="number" min="0" step="1000" class="form-control" name="min_price" placeholder="Min Price" value="{{ request('min_price') }}">
+                                </div>
+
+                                <div class="col-md-2">
+                                    <input type="number" min="0" step="1000" class="form-control" name="max_price" placeholder="Max Price" value="{{ request('max_price') }}">
                                 </div>
 
                                 <div class="col-md-2">

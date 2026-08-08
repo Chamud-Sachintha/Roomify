@@ -111,6 +111,10 @@ class ClientListing extends Model
             $query->where('location', 'like', '%' . $filters['location'] . '%');
         }
 
+        if (!empty($filters['gender'])) {
+            $query->where('gender', $filters['gender']);
+        }
+
         if (!empty($filters['min_price'])) {
             $query->whereNotNull('rent_for_you')
                 ->where('rent_for_you', '>=', (float) $filters['min_price']);
