@@ -115,6 +115,13 @@ class ClientListing extends Model
             $query->where('gender', $filters['gender']);
         }
 
+        if (!empty($filters['personal_habits'])) {
+            $habits = array_filter(array_map('trim', explode(',', $filters['personal_habits'])));
+            foreach ($habits as $habit) {
+                $query->whereRaw('LOWER(personal_habbits) LIKE ?', ['%' . strtolower($habit) . '%']);
+            }
+        }
+
         if (!empty($filters['min_price'])) {
             $query->whereNotNull('rent_for_you')
                 ->where('rent_for_you', '>=', (float) $filters['min_price']);

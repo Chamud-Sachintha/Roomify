@@ -263,6 +263,7 @@ class ClientListingController extends Controller
             'min_price' => 'nullable|numeric|min:0',
             'max_price' => 'nullable|numeric|min:0',
             'gender' => 'nullable|in:male,female,other',
+            'personal_habits' => 'nullable|string',
         ]);
 
         $filter_data['display_name'] = $validated['display_name'] ?? null;
@@ -271,6 +272,7 @@ class ClientListingController extends Controller
         $filter_data['min_price'] = $validated['min_price'] ?? null;
         $filter_data['max_price'] = $validated['max_price'] ?? null;
         $filter_data['gender'] = $validated['gender'] ?? null;
+        $filter_data['personal_habits'] = $validated['personal_habits'] ?? null;
 
         $listings = $this->ClientListingModel->filterListings($filter_data, 10);
 

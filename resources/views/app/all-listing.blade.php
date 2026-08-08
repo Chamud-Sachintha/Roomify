@@ -101,6 +101,38 @@
             border-left: 4px solid var(--accent);
         }
 
+        .chips-box {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 6px;
+            min-height: 48px;
+            padding: 10px 12px;
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            border-radius: 14px;
+            background: #fff;
+        }
+
+        .chips-input {
+            border: none;
+            outline: none;
+            min-width: 120px;
+            flex: 1 1 auto;
+            padding: 8px 4px;
+            font-size: 0.95rem;
+            background: transparent;
+        }
+
+        .chips-box .chip {
+            margin: 0;
+        }
+
+        .chip-remove {
+            cursor: pointer;
+            margin-left: 8px;
+            font-weight: 700;
+        }
+
         .btn-primary {
             background: linear-gradient(135deg, var(--accent), var(--accent-dark));
             border: 0;
@@ -156,52 +188,62 @@
                             <!-- SEARCH + FILTER BAR -->
                             <form action="{{ route('filter_listings') }}" method="POST" class="mb-4">
                                 @csrf
-                                <div class="row mb-4">
-                                <div class="col-md-4">
-                                    <input type="text" class="form-control" name="display_name" placeholder="🔍 Search listings..." value="{{ request('display_name') }}">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="display_name" placeholder="🔍 Search listings..." value="{{ request('display_name') }}">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <select class="form-control" name="category_type_id">
+                                            <option value="">-- Select Category --</option>
+                                            @foreach($categoryTypeList as $categoryType)
+                                                <option value="{{ $categoryType->id }}" {{ request('category_type_id') == $categoryType->id ? 'selected' : '' }}>{{ $categoryType->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <select class="form-control" name="gender">
+                                            <option value="">-- Preferred Gender --</option>
+                                            <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                            <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                            <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="location" placeholder="📍 Location" value="{{ request('location') }}">
+                                    </div>
                                 </div>
 
-                                <div class="col-md-2">
-                                    <select class="form-control" name="category_type_id">
-                                        <option value="">-- Select Category --</option>
-                                        @foreach($categoryTypeList as $categoryType)
-                                            <option value="{{ $categoryType->id }}" {{ request('category_type_id') == $categoryType->id ? 'selected' : '' }}>{{ $categoryType->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <div class="row g-3 align-items-end">
+                                    <div class="col-md-2">
+                                        <input type="number" min="0" step="1000" class="form-control" name="min_price" placeholder="Min Price" value="{{ request('min_price') }}">
+                                    </div>
 
-                                <div class="col-md-2">
-                                    <select class="form-control" name="gender">
-                                        <option value="">-- Preferred Gender --</option>
-                                        <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                        <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                                        <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>Other</option>
-                                    </select>
-                                </div>
+                                    <div class="col-md-2">
+                                        <input type="number" min="0" step="1000" class="form-control" name="max_price" placeholder="Max Price" value="{{ request('max_price') }}">
+                                    </div>
 
-                                <div class="col-md-2">
-                                    <input type="text" class="form-control" name="location" placeholder="📍 Location" value="{{ request('location') }}">
-                                </div>
-
-                                <div class="col-md-2">
-                                    <input type="number" min="0" step="1000" class="form-control" name="min_price" placeholder="Min Price" value="{{ request('min_price') }}">
-                                </div>
-
-                                <div class="col-md-2">
-                                    <input type="number" min="0" step="1000" class="form-control" name="max_price" placeholder="Max Price" value="{{ request('max_price') }}">
-                                </div>
-
-                                <div class="col-md-2">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                                    <div class="col-md-6">
+                                        <label class="form-label mb-2">Personal Habits</label>
+                                        <div id="filter-habits-container" class="chips-box">
+                                            <input type="text" id="filter-habits-input" class="chips-input" placeholder="Type a habit and press Enter">
                                         </div>
-                                        <div class="col-6">
-                                            <a href="{{ route('all_listings') }}" class="btn btn-warning w-100">Reset</a>
+                                        <input type="hidden" name="personal_habits" id="filter-habits-hidden" value="{{ request('personal_habits') }}">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="row g-2">
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary w-100">Filter</button>
+                                            </div>
+                                            <div class="col-12">
+                                                <a href="{{ route('all_listings') }}" class="btn btn-warning w-100">Reset</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </form>
 
 
@@ -284,3 +326,64 @@
         </main>
 
     </div>
+
+    <script>
+        function initChips(boxId, inputId, hiddenId, initialValue = '') {
+            const box = document.getElementById(boxId);
+            const input = document.getElementById(inputId);
+            const hidden = document.getElementById(hiddenId);
+
+            if (!box || !input || !hidden) {
+                return;
+            }
+
+            let chips = [];
+
+            if (initialValue) {
+                initialValue.split(',').map(item => item.trim()).filter(Boolean).forEach(value => {
+                    if (!chips.includes(value)) {
+                        chips.push(value);
+                    }
+                });
+            }
+
+            function renderChips() {
+                box.querySelectorAll('.chip').forEach(c => c.remove());
+
+                chips.forEach((text, index) => {
+                    const chip = document.createElement('div');
+                    chip.classList.add('chip');
+                    chip.innerHTML = `${text} <span class="chip-remove" data-index="${index}">&times;</span>`;
+
+                    chip.querySelector('.chip-remove').addEventListener('click', () => {
+                        chips.splice(index, 1);
+                        renderChips();
+                    });
+
+                    box.insertBefore(chip, input);
+                });
+
+                hidden.value = chips.join(',');
+            }
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && input.value.trim() !== '') {
+                    e.preventDefault();
+
+                    const value = input.value.trim();
+                    if (!chips.includes(value)) {
+                        chips.push(value);
+                    }
+
+                    renderChips();
+                    input.value = '';
+                }
+            });
+
+            renderChips();
+        }
+
+        initChips('filter-habits-container', 'filter-habits-input', 'filter-habits-hidden', document.getElementById('filter-habits-hidden')?.value || '');
+    </script>
+</body>
+</html>
