@@ -163,6 +163,7 @@ Route::middleware('auth')->group(function () {
         */
         Route::get('/category-management', [CategoryController::class, 'showCategorySettingsPage'])->name('category_management');
         Route::post('/category-management/create', [CategoryController::class, 'createNewCategory'])->name('create_new_category');
+        Route::post('/category-management/update', [CategoryController::class, 'updateCategory'])->name('update_category');
         Route::get('/manage-all-users', [UserManagementController::class, 'showUserManagementPage'])->name('manage_all_users');
         Route::get('/view-user/{id}', [UserManagementController::class, 'viewUserDetails'])->name('view_user_details');
         Route::post('/reset-user-password', [UserManagementController::class, 'resetUserPassword'])->name('reset_user_password');

@@ -109,6 +109,17 @@
                 <input type="number" class="form-control" id="number_of_persons" name="number_of_persons" value="{{ $post->number_of_persons }}">
             </div>
 
+            <!-- Category Type -->
+            <div class="mb-3">
+                <label for="category_type_id" class="form-label">Category Type</label>
+                <select name="category_type_id" id="category_type_id" class="form-control">
+                    <option value="">Select Category</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}" {{ ($post->category_type_id == $cat->id) ? 'selected' : '' }}>{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <!-- Total Rent -->
             <div class="mb-3">
                 <label for="total_rent" class="form-label">Total Rent</label>
@@ -131,6 +142,18 @@
             <div class="mb-3">
                 <label for="personal_habbits" class="form-label">Personal Habits</label>
                 <input type="text" class="form-control" id="personal_habbits" name="personal_habbits" value="{{ $post->personal_habbits }}">
+            </div>
+
+            <!-- Occupation -->
+            <div class="mb-3">
+                <label for="ocupation" class="form-label">Occupation</label>
+                <select name="ocupation" id="ocupation" class="form-control">
+                    <option value="">Select</option>
+                    <option value="employed" {{ $post->occupation == 'employed' ? 'selected' : '' }}>Employed</option>
+                    <option value="student" {{ $post->occupation == 'student' ? 'selected' : '' }}>Student</option>
+                    <option value="unemployed" {{ $post->occupation == 'unemployed' ? 'selected' : '' }}>Unemployed</option>
+                    <option value="retired" {{ $post->occupation == 'retired' ? 'selected' : '' }}>Retired</option>
+                </select>
             </div>
 
             <!-- Notes -->

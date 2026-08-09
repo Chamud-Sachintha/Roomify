@@ -173,6 +173,11 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
+                                <div class="detail-label">Category</div>
+                                <div class="detail-value">{{ optional($post->categoryType)->name ?? 'N/A' }}</div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
                                 <div class="detail-label">Number of Persons</div>
                                 <div class="detail-value">{{ $post->number_of_persons ?? 'N/A' }}</div>
                             </div>

@@ -167,10 +167,18 @@ class ClientListingController extends Controller
             $post->images = explode(',', $post->images);
         }
 
+        // If admin has approved the listing, disallow client updates
+        if ($post && $post->status === 'approved') {
+            return redirect()->route('client_my_listings')->with('error', 'Approved listings cannot be edited by clients.');
+        }
+
+        $categories = $this->categoryTypeService->getAllCategoryTypes();
+
         return view('app.update-my-listing-page')->with([
             'user' => $this->user,
             'breadcrumb' => 'Update Listing',
             'post' => $post,
+            'categories' => $categories,
         ]);
     }
 
@@ -178,6 +186,8 @@ class ClientListingController extends Controller
     {
         $validated = $request->validate([
             'location'           => 'required|string',
+            'category_type_id'   => 'nullable|exists:categories,id',
+            'ocupation'          => 'nullable|in:employed,student,unemployed,retired',
             'number_of_persons'  => 'nullable|integer|min:1',
             'total_rent'         => 'nullable|numeric|min:0',
             'rent_for_you'       => 'nullable|numeric|min:0',
@@ -197,6 +207,10 @@ class ClientListingController extends Controller
                 return redirect()->route('client_my_listings')->with('error', 'Listing not found.');
             }
 
+            if ($post->status === 'approved') {
+                return redirect()->route('client_my_listings')->with('error', 'Approved listings cannot be edited by clients.');
+            }
+
             // Image upload
             $imagePaths = $post->images ? explode(',', $post->images) : [];
             if ($request->hasFile('images')) {
@@ -208,11 +222,13 @@ class ClientListingController extends Controller
 
             $post->update([
                 'location'          => $validated['location'],
+                'category_type_id'  => $validated['category_type_id'] ?? null,
                 'number_of_persons' => $validated['number_of_persons'] ?? null,
                 'total_rent'        => $validated['total_rent'] ?? null,
                 'rent_for_you'      => $validated['rent_for_you'] ?? null,
                 'facilities'        => $validated['facilities'] ?? '',
                 'personal_habbits'  => $validated['personal_habbits'] ?? '',
+                'occupation'        => $validated['ocupation'] ?? null,
                 'notes'             => $validated['notes'] ?? null,
                 'images'            => implode(',', $imagePaths),
             ]);

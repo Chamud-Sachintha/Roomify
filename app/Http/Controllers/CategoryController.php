@@ -66,4 +66,24 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors(['error' => 'Category could not be deleted.']);
         }
     }
+
+    public function updateCategory(Request $request)
+    {
+        $validated = $request->validate([
+            'categoryId' => 'required|integer|exists:categories,id',
+            'editCategoryTypeName' => 'required|string|max:255',
+            'editCategoryTypeStatus' => 'required|integer|between:0,1',
+        ]);
+
+        try {
+            $category = $this->CategoryModel->findOrFail($validated['categoryId']);
+            $category->name = $validated['editCategoryTypeName'];
+            $category->status = $validated['editCategoryTypeStatus'];
+            $category->save();
+
+            return redirect()->route('category_management')->with('success', 'Category updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Category could not be updated.']);
+        }
+    }
 }

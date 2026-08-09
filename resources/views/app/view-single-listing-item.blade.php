@@ -169,6 +169,11 @@
                         </div>
 
                         <div class="col-md-6 mb-3">
+                            <div class="detail-label">Category</div>
+                            <div class="detail-value">{{ optional($listing->categoryType)->name ?? 'N/A' }}</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <div class="detail-label">Number of Persons</div>
                             <div class="detail-value">{{ $listing->number_of_persons ?? 'N/A' }}</div>
                         </div>

@@ -370,7 +370,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="" class="row g-3">
+                        <form method="POST" action="{{ route('update_category') }}" class="row g-3">
                             @csrf
                             <input type="hidden" id="categoryId" name="categoryId">
                             <div class="col-12">
