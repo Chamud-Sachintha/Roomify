@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Services\VerificationDocumentTypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ClientVerificationDocumentController extends Controller
@@ -94,10 +95,10 @@ class ClientVerificationDocumentController extends Controller
         ]);
 
         $documentId = $request->input('document_id');
-        $status = $request->input('status');
+        $status = (int) $request->input('status');
         $remark = $request->input('remark', 'N/A');
 
-        if ($status == 2 && trim($remark) === '') {
+        if ($status === 2 && trim($remark) === '') {
             return back()->withErrors(['error' => 'Remark is required when rejecting a verification request.']);
         }
 
@@ -115,8 +116,14 @@ class ClientVerificationDocumentController extends Controller
             $document->client()->update(['is_verified' => $hasApprovedDocument]);
             $document->load('client');
 
-            if (in_array($status, [1, 2])) {
+            if (in_array($status, [1, 2], true)) {
                 try {
+                    Log::debug('Sending verification notification email', [
+                        'document_id' => $document->id,
+                        'client_id' => $document->client_id,
+                        'status' => $status,
+                    ]);
+
                     Mail::to($document->client->email)->send(
                         new VerificationRequestNotificationMail(
                             $document,
@@ -124,8 +131,14 @@ class ClientVerificationDocumentController extends Controller
                             $status === 2 ? $document->remark : null
                         )
                     );
+
+                    Log::debug('Verification notification email sent successfully', [
+                        'document_id' => $document->id,
+                        'client_id' => $document->client_id,
+                        'status' => $status,
+                    ]);
                 } catch (\Exception $mailException) {
-                    \Log::error('Verification request email failed: ' . $mailException->getMessage(), [
+                    Log::error('Verification request email failed: ' . $mailException->getMessage(), [
                         'document_id' => $document->id,
                         'client_id' => $document->client_id,
                         'status' => $status,
