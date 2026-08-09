@@ -271,6 +271,14 @@
 
                                         <!-- Submit -->
                                         <div class="col-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Payment Method</label>
+                                                <select name="payment_method" class="form-control">
+                                                    <option value="stripe">Card (Online)</option>
+                                                    <option value="offline">Offline / Pay later</option>
+                                                </select>
+                                            </div>
+
                                             <button class="btn btn-primary px-4">Submit</button>
                                             <button type="reset" class="btn btn-secondary px-4">Clear Form</button>
                                         </div>

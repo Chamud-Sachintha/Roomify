@@ -201,11 +201,22 @@
                                                     </td>
                                                     <td>{{ $payment->created_at->format('Y-m-d H:i') }}</td>
                                                     <td>
-                                                        <form method="POST" action="{{ route('admin_delete_payment') }}" onsubmit="return confirm('Are you sure you want to delete this payment record?');">
-                                                            @csrf
-                                                            <input type="hidden" name="payment_id" value="{{ $payment->id }}">
-                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                        </form>
+                                                        <div class="d-flex gap-2">
+                                                            @if(in_array($payment->status, ['pending_offline','pending']))
+                                                                <form method="POST" action="{{ route('admin_mark_payment_paid') }}" onsubmit="return confirm('Mark this payment as paid and approve the listing?');">
+                                                                    @csrf
+                                                                    <input type="hidden" name="payment_id" value="{{ $payment->id }}">
+                                                                    <input type="text" name="offline_reference" placeholder="Ref (optional)" class="form-control form-control-sm" style="width:140px">
+                                                                    <button type="submit" class="btn btn-sm btn-success">Mark Paid</button>
+                                                                </form>
+                                                            @endif
+
+                                                            <form method="POST" action="{{ route('admin_delete_payment') }}" onsubmit="return confirm('Are you sure you want to delete this payment record?');">
+                                                                @csrf
+                                                                <input type="hidden" name="payment_id" value="{{ $payment->id }}">
+                                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                            </form>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @empty

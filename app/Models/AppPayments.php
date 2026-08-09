@@ -12,7 +12,9 @@ class AppPayments extends Model
         'order_id',
         'status',
         'amount',
-        'stripe_payment_id'
+        'stripe_payment_id',
+        'payment_method',
+        'offline_reference'
     ];
 
     public function listing()

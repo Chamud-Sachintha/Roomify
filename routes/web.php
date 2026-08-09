@@ -154,6 +154,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/update-verification-request', [ClientVerificationDocumentController::class, 'updateVerificationRequest'])->name('update_verification_request');
         Route::get('/payment-history', [StripePaymentController::class, 'showPaymentHistoryPage'])->name('admin_payment_history');
         Route::post('/delete-payment', [StripePaymentController::class, 'deletePayment'])->name('admin_delete_payment');
+        Route::post('/mark-payment-paid', [StripePaymentController::class, 'markPaymentAsPaid'])->name('admin_mark_payment_paid');
 
         /*
         |--------------------------------------------------------------------------

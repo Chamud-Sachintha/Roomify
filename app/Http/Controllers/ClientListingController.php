@@ -94,6 +94,7 @@ class ClientListingController extends Controller
             'notes'              => 'nullable|string',
             'images'             => 'nullable|array|max:3',
             'images.*'           => 'file|mimes:jpg,jpeg,png|max:2048',
+            'payment_method'      => 'nullable|in:stripe,offline',
         ]);
 
         DB::beginTransaction();
@@ -123,10 +124,27 @@ class ClientListingController extends Controller
 
             $payment = $this->AppPaymentModel->createPaymentDetails($paymentDetails);
 
+            $paymentMethod = $request->input('payment_method', 'stripe');
+
+            // persist chosen payment method
+            $payment->update(['payment_method' => $paymentMethod]);
+
             DB::commit();
 
             Mail::to($this->user->email)->send(new ClientListingNotificationMail($post, 'created'));
 
+            // If user chose offline payment, mark as pending_offline and show instructions
+            if ($paymentMethod === 'offline') {
+                $payment->update(['status' => 'pending_offline']);
+
+                return view('app.offline-payment-instructions')->with([
+                    'user' => $this->user,
+                    'breadcrumb' => 'Offline Payment Instructions',
+                    'payment' => $payment,
+                ]);
+            }
+
+            // default: redirect to Stripe checkout
             $stripe = new PaymentService();
             $checkoutUrl = $stripe->createCheckout($payment);
 

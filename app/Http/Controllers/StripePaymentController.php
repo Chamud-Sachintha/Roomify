@@ -92,4 +92,38 @@ class StripePaymentController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to delete payment record.']);
         }
     }
+
+    public function markPaymentAsPaid(Request $request)
+    {
+        $request->validate([
+            'payment_id' => 'required|integer',
+            'offline_reference' => 'nullable|string|max:255',
+        ]);
+
+        $payment = AppPayments::find($request->input('payment_id'));
+
+        if (!$payment) {
+            return redirect()->back()->withErrors(['error' => 'Payment not found.']);
+        }
+
+        try {
+            // mark payment succeeded and attach offline reference if provided
+            $payment->update([
+                'status' => 'succeeded',
+                'offline_reference' => $request->input('offline_reference', null),
+            ]);
+
+            // approve associated listing if exists
+            if ($payment->listing_id) {
+                $listing = ClientListing::find($payment->listing_id);
+                if ($listing) {
+                    $listing->update(['status' => 'approved']);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Payment marked as paid and listing approved.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Failed to mark payment as paid: ' . $e->getMessage()]);
+        }
+    }
 }
