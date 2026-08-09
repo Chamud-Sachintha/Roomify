@@ -97,16 +97,30 @@
             @csrf
             @method('PUT')
 
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
             <!-- Location -->
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" class="form-control" id="location" name="location" value="{{ $post->location }}" required>
+                    <input type="text" class="form-control" id="location" name="location" value="{{ old('location', $post->location) }}" required>
             </div>
 
             <!-- Number of Persons -->
             <div class="mb-3">
                 <label for="number_of_persons" class="form-label">Number of Persons</label>
-                <input type="number" class="form-control" id="number_of_persons" name="number_of_persons" value="{{ $post->number_of_persons }}">
+                <input type="number" class="form-control" id="number_of_persons" name="number_of_persons" value="{{ old('number_of_persons', $post->number_of_persons) }}">
             </div>
 
             <!-- Category Type -->
@@ -123,25 +137,25 @@
             <!-- Total Rent -->
             <div class="mb-3">
                 <label for="total_rent" class="form-label">Total Rent</label>
-                <input type="number" class="form-control" id="total_rent" name="total_rent" value="{{ $post->total_rent }}">
+                <input type="number" class="form-control" id="total_rent" name="total_rent" value="{{ old('total_rent', $post->total_rent) }}">
             </div>
 
             <!-- Rent for You -->
             <div class="mb-3">
                 <label for="rent_for_you" class="form-label">Rent for You</label>
-                <input type="number" class="form-control" id="rent_for_you" name="rent_for_you" value="{{ $post->rent_for_you }}">
+                <input type="number" class="form-control" id="rent_for_you" name="rent_for_you" value="{{ old('rent_for_you', $post->rent_for_you) }}">
             </div>
 
             <!-- Facilities -->
             <div class="mb-3">
                 <label for="facilities" class="form-label">Facilities</label>
-                <input type="text" class="form-control" id="facilities" name="facilities" value="{{ $post->facilities }}">
+                <input type="text" class="form-control" id="facilities" name="facilities" value="{{ old('facilities', $post->facilities) }}">
             </div>
 
             <!-- Personal Habits -->
             <div class="mb-3">
                 <label for="personal_habbits" class="form-label">Personal Habits</label>
-                <input type="text" class="form-control" id="personal_habbits" name="personal_habbits" value="{{ $post->personal_habbits }}">
+                <input type="text" class="form-control" id="personal_habbits" name="personal_habbits" value="{{ old('personal_habbits', $post->personal_habbits) }}">
             </div>
 
             <!-- Occupation -->
@@ -159,7 +173,7 @@
             <!-- Notes -->
             <div class="mb-3">
                 <label for="notes" class="form-label">Notes</label>
-                <textarea class="form-control" id="notes" name="notes" rows="4">{{ $post->notes }}</textarea>
+                <textarea class="form-control" id="notes" name="notes" rows="4">{{ old('notes', $post->notes) }}</textarea>
             </div>
 
             <!-- Images -->
