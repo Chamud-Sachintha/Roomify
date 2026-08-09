@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\VerificationRequestNotificationMail;
 use App\Models\ClientVerificationDocument;
 use App\Models\Role;
 use App\Services\VerificationDocumentTypeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ClientVerificationDocumentController extends Controller
 {
@@ -103,10 +105,24 @@ class ClientVerificationDocumentController extends Controller
             $document = $this->clientVerificationDocumentModel->findOrFail($documentId);
             $document->status = $status;
             $document->remark = $remark;
-            if ($status == 1) {
-                $document->verified_at = now();
-            }
+            $document->verified_at = $status === 1 ? now() : null;
             $document->save();
+
+            $hasApprovedDocument = ClientVerificationDocument::where('client_id', $document->client_id)
+                ->where('status', 1)
+                ->exists();
+
+            $document->client()->update(['is_verified' => $hasApprovedDocument]);
+
+            if (in_array($status, [1, 2])) {
+                Mail::to($document->client->email)->send(
+                    new VerificationRequestNotificationMail(
+                        $document,
+                        $status === 1 ? 'approved' : 'rejected',
+                        $status === 2 ? $remark : null
+                    )
+                );
+            }
 
             return redirect()->back()->with('success', 'Verification request updated successfully.');
         } catch (\Exception $e) {
