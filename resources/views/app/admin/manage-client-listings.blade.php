@@ -317,6 +317,7 @@
                                                     <th>Full Name</th>
                                                     <th>Location</th>
                                                     <th>Number of Persons</th>
+                                                    <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -328,6 +329,15 @@
                                                         <td>{{ $clientListing->user->name }}</td>
                                                         <td>{{ $clientListing->location }}</td>
                                                         <td>{{ $clientListing->number_of_persons }}</td>
+                                                        <td>
+                                                            @php
+                                                                $statusClass = 'status-inactive';
+                                                                if ($clientListing->status === 'pending') $statusClass = 'status-pending';
+                                                                if ($clientListing->status === 'approved') $statusClass = 'status-active';
+                                                                if ($clientListing->status === 'rejected') $statusClass = 'status-inactive';
+                                                            @endphp
+                                                            <span class="status-badge {{ $statusClass }}">{{ ucfirst($clientListing->status) }}</span>
+                                                        </td>
                                                         <td>
                                                             <a href="{{ route('view_client_listing', $clientListing->id) }}" class="btn btn-sm btn-primary">View</a>
                                                             <form action="{{ route('delete_client_listing', $clientListing->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this listing?');">
