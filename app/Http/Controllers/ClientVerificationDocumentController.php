@@ -97,14 +97,14 @@ class ClientVerificationDocumentController extends Controller
         $status = $request->input('status');
         $remark = $request->input('remark', 'N/A');
 
-        if ($status == 2 && $remark == 'N/A') {
+        if ($status == 2 && trim($remark) === '') {
             return back()->withErrors(['error' => 'Remark is required when rejecting a verification request.']);
         }
 
         try {
             $document = $this->clientVerificationDocumentModel->findOrFail($documentId);
             $document->status = $status;
-            $document->remark = $remark;
+            $document->remark = trim($remark) === '' ? 'N/A' : $remark;
             $document->verified_at = $status === 1 ? now() : null;
             $document->save();
 
@@ -113,15 +113,24 @@ class ClientVerificationDocumentController extends Controller
                 ->exists();
 
             $document->client()->update(['is_verified' => $hasApprovedDocument]);
+            $document->load('client');
 
             if (in_array($status, [1, 2])) {
-                Mail::to($document->client->email)->send(
-                    new VerificationRequestNotificationMail(
-                        $document,
-                        $status === 1 ? 'approved' : 'rejected',
-                        $status === 2 ? $remark : null
-                    )
-                );
+                try {
+                    Mail::to($document->client->email)->send(
+                        new VerificationRequestNotificationMail(
+                            $document,
+                            $status === 1 ? 'approved' : 'rejected',
+                            $status === 2 ? $document->remark : null
+                        )
+                    );
+                } catch (\Exception $mailException) {
+                    \Log::error('Verification request email failed: ' . $mailException->getMessage(), [
+                        'document_id' => $document->id,
+                        'client_id' => $document->client_id,
+                        'status' => $status,
+                    ]);
+                }
             }
 
             return redirect()->back()->with('success', 'Verification request updated successfully.');
